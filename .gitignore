@@ -1,0 +1,24 @@
+# Ignore dependencies and large static builds from Git and search indexers
+node_modules/
+.next/
+_next/
+OUT/
+scratch/
+*.xlsx
+*.xlsx.bak
+*.bak
+*.eap_patch.bak
+*.txt
+*.log
+*.zip
+*.tar.gz
+*.pdf
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.ico
+tmp/
+temp/
+dist/
+build/

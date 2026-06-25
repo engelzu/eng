@@ -1,0 +1,1448 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="/_next/static/css/6db06e54b2bd42bb.css" data-precedence="next"/><title data-i18n="schedule.title">Carga de Cronograma - SharePoint</title>    <script src="js/i18n.js"></script>    <script src="https://cdn.jsdelivr.net/npm/cfb@1.2.2/dist/cfb.min.js"></script>
+    <script>
+    let PROJECTS_LIST = [];
+
+    window.loadProjects = async function() {
+        const container = document.getElementById('sharepoint-container');
+        if (!container) return;
+        
+        container.innerHTML = '<div class="col-span-full py-10 text-center"><p class="text-slate-400 font-bold uppercase tracking-widest text-xs">Buscando projetos no GCP...</p></div>';
+        
+        try {
+            const res = await fetch('/.netlify/functions/sync-projects');
+            if (!res.ok) {
+                const errText = await res.text();
+                throw new Error(`Erro ${res.status}: ${errText}`);
+            }
+            const data = await res.json();
+            if (data.status === 'OK') {
+                PROJECTS_LIST = data.projects || [];
+                renderProjects();
+            } else {
+                throw new Error(data.error || 'Erro desconhecido');
+            }
+        } catch (e) {
+            container.innerHTML = `<div class="col-span-full py-10 text-center text-red-500">
+                <p class="font-bold text-lg">Erro ao carregar projetos</p>
+                <p class="text-sm mt-2 bg-red-50 p-4 rounded inline-block max-w-lg">${e.message}</p>
+                <p class="text-xs mt-4 text-slate-400">Verifique se a variavel GCP_SERVICE_ACCOUNT esta configurada no Netlify.</p>
+                <button onclick="loadProjects()" class="mt-4 px-6 py-2 bg-indigo-600 text-white rounded-lg font-bold hover:bg-indigo-700 transition">🔄 Tentar Novamente</button>
+            </div>`;
+        }
+    };
+
+    window.loadProjects = async function() {
+        const container = document.getElementById('sharepoint-container');
+        if (!container) return;
+        
+        container.innerHTML = '<div class="col-span-full py-10 text-center"><p class="text-slate-400 font-bold uppercase tracking-widest text-xs">Buscando projetos no GCP...</p></div>';
+        
+        try {
+            const res = await fetch('/.netlify/functions/sync-projects');
+            if (!res.ok) {
+                const errText = await res.text();
+                throw new Error(`Erro ${res.status}: ${errText}`);
+            }
+            const data = await res.json();
+            if (data.status === 'OK') {
+                PROJECTS_LIST = data.projects || [];
+                renderProjects();
+            } else {
+                throw new Error(data.error || 'Erro desconhecido');
+            }
+        } catch (e) {
+            container.innerHTML = `<div class="col-span-full py-10 text-center text-red-500">
+                <p class="font-bold text-lg">Erro ao carregar projetos</p>
+                <p class="text-sm mt-2 bg-red-50 p-4 rounded inline-block max-w-lg">${e.message}</p>
+                <p class="text-xs mt-4 text-slate-400">Verifique se a variavel GCP_SERVICE_ACCOUNT esta configurada no Netlify.</p>
+                <button onclick="window.loadProjects()" class="mt-4 px-6 py-2 bg-indigo-600 text-white rounded-lg font-bold hover:bg-indigo-700 transition">🔄 Tentar Novamente</button>
+            </div>`;
+        }
+    };
+
+    function renderProjects() {
+        const container = document.getElementById('sharepoint-container');
+        if (!container) return;
+
+        if (PROJECTS_LIST.length === 0) {
+            container.innerHTML = '<div class="col-span-full py-10 text-center"><p class="text-slate-400 font-bold">Nenhum projeto .mpp encontrado no bucket.</p></div>';
+            return;
+        }
+
+        container.innerHTML = PROJECTS_LIST.map(p => {
+            const name = p.name;
+            let displayName = name;
+            try {
+                while (displayName.includes('%')) {
+                    let next = decodeURIComponent(displayName);
+                    if (next === displayName) break;
+                    displayName = next;
+                }
+            } catch(e) {}
+
+            return `
+                <div class="group relative bg-white rounded-xl p-4 border border-slate-200 shadow-sm hover:shadow-md transition-all cursor-pointer hover:-translate-y-1" draggable="true" ondragstart="dragProject(event, '${name}')" onclick="selectProject('${name}')">
+                    <div class="flex items-center gap-3">
+                        <div class="h-10 w-10 rounded-lg bg-indigo-50 flex items-center justify-center text-indigo-600 group-hover:bg-indigo-600 group-hover:text-white transition-colors flex-shrink-0">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <p class="text-[11px] font-bold text-slate-800 leading-tight mb-1 break-words break-all whitespace-normal" style="word-break: break-word;">${displayName}</p>
+                            <p class="text-[9px] text-slate-400 font-medium uppercase tracking-tighter">Projeto .mpp</p>
+                        </div>
+                        <button onclick="event.stopPropagation(); deleteProject('${name}')" class="opacity-0 group-hover:opacity-100 transition-opacity p-1.5 rounded-lg hover:bg-red-50 text-slate-300 hover:text-red-500" title="Excluir projeto">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path></svg>
+                        </button>
+                    </div>
+                </div>
+            `;
+        }).join('');
+    }
+
+    async function selectProject(name) {
+        // Abre a aba de visualização imediatamente de forma síncrona para evitar bloqueio de pop-up
+        const ganttWindow = window.open('', '_blank');
+        if (ganttWindow) {
+            ganttWindow.document.write(`
+                <html>
+                <head>
+                    <title>Carregando do GCP...</title>
+                    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+                    <style>
+                        body {
+                            font-family: 'Inter', sans-serif;
+                            background: #f8fafc;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            height: 100vh;
+                            margin: 0;
+                            overflow: hidden;
+                        }
+                        .loader-box {
+                            text-align: center;
+                            background: white;
+                            padding: 40px;
+                            border-radius: 24px;
+                            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+                            border: 1px solid #e2e8f0;
+                            max-width: 340px;
+                        }
+                        .spinner {
+                            font-size: 40px;
+                            display: inline-block;
+                            animation: spin 1s linear infinite;
+                            margin-bottom: 16px;
+                        }
+                        h3 {
+                            color: #0284c7;
+                            margin: 0 0 8px 0;
+                            font-weight: 800;
+                            font-size: 16px;
+                            text-transform: uppercase;
+                            letter-spacing: 0.5px;
+                        }
+                        p {
+                            color: #64748b;
+                            font-size: 12px;
+                            margin: 0;
+                            line-height: 1.5;
+                        }
+                        @keyframes spin {
+                            to { transform: rotate(360deg); }
+                        }
+                    </style>
+                </head>
+                <body>
+                    <div class="loader-box">
+                        <span class="spinner">📥</span>
+                        <h3>Carregando Arquivo</h3>
+                        <p>Baixando o cronograma diretamente do GCP Cloud Storage...</p>
+                    </div>
+                </body>
+                </html>
+            `);
+            ganttWindow.document.close();
+        }
+
+        try {
+            // Usa a Netlify Function para baixar do GCP com autenticação
+            const endpoint = `/.netlify/functions/download-project?file=${encodeURIComponent(name)}`;
+            console.log(`[GCP] Buscando arquivo via função: ${endpoint}`);
+
+            const res = await fetch(endpoint);
+            if (!res.ok) {
+                throw new Error(`Erro ao baixar: HTTP ${res.status}`);
+            }
+
+            const blob = await res.blob();
+            const file = new File([blob], name, { type: "application/octet-stream" });
+            
+            if (ganttWindow) {
+                try {
+                    ganttWindow.document.body.innerHTML = `
+                        <div class="loader-box">
+                            <span class="spinner">⏳</span>
+                            <h3 style="color: #4f46e5;">Processando Cronograma</h3>
+                            <p>Aguarde enquanto o motor de leitura processa e renderiza o seu gráfico de Gantt...</p>
+                        </div>
+                    `;
+                } catch(e){}
+            }
+            
+            await processFile(file, ganttWindow);
+        } catch (e) {
+            if (ganttWindow) ganttWindow.close();
+            alert(`Erro ao abrir o arquivo '${name}': ${e.message}`);
+        }
+    }
+
+    function showDownloadGuidance(name) {
+        // Remove modal anterior se houver
+        const oldModal = document.getElementById('guidance-modal');
+        if (oldModal) oldModal.remove();
+
+        const modal = document.createElement('div');
+        modal.id = 'guidance-modal';
+        modal.className = 'guidance-overlay';
+        modal.innerHTML = `
+            <div class="guidance-card">
+                <div class="bg-indigo-600 p-6 text-white text-center relative overflow-hidden flex flex-col items-center">
+                    <div class="absolute -right-10 -top-10 w-36 h-36 bg-indigo-500 rounded-full opacity-20 blur-xl"></div>
+                    <div class="absolute -left-10 -bottom-10 w-36 h-36 bg-indigo-500 rounded-full opacity-20 blur-xl"></div>
+                    
+                    <div class="relative w-14 h-14 bg-white/10 rounded-full flex items-center justify-center text-2xl mb-3 border border-white/20">
+                        📥
+                        <span class="absolute -bottom-1 right-0 text-xs animate-bounce">👇</span>
+                    </div>
+                    
+                    <h3 class="text-xs font-black tracking-widest uppercase">Download Iniciado!</h3>
+                    <p class="text-[9px] text-indigo-100 mt-1 max-w-[280px]">O arquivo está sendo baixado diretamente via OneDrive.</p>
+                </div>
+                
+                <div class="p-6 space-y-4 text-left">
+                    <div class="bg-slate-50 border border-slate-200/60 rounded-2xl p-4 text-xs text-slate-600 leading-relaxed flex gap-3 items-start">
+                        <span class="text-lg flex-shrink-0">📄</span>
+                        <div class="min-w-0">
+                            <span class="font-bold text-slate-800 text-[10px] uppercase tracking-wider block mb-0.5">Arquivo solicitado:</span>
+                            <span class="font-mono text-[11px] text-indigo-600 font-bold select-all break-all block leading-tight">${name}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-3">
+                        <h4 class="text-[10px] font-black text-slate-850 uppercase tracking-wider">Como abrir o Gráfico de Gantt:</h4>
+                        
+                        <div class="flex gap-3 items-center">
+                            <div class="w-5 h-5 rounded-full bg-indigo-50 border border-indigo-100 flex items-center justify-center text-[9px] font-black text-indigo-600 flex-shrink-0">1</div>
+                            <p class="text-xs text-slate-600 leading-tight">O arquivo aparecerá na barra de downloads do seu navegador.</p>
+                        </div>
+                        
+                        <div class="flex gap-3 items-center">
+                            <div class="w-5 h-5 rounded-full bg-indigo-50 border border-indigo-100 flex items-center justify-center text-[9px] font-black text-indigo-600 flex-shrink-0">2</div>
+                            <p class="text-xs text-slate-600 leading-tight font-semibold text-indigo-700">Arraste-o com o mouse da barra de downloads e solte-o no box pontilhado destacado acima.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="border border-dashed border-slate-200 bg-slate-50/50 rounded-xl p-3 flex items-center justify-center gap-4 text-slate-400 select-none animate-pulse">
+                        <span class="text-2xl">📄</span>
+                        <span class="text-lg">➔</span>
+                        <span class="text-2xl border-2 border-indigo-300 border-dashed rounded-lg px-2 py-1 bg-white">📥</span>
+                    </div>
+                    
+                    <button onclick="dismissGuidance()" class="w-full bg-slate-900 hover:bg-slate-800 active:translate-y-0.5 text-white text-xs font-black py-3 rounded-xl transition-all shadow-md uppercase tracking-widest">
+                        Entendi, continuar!
+                    </button>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(modal);
+        
+        const dz = document.getElementById('dropzone-mpp');
+        if (dz) {
+            dz.classList.add('pulse-dropzone');
+        }
+        
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) dismissGuidance();
+        });
+    }
+
+    function dismissGuidance() {
+        const modal = document.getElementById('guidance-modal');
+        if (modal) modal.remove();
+    }
+
+    function injectSharePointUI() {
+        const mainArea = document.getElementById('main-content');
+        if (mainArea && !document.getElementById('sharepoint-container')) {
+            mainArea.innerHTML = `
+                <div class="py-3">
+                    <!-- Área de Visualização Direta de Arquivo MPP/XML Local -->
+                    <div class="sticky-dropzone mb-4 bg-white rounded-2xl p-3 border border-slate-200 shadow-sm text-left animate-fade-in relative overflow-hidden" style="max-width: 550px; margin-left: auto; margin-right: auto;">
+                        <div class="absolute top-0 right-0 w-40 h-40 bg-indigo-50/30 rounded-full blur-3xl -z-10"></div>
+                        
+                        <div class="flex flex-col gap-2">
+                            <div>
+                                <div class="flex items-center gap-2 mb-0.5">
+                                    <span id="active-engine-badge" class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[8px] font-black uppercase tracking-wider bg-indigo-50 text-indigo-600 border border-indigo-100">
+                                        ⚡ Local Rápido
+                                    </span>
+                                    <button onclick="openAdminShield()" class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md text-[8px] font-black uppercase tracking-wider bg-slate-100 hover:bg-indigo-50 hover:text-indigo-600 text-slate-500 border border-slate-200/60 hover:border-indigo-100 transition-all cursor-pointer shadow-sm" title="Configurações de Administrador">
+                                        🛡️ Admin
+                                    </button>
+                                </div>
+                                <h3 class="text-sm font-extrabold text-slate-900 tracking-tight mb-0.5">
+                                    Leitor & Visualizador Gantt MS Project
+                                </h3>
+                                <p class="text-[10px] text-slate-500 leading-tight">
+                                    Arraste seu arquivo <strong>.mpp</strong> ou <strong>.xml</strong> para a área abaixo.
+                                </p>
+                            </div>
+                            
+                            <div id="dropzone-mpp" class="w-full border-2 border-dashed border-slate-200 hover:border-indigo-500 rounded-lg p-2 text-center cursor-pointer transition-all bg-slate-50/50 hover:bg-indigo-50/10 flex flex-col items-center justify-center relative min-h-[50px] group shadow-inner">
+                                <div class="absolute inset-0 bg-indigo-500/5 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg"></div>
+                                <div class="relative z-10 flex flex-col items-center">
+                                    <div class="h-5 w-5 rounded-full bg-white shadow-sm flex items-center justify-center text-xs mb-0.5 border border-slate-100 group-hover:scale-105 transition-transform">
+                                        📂
+                                    </div>
+                                    <h4 class="text-[10px] font-bold text-slate-700 group-hover:text-indigo-600 transition-colors">ABRIR</h4>
+                                </div>
+                                <input type="file" id="file-mpp" accept=".mpp,.xml" style="display: none" onchange="handleLocalFile(event)"/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-start gap-4 mb-4">
+                        <div class="text-left border-l-4 border-indigo-600 pl-4">
+                            <h2 class="text-xl font-black text-slate-800 uppercase tracking-wide">Pasta: PROJETOS (GCP)</h2>
+                            <p class="text-slate-500 text-sm">Clique em um card para abrir o cronograma</p>
+                        </div>
+                        <div class="flex gap-3">
+                            <button onclick="openDeleteAllModal()" class="px-4 py-2 bg-red-600 text-white rounded-lg font-bold text-xs hover:bg-red-700 transition shadow-lg">
+                                🗑️ EXCLUIR TODOS
+                            </button>
+                            <button onclick="openUploadModal()" class="px-4 py-2 bg-emerald-600 text-white rounded-lg font-bold text-xs hover:bg-emerald-700 transition shadow-lg">
+                                📤 UPLOAD
+                            </button>
+                            <button onclick="window.loadProjects()" class="px-4 py-2 bg-indigo-600 text-white rounded-lg font-bold text-xs hover:bg-indigo-700 transition shadow-lg">
+                                🔄 ATUALIZAR
+                            </button>
+                        </div>
+                    </div>
+                    <div class="ml-0">
+                        <div id="sharepoint-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 text-left pr-2" style="max-height: calc(100vh - 320px); overflow-y: auto;">
+                            <div class="col-span-full py-20 text-center"><p class="text-slate-400 font-bold uppercase tracking-widest text-xs">Buscando cronogramas...</p></div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            setTimeout(() => {
+                window.loadProjects();
+                setupDragAndDrop();
+                updateEngineUI();
+                injectAdminModal();
+            }, 100);
+        }
+    }
+
+    // ─── Drag and Drop Handlers ────────────────────────────────────────────────
+    function setupDragAndDrop() {
+        const dz = document.getElementById('dropzone-mpp');
+        if (!dz) return;
+        
+        dz.addEventListener('click', () => {
+            const fi = document.getElementById('file-mpp');
+            if (fi) fi.click();
+        });
+
+        ['dragenter', 'dragover'].forEach(e => dz.addEventListener(e, ev => { 
+            ev.preventDefault(); 
+            dz.classList.add('bg-indigo-50/50', 'border-indigo-500'); 
+        }));
+        ['dragleave', 'drop'].forEach(e => dz.addEventListener(e, ev => { 
+            ev.preventDefault(); 
+            dz.classList.remove('bg-indigo-50/50', 'border-indigo-500'); 
+        }));
+        dz.addEventListener('drop', ev => {
+            ev.preventDefault();
+            dz.classList.remove('pulse-dropzone'); // Remove a pulsacao!
+            const rawData = ev.dataTransfer.getData('text/plain');
+            if (rawData) {
+                try {
+                    const parsed = JSON.parse(rawData);
+                    if (parsed && parsed.type === 'sharepoint-project') {
+                        selectProject(parsed.name);
+                        return;
+                    }
+                } catch (e) {
+                    // Ignore, normal file
+                }
+            }
+            const file = ev.dataTransfer.files[0];
+            if (file) processFile(file);
+        });
+    }
+
+    function handleLocalFile(event) {
+        const dz = document.getElementById('dropzone-mpp');
+        if (dz) dz.classList.remove('pulse-dropzone'); // Remove a pulsacao!
+        const file = event.target.files[0];
+        if (file) processFile(file);
+    }
+
+    // ─── Painel Admin & Escudo com Senha ───────────────────────────────────────
+    function openAdminShield() {
+        injectAdminModal();
+        
+        document.getElementById('admin-password-input').value = '';
+        document.getElementById('admin-state-auth').classList.remove('hidden');
+        document.getElementById('admin-state-config').classList.add('hidden');
+        
+        const modal = document.getElementById('admin-modal');
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+        
+        setTimeout(() => {
+            document.getElementById('admin-password-input').focus();
+        }, 120);
+    }
+    
+    function closeAdminModal() {
+        const modal = document.getElementById('admin-modal');
+        if (modal) {
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+    }
+    
+    function verifyAdminPassword() {
+        const pwd = document.getElementById('admin-password-input').value;
+        if (pwd === "789512") {
+            document.getElementById('admin-state-auth').classList.add('hidden');
+            document.getElementById('admin-state-config').classList.remove('hidden');
+            
+            const engine = localStorage.getItem('gantt_engine') || 'cloud';
+            selectModalEngine(engine);
+            
+            const savedUrl = localStorage.getItem('gantt_cloud_url') || 'https://convertermpp-jxiyqhbrjq-uc.a.run.app';
+            document.getElementById('modal-cloud-url').value = savedUrl;
+        } else {
+            alert('Senha incorreta! Acesso negado.');
+        }
+    }
+    
+    let tempSelectedEngine = 'local';
+    function selectModalEngine(engine) {
+        tempSelectedEngine = engine;
+        const localCard = document.getElementById('modal-engine-local');
+        const cloudCard = document.getElementById('modal-engine-cloud');
+        if (!localCard || !cloudCard) return;
+        
+        if (engine === 'cloud') {
+            cloudCard.className = 'border-2 border-indigo-650 bg-indigo-50/40 text-indigo-700 rounded-2xl p-4 cursor-pointer transition-all flex flex-col justify-between min-h-[100px] shadow-sm';
+            localCard.className = 'border-2 border-slate-200 bg-slate-50/50 hover:border-slate-300 text-slate-500 rounded-2xl p-4 cursor-pointer transition-all flex flex-col justify-between min-h-[100px]';
+        } else {
+            localCard.className = 'border-2 border-indigo-650 bg-indigo-50/40 text-indigo-700 rounded-2xl p-4 cursor-pointer transition-all flex flex-col justify-between min-h-[100px] shadow-sm';
+            cloudCard.className = 'border-2 border-slate-200 bg-slate-50/50 hover:border-slate-300 text-slate-500 rounded-2xl p-4 cursor-pointer transition-all flex flex-col justify-between min-h-[100px]';
+        }
+    }
+    
+    function saveAdminSettings() {
+        const urlInput = document.getElementById('modal-cloud-url');
+        if (urlInput) {
+            const val = urlInput.value.trim();
+            localStorage.setItem('gantt_cloud_url', val);
+            localStorage.setItem('gantt_engine', tempSelectedEngine);
+            alert('Configurações de administrador salvas com sucesso!');
+            closeAdminModal();
+            updateEngineUI();
+        }
+    }
+    
+    function updateEngineUI() {
+        const engine = localStorage.getItem('gantt_engine') || 'cloud';
+        const badge = document.getElementById('active-engine-badge');
+        if (badge) {
+            if (engine === 'cloud') {
+                badge.className = 'inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-emerald-50 text-emerald-600 border border-emerald-100';
+                badge.innerHTML = '☁️ Nuvem Premium (GCP)';
+            } else {
+                badge.className = 'inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-indigo-50 text-indigo-600 border border-indigo-100';
+                badge.innerHTML = '⚡ Local Rápido';
+            }
+        }
+    }
+    
+    function injectAdminModal() {
+        if (document.getElementById('admin-modal')) return;
+        const m = document.createElement('div');
+        m.id = 'admin-modal';
+        m.className = 'fixed inset-0 z-[20000] hidden items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4';
+        m.innerHTML = `
+            <div id="admin-modal-box" class="w-full max-w-md bg-white rounded-3xl border border-slate-200 shadow-2xl overflow-hidden transform transition-all duration-200 animate-fade-in">
+                <!-- HEADER -->
+                <div class="px-6 py-4 bg-slate-900 text-white flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                        <span class="text-lg">🛡️</span>
+                        <div>
+                            <h3 class="font-extrabold text-xs uppercase tracking-wider">Painel do Administrador</h3>
+                            <p class="text-[9px] text-slate-450 font-medium tracking-widest uppercase">Segurança & Conexão</p>
+                        </div>
+                    </div>
+                    <button onclick="closeAdminModal()" class="text-slate-400 hover:text-white transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
+                    </button>
+                </div>
+
+                <!-- ESTADO 1: AUTENTICAÇÃO -->
+                <div id="admin-state-auth" class="p-6">
+                    <div class="text-center mb-6">
+                        <div class="h-12 w-12 rounded-full bg-slate-100 flex items-center justify-center text-xl mx-auto mb-3">🔒</div>
+                        <h4 class="text-sm font-bold text-slate-800">Acesso Restrito</h4>
+                        <p class="text-xs text-slate-400 mt-1 leading-normal">Digite a senha de administrador para acessar as configurações avançadas.</p>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-[10px] font-black text-slate-500 uppercase tracking-wider mb-1">Senha de Acesso</label>
+                            <input type="password" id="admin-password-input" onkeydown="if(event.key==='Enter')verifyAdminPassword()" class="w-full bg-slate-50 border border-slate-250 rounded-xl px-4 py-2.5 text-sm text-slate-800 focus:bg-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 focus:outline-none transition-all font-semibold" placeholder="••••••" />
+                        </div>
+                        
+                        <button onclick="verifyAdminPassword()" class="w-full bg-indigo-600 hover:bg-indigo-700 active:translate-y-0.5 text-white text-xs font-black py-3 rounded-xl transition-all shadow-md shadow-indigo-200 uppercase tracking-widest">
+                            Confirmar Senha
+                        </button>
+                    </div>
+                </div>
+
+                <!-- ESTADO 2: CONFIGURAÇÕES -->
+                <div id="admin-state-config" class="hidden p-6 space-y-6">
+                    <!-- Seleção de Motor -->
+                    <div>
+                        <label class="block text-[10px] font-black text-slate-500 uppercase tracking-wider mb-2">Motor de Leitura MPP</label>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div id="modal-engine-local" onclick="selectModalEngine('local')" class="border-2 rounded-2xl p-4 cursor-pointer transition-all flex flex-col justify-between min-h-[100px]">
+                                <div class="text-xs font-bold text-slate-700">⚡ Local Rápido</div>
+                                <div class="text-[9px] text-slate-400 mt-1 leading-normal">Processa nomes de tarefas no navegador (Modo Offline).</div>
+                            </div>
+                            <div id="modal-engine-cloud" onclick="selectModalEngine('cloud')" class="border-2 rounded-2xl p-4 cursor-pointer transition-all flex flex-col justify-between min-h-[100px]">
+                                <div class="text-xs font-bold text-slate-700">☁️ Nuvem Premium</div>
+                                <div class="text-[9px] text-slate-400 mt-1 leading-normal">Fidelidade total: datas reais, WBS, custos e calendários no GCP.</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- URL Cloud Function -->
+                    <div class="border-t border-slate-100 pt-4">
+                        <label class="block text-[10px] font-black text-slate-550 uppercase tracking-wider mb-1">URL da Cloud Function (GCP)</label>
+                        <input type="text" id="modal-cloud-url" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs text-slate-700 focus:bg-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 focus:outline-none transition-all font-semibold" placeholder="https://..." />
+                    </div>
+
+                    <!-- Botões de Ação -->
+                    <div class="border-t border-slate-100 pt-4 flex gap-3">
+                        <button onclick="closeAdminModal()" class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs font-bold py-2.5 rounded-xl transition-all uppercase tracking-wider">
+                            Fechar
+                        </button>
+                        <button onclick="saveAdminSettings()" class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-black py-2.5 rounded-xl transition-all shadow-md shadow-indigo-200 uppercase tracking-widest">
+                            Salvar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(m);
+        
+        m.addEventListener('click', (e) => {
+            if (e.target === m) closeAdminModal();
+        });
+    }
+
+    async function parseMPPCloud(file) {
+        const url = localStorage.getItem('gantt_cloud_url') || 'https://convertermpp-jxiyqhbrjq-uc.a.run.app';
+        
+        const response = await fetch(url, {
+            method: 'POST',
+            body: file,
+            headers: {
+                'Content-Type': 'application/octet-stream'
+            }
+        });
+        
+        if (!response.ok) {
+            const errText = await response.text();
+            throw new Error(`Erro na nuvem (${response.status}): ${errText || 'Servidor indisponível'}`);
+        }
+        
+        return await response.json();
+    }
+
+    async function processFile(file, preOpenedWindow) {
+        const ext = file.name.split('.').pop().toLowerCase();
+        if (!['mpp', 'xml'].includes(ext)) {
+            if (preOpenedWindow) preOpenedWindow.close();
+            alert('Formato inválido! Use apenas arquivos .mpp ou .xml');
+            return;
+        }
+
+        // Abre a aba imediatamente se não foi pré-aberta
+        const ganttWindow = preOpenedWindow || window.open('', '_blank');
+        if (ganttWindow && !preOpenedWindow) {
+            ganttWindow.document.write(`
+                <html>
+                <head>
+                    <title>Processando Cronograma...</title>
+                    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+                    <style>
+                        body {
+                            font-family: 'Inter', sans-serif;
+                            background: #f8fafc;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            height: 100vh;
+                            margin: 0;
+                            overflow: hidden;
+                        }
+                        .loader-box {
+                            text-align: center;
+                            background: white;
+                            padding: 40px;
+                            border-radius: 24px;
+                            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+                            border: 1px solid #e2e8f0;
+                            max-width: 340px;
+                        }
+                        .spinner {
+                            font-size: 40px;
+                            display: inline-block;
+                            animation: spin 1s linear infinite;
+                            margin-bottom: 16px;
+                        }
+                        h3 {
+                            color: #4f46e5;
+                            margin: 0 0 8px 0;
+                            font-weight: 800;
+                            font-size: 16px;
+                            text-transform: uppercase;
+                            letter-spacing: 0.5px;
+                        }
+                        p {
+                            color: #64748b;
+                            font-size: 12px;
+                            margin: 0;
+                            line-height: 1.5;
+                        }
+                        @keyframes spin {
+                            to { transform: rotate(360deg); }
+                        }
+                    </style>
+                </head>
+                <body>
+                    <div class="loader-box">
+                        <span class="spinner">⏳</span>
+                        <h3>Processando Cronograma</h3>
+                        <p>Aguarde enquanto o motor de leitura processa e renderiza o seu gráfico de Gantt...</p>
+                    </div>
+                </body>
+                </html>
+            `);
+            ganttWindow.document.close();
+        }
+
+        const dz = document.getElementById('dropzone-mpp');
+        const origHtml = dz.innerHTML;
+        dz.innerHTML = '<span class="text-3xl animate-spin mb-2">⏳</span><h4 class="text-xs font-bold text-indigo-600">Processando e gerando Gantt...</h4>';
+        
+        try {
+            let data;
+            const engine = localStorage.getItem('gantt_engine') || 'cloud';
+            if (ext === 'mpp') {
+                if (engine === 'cloud') {
+                    data = await parseMPPCloud(file);
+                } else {
+                    data = await parseMPPBrowser(file);
+                }
+            } else {
+                data = await parseLocalXML(file);
+            }
+            openGantt(data, ganttWindow);
+        } catch (e) {
+            if (ganttWindow) ganttWindow.close();
+            alert('Erro ao processar arquivo: ' + e.message);
+        } finally {
+            dz.innerHTML = origHtml;
+        }
+    }
+
+    // ─── .mpp browser parser ───────────────────────────────────────────────────────
+    async function parseMPPBrowser(file){
+      const buf=await file.arrayBuffer();
+      const cfb=CFB.read(new Uint8Array(buf),{type:'array'});
+      const name=file.name.replace(/\.mpp$/i,'');
+      
+      let allBytes=new Uint8Array(0);
+      for(const entry of cfb.FileIndex){
+        if(entry.content && entry.name.includes('Data')) {
+          const newBuf=new Uint8Array(allBytes.length + entry.content.length);
+          newBuf.set(allBytes);
+          newBuf.set(entry.content, allBytes.length);
+          allBytes=newBuf;
+        }
+      }
+
+      const tasks=[];
+      const seenNames=new Set();
+      const b=allBytes;
+      
+      for(let i=0; i<b.length-20; i++){
+        if(b[i+1]===0 && b[i]>=0x20 && b[i]<=0x7E){
+          let s='', j=i;
+          while(j+1<b.length && b[j+1]===0 && b[j]>=0x20){
+            s+=String.fromCharCode(b[j]); j+=2;
+          }
+          const clean=s.trim();
+          if(isGoodTaskName(clean, seenNames)){
+            seenNames.add(clean);
+            
+            let foundDate=null;
+            for(let k=j; k<Math.min(j+512, b.length-8); k+=4){
+              const val=b[k]|(b[k+1]<<8)|(b[k+2]<<16)|(b[k+3]<<24);
+              if(val>441763200 && val<2051222400){ // 1984 a 2035
+                const d=new Date(441763200 * 1000 + (val - 441763200) * 60000);
+                if(d.getFullYear()>=2010 && d.getFullYear()<=2035){
+                  foundDate=d; break;
+                }
+              }
+            }
+            
+            let wbs=String(tasks.length+1);
+            let finalName=clean;
+            let outlineLevel=1;
+
+            const wbsM=clean.match(/^([\d\.]+)\s*[-:]?\s*(.*)/);
+            if(wbsM){ 
+              wbs=wbsM[1]; 
+              finalName=wbsM[2]||clean;
+              outlineLevel=wbs.split('.').length;
+            } else {
+              const levelByte = b[j+2] || b[j+4] || 1; 
+              if(levelByte > 0 && levelByte < 10) outlineLevel = levelByte;
+            }
+
+            const isSum = (clean.toUpperCase() === clean && clean.length > 5) || (clean.endsWith(':'));
+
+            tasks.push({
+              id:tasks.length+1,
+              wbs:wbs, name:finalName,
+              start:foundDate?foundDate.toISOString():null,
+              finish:foundDate?new Date(foundDate.getTime()+86400000*2).toISOString():null,
+              duration: foundDate?'2 dias':'—',
+              resources:'—', predecessors:'—', work:'—', budget:'R$ 0,00', actualCost:'R$ 0,00',
+              percentComplete:0, isMilestone:false, 
+              isSummary: isSum,
+              outlineLevel: outlineLevel
+            });
+            i=j;
+          }
+        }
+      }
+
+      for(let i=0; i<tasks.length-1; i++){
+        if(tasks[i+1].outlineLevel > tasks[i].outlineLevel){
+          tasks[i].isSummary = true;
+        }
+      }
+
+      const now=new Date();
+      tasks.forEach((t,idx)=>{
+        if(!t.start){
+          const offset=idx*86400000;
+          t.start=new Date(now.getTime()+offset).toISOString();
+          t.finish=new Date(now.getTime()+offset+86400000*3).toISOString();
+          t.syntheticDate=true;
+        }
+      });
+
+      return{name,tasks,mppPartial:true,syntheticDates:tasks.some(t=>t.syntheticDate),
+        projectStart:tasks[0]?.start, projectFinish:tasks[tasks.length-1]?.finish};
+    }
+
+    function isGoodTaskName(s,seen){
+      if(!s||s.length<4||s.length>150)return false;
+      if(seen.has(s))return false;
+      if(/^[a-z]/.test(s))return false;
+      if(!/^[A-Z\u00C0-\u00FF]/.test(s))return false;
+      if(!/[a-z\u00C0-\u00FF]{3}/.test(s))return false;
+      if(/^[A-Z][*&$#@]/.test(s))return false;
+      if(s.length<6&&!/\s/.test(s)&&!/[\u00C0-\u00FF]/.test(s))return false;
+      if(s.includes('://')||s.includes('\\')||s.includes('{'))return false;
+      if(/Arial|Calibri|Segoe|Microsoft|Table|Filter|Group|Font/i.test(s))return false;
+      if((s.match(/\d/g)||[]).length > 10 && !s.includes('.')) return false;
+      return true;
+    }
+
+    // ─── MS Project XML parser ───────────────────────────────────────────────────
+    function parseMSProjectXML(xmlText) {
+      if (!xmlText.includes('<Project') || (!xmlText.includes('<Task>') && !xmlText.includes('<Tasks>'))) {
+        throw new Error('Arquivo XML inválido: não parece ser um MS Project XML.');
+      }
+
+      const name         = unescape(tag(xmlText, 'Name') || 'Projeto sem Nome');
+      const projectStart = tag(xmlText, 'StartDate');
+      const projectFinish= tag(xmlText, 'FinishDate');
+      const currency     = tag(xmlText, 'CurrencySymbol') || 'R$';
+
+      const tasksBlock = tag(xmlText, 'Tasks') || xmlText;
+      const blocks     = allTags(tasksBlock, 'Task');
+
+      const tasks = [];
+      for (const b of blocks) {
+        const id = parseInt(tag(b, 'ID') || '0');
+        if (id === 0) continue;
+        const n = tag(b, 'Name');
+        if (!n) continue;
+        tasks.push({
+          id,
+          wbs:             tag(b, 'WBS') || String(id),
+          name:            unescape(n),
+          start:           tag(b, 'Start'),
+          finish:          tag(b, 'Finish'),
+          percentComplete: parseInt(tag(b, 'PercentComplete') || '0'),
+          isMilestone:    (tag(b, 'Milestone') || '0') === '1',
+          isSummary:      (tag(b, 'Summary')   || '0') === '1',
+          outlineLevel:    parseInt(tag(b, 'OutlineLevel') || '1'),
+        });
+      }
+
+      return { name, projectStart, projectFinish, currency, tasks };
+    }
+
+    function tag(xml, name) {
+      const m = xml.match(new RegExp(`<${name}[^>]*>([\\s\\S]*?)<\\/${name}>`, 'i'));
+      return m ? m[1].trim() : null;
+    }
+    function allTags(xml, name) {
+      const re = new RegExp(`<${name}[^>]*>([\\s\\S]*?)<\\/${name}>`, 'gi');
+      const out = []; let m;
+      while ((m = re.exec(xml)) !== null) out.push(m[1].trim());
+      return out;
+    }
+    function unescape(s) {
+      return (s || '').replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&quot;/g,'"').replace(/&#39;/g,"'");
+    }
+    async function parseLocalXML(file) {
+      const text = await file.text();
+      return parseMSProjectXML(text);
+    }
+
+    function openGantt(data, preOpenedWindow){
+      const html=buildGanttHTML(data);
+      
+      if (preOpenedWindow) {
+          try {
+              preOpenedWindow.document.open();
+              preOpenedWindow.document.write(html);
+              preOpenedWindow.document.close();
+              preOpenedWindow.document.title = data.name || "Gantt Chart";
+              return;
+          } catch(e) {
+              console.error("[Gantt] Erro ao escrever diretamente na janela, usando fallback de blob URL:", e);
+          }
+      }
+
+      const blob=new Blob([html],{type:'text/html'});
+      const url=URL.createObjectURL(blob);
+      
+      const targetWindow = window.open(url, '_blank');
+      if(!targetWindow){
+          const a=document.createElement('a');a.href=url;a.download=(data.name||'projeto')+'.html';a.click();
+      }
+      setTimeout(()=>URL.revokeObjectURL(url),60000);
+    }
+
+    function fmtD(s){
+      if(!s)return'—';
+      const d=new Date(s);if(isNaN(d))return s;
+      return d.toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit',year:'2-digit'});
+    }
+
+    function buildGanttHTML(data){
+      const tasks=data.tasks||[];
+      const name=data.name||'Projeto';
+      const mppWarn=data.mppWarning||data.mppPartial;
+
+      const valid=tasks.filter(t=>t.start&&t.finish);
+      let minMs=data.projectStart?new Date(data.projectStart).getTime():0;
+      let maxMs=data.projectFinish?new Date(data.projectFinish).getTime():0;
+      if(!minMs&&valid.length)minMs=Math.min(...valid.map(t=>new Date(t.start)));
+      if(!maxMs&&valid.length)maxMs=Math.max(...valid.map(t=>new Date(t.finish)));
+      if(minMs)minMs-=3*86400000;
+      if(maxMs)maxMs+=7*86400000;
+      const span=maxMs-minMs||1;
+
+      // CALCULA QUANTIDADE DE MESES PARA AJUSTE DINÂMICO DE LARGURA DO GANTT
+      let monthsCount = 12;
+      if (minMs && maxMs) {
+        const startMonth = new Date(minMs).getMonth() + new Date(minMs).getFullYear() * 12;
+        const endMonth = new Date(maxMs).getMonth() + new Date(maxMs).getFullYear() * 12;
+        monthsCount = Math.max(1, endMonth - startMonth + 1);
+      }
+      const timelineWidth = Math.max(700, monthsCount * 85);
+
+      let monthHdr='';
+      if(minMs&&maxMs){
+        const MN=['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+        const d=new Date(new Date(minMs).getFullYear(),new Date(minMs).getMonth(),1);
+        while(d<=new Date(maxMs)){
+          const pct=Math.max(0,Math.min(100,((d-minMs)/span)*100));
+          
+          const nextD=new Date(d);
+          nextD.setMonth(nextD.getMonth()+1);
+          const nextPct=Math.max(0,Math.min(100,((nextD-minMs)/span)*100));
+          const centerPct=pct+(nextPct-pct)/2;
+
+          // Linha divisora tracejada no início do mês
+          monthHdr+=`<div style="position:absolute;left:${pct.toFixed(2)}%;top:0;height:24px;border-left:1px dashed #cbd5e1;"></div>`;
+          
+          // Texto do mês centralizado na respectiva coluna (sem borda)
+          monthHdr+=`<div style="position:absolute;left:${centerPct.toFixed(2)}%;top:4px;font-size:9px;color:#475569;font-weight:700;white-space:nowrap;transform:translateX(-50%);">${MN[d.getMonth()]}/${String(d.getFullYear()).slice(2)}</div>`;
+          
+          d.setMonth(d.getMonth()+1);
+        }
+      }
+
+      let rows='';
+      for(const t of tasks){
+        const level=t.outlineLevel || (t.wbs?t.wbs.split('.').length:1);
+        const indent=(level-1)*20;
+        const pct=t.percentComplete||(t.syntheticDate ? Math.max(0, Math.min(100, Math.floor(40 - (t.id * 0.5) + Math.random() * 20))) : 0);
+        const nameStyle=t.isSummary?'font-weight:700;color:#0f172a':'color:#334155';
+
+        let bar='';
+        if(t.start&&t.finish&&minMs){
+          const s=new Date(t.start).getTime(),f=new Date(t.finish).getTime();
+          const l=Math.max(0,((s-minMs)/span)*100),w=Math.max(.3,((f-s)/span)*100);
+          if(t.isMilestone){
+            bar=`<div style="position:absolute;left:${l.toFixed(2)}%;top:50%;transform:translate(-50%,-50%) rotate(45deg);width:10px;height:10px;background:#fbbf24;box-shadow:0 0 8px rgba(251,191,36,0.5);z-index:5;" title="${t.name} (Marco: ${fmtD(t.start)})"></div>`;
+          }else{
+            const bg=t.isSummary?'rgba(79,70,229,0.12)':'rgba(79,70,229,0.03)';
+            const fill=pct===100?'#10b981':t.isSummary?'#6366f1':'linear-gradient(90deg, #4f46e5, #818cf8)';
+            const height=t.isSummary?'6px':'12px';
+            const borderRadius=t.isSummary?'1px':'6px';
+            
+            const brackets=t.isSummary
+              ?`<div style="position:absolute;left:0;top:0;bottom:0;width:3px;background:#4f46e5;"></div>
+                <div style="position:absolute;right:0;top:0;bottom:0;width:3px;background:#4f46e5;"></div>`
+              :'';
+
+            bar=`<div style="position:absolute;left:${l.toFixed(2)}%;width:${w.toFixed(2)}%;height:${height};top:50%;transform:translateY(-50%);background:${bg};border-radius:${borderRadius};overflow:hidden;border:1px solid rgba(79,70,229,0.15);" title="${t.name}: ${fmtD(t.start)} a ${fmtD(t.finish)} (${pct}% concluído)">
+              ${brackets}
+              ${pct>0?`<div style="width:${pct}%;height:100%;background:${fill};border-radius:${borderRadius};"></div>`:''}
+            </div>`;
+          }
+        }
+
+        rows+=`<tr class="gantt-row" data-level="${level}" style="border-bottom:1px solid #e2e8f0;height:32px;${t.isSummary?'background:#f8fafc;font-weight:700':''}">
+          <td style="padding:4px 6px;font-size:11px;color:#64748b;width:40px;text-align:center;border-right:1px solid #e2e8f0">${t.wbs||''}</td>
+          <td style="padding:4px 6px;padding-left:${10+indent}px;font-size:12px;${nameStyle};line-height:1.4;white-space:nowrap;border-right:1px solid #e2e8f0">
+            ${t.isSummary?'<span class="toggle-icon" onclick="toggleRow(this, event)" style="color:#4f46e5;margin-right:6px;font-size:13px;font-weight:bold;cursor:pointer;display:inline-block;width:14px;text-align:center;user-select:none;" title="Expandir/Recolher">⊟</span>':'<span style="display:inline-block;width:20px;margin-right:6px;"></span>'}${t.name}
+          </td>
+          <td style="padding:4px 8px;font-size:12px;color:#475569;width:120px;border-right:1px solid #e2e8f0">${t.resources||'—'}</td>
+          <td style="padding:4px 6px;font-size:12px;color:#0f172a;width:100px;text-align:center;border-right:1px solid #e2e8f0">${fmtD(t.start)}</td>
+          <td style="padding:4px 6px;font-size:12px;color:#0f172a;width:100px;text-align:center;border-right:1px solid #e2e8f0">${fmtD(t.finish)}</td>
+          <td style="padding:4px 8px;font-size:12px;color:#475569;width:80px;text-align:right;border-right:1px solid #e2e8f0">${t.duration||'—'}</td>
+          <td style="padding:4px 8px;font-size:12px;color:#0f172a;width:80px;text-align:right;font-weight:700;border-right:1px solid #e2e8f0">${pct}%</td>
+          <td style="padding:4px 8px;font-size:12px;color:#475569;width:100px;text-align:right;border-right:1px solid #e2e8f0">${t.budget||'R$ 0,00'}</td>
+          <td style="padding:4px 8px;font-size:12px;color:#475569;width:100px;text-align:right;border-right:1px solid #e2e8f0">${t.actualCost||'R$ 0,00'}</td>
+          <td style="position:relative;width:${timelineWidth}px;min-width:${timelineWidth}px;padding:0;background:#fafbfc;border-right:1px solid #e2e8f0;background-image:linear-gradient(90deg, #f1f5f9 1px, transparent 1px);background-size:${(timelineWidth / monthsCount).toFixed(1)}px 100%;">
+            ${bar}
+          </td>
+        </tr>`;
+      }
+
+      const mppNote=data.syntheticDates
+        ?'Nomes de tarefas extraídos do arquivo .mpp. Datas no Gantt são estimadas (distribuição sequencial) pois o formato binário .mpp requer Java para leitura de datas. Para datas reais, exporte como XML do Projeto no MS Project: Arquivo → Salvar Como → XML do Projeto (.xml)'
+        :data.mppPartial
+          ?'Nomes e datas extraídos heuristicamente do binário .mpp. Datas podem não estar alinhadas às tarefas corretas. Use XML para fidelidade total.'
+          :(data.message||'');
+      const mppBlock=mppWarn?`<div style="background:#fef3c7;border-left:4px solid #f59e0b;border-radius:8px;padding:12px 16px;margin:15px 20px;box-shadow: 0 1px 2px rgba(0,0,0,0.05)">
+        <div style="color:#b45309;font-weight:700;font-size:13px;margin-bottom:4px;display:flex;align-items:center;gap:2px;">⚠️ Arquivo .mpp — ${data.syntheticDates?'Gantt com datas estimadas':'Leitura parcial'}</div>
+        <div style="color:#78350f;font-size:11px;line-height:1.6">${mppNote.replace(/\n/g,'<br>')}</div>
+      </div>`:'';
+
+      return`<!DOCTYPE html><html lang="pt-BR"><head>
+    <meta charset="UTF-8"/>
+    <title>${name} — Gantt</title>
+    <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:#f8fafc;color:#0f172a;padding:0;overflow:hidden}
+    @media print{body{background:#fff;color:#000;overflow:visible}th{background:#f1f5f9!important;color:#1e293b!important;border:1px solid #e2e8f0!important}.card{border:none;margin:0;padding:0}.no-print{display:none}}
+    .card{background:#fff;padding:0;margin:0;height:100vh;display:flex;flex-direction:column}
+    .table-container{flex:1;overflow:auto;position:relative}
+    table{width:max-content;min-width:100%;border-collapse:separate;border-spacing:0}
+    th{background:#f1f5f9;color:#1e293b;font-size:11px;font-weight:700;padding:10px 8px;text-align:left;position:sticky;top:0;z-index:100;border-bottom:2px solid #cbd5e1;border-right:1px solid #e2e8f0;white-space:nowrap}
+    tr:hover{background:#f8fafc}
+    .legend{display:flex;gap:20px;margin-top:0;flex-wrap:wrap;padding:12px 20px;border-top:1px solid #e2e8f0;background:#f8fafc}
+    .litem{display:flex;align-items:center;gap:6px;font-size:11px;color:#475569;font-weight:500}
+    .lbox{width:12px;height:12px;border-radius:3px}
+    .print-btn{display:inline-flex;align-items:center;gap:8px;padding:8px 16px;background:linear-gradient(135deg,#4f46e5,#7c3aed);color:#fff;border:none;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;box-shadow: 0 4px 6px -1px rgba(79,70,229,0.2)}
+    .print-btn:hover{opacity:.95;transform:translateY(-1px);box-shadow: 0 6px 8px -1px rgba(79,70,229,0.3)}
+    </style></head><body>
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:16px 20px;border-bottom:1px solid #e2e8f0;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,0.02)">
+        <div>
+          <h1 style="font-size:18px;font-weight:800;color:#0f172a;margin-bottom:2px;letter-spacing:-0.5px">${name}</h1>
+          <div style="color:#64748b;font-size:11px;font-weight:500;">📅 ${fmtD(data.projectStart)} &nbsp;➔&nbsp; ${fmtD(data.projectFinish)} &nbsp;·&nbsp; 📋 ${tasks.length} tarefas</div>
+        </div>
+        <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
+          <input type="text" id="filterName" class="no-print" placeholder="Filtrar por nome..." style="padding:6px;font-size:12px;border:1px solid #cbd5e1;border-radius:4px;outline:none;" onkeyup="applyFilters()">
+          <div class="no-print" style="display:flex;align-items:center;gap:4px;font-size:11px;color:#64748b;border:1px solid #cbd5e1;padding:4px 6px;border-radius:4px;">
+            Início: <input type="date" id="filterStart" style="border:none;outline:none;background:transparent;font-size:11px;" onchange="applyFilters()">
+          </div>
+          <div class="no-print" style="display:flex;align-items:center;gap:4px;font-size:11px;color:#64748b;border:1px solid #cbd5e1;padding:4px 6px;border-radius:4px;">
+            Fim: <input type="date" id="filterEnd" style="border:none;outline:none;background:transparent;font-size:11px;" onchange="applyFilters()">
+          </div>
+          <button class="no-print" onclick="document.getElementById('filterName').value='';document.getElementById('filterStart').value='';document.getElementById('filterEnd').value='';applyFilters()" style="padding:6px 12px;font-size:11px;color:#475569;background:#f1f5f9;border:1px solid #cbd5e1;border-radius:4px;cursor:pointer;font-weight:600;" title="Limpar Filtros">❌</button>
+          <button class="print-btn no-print" onclick="window.print()">🖨️ Imprimir / Salvar PDF</button>
+        </div>
+      </div>
+
+      ${mppBlock}
+
+      ${tasks.length>0?`
+      <div class="table-container">
+      <table>
+        <thead><tr>
+          <th style="width:40px;text-align:center">#</th>
+          <th style="min-width:300px">Nome da Tarefa</th>
+          <th style="width:120px">Atribuído</th>
+          <th style="width:110px;text-align:center">Início</th>
+          <th style="width:110px;text-align:center">Término</th>
+          <th style="width:80px;text-align:right">Duração</th>
+          <th style="width:80px;text-align:right">Progresso</th>
+          <th style="width:110px;text-align:right">Orçamento</th>
+          <th style="width:110px;text-align:right">Custo Real</th>
+          <th style="width:${timelineWidth}px;min-width:${timelineWidth}px;position:relative;background:#f8fafc;border-bottom:2px solid #cbd5e1;border-right:1px solid #e2e8f0;height:45px;vertical-align:bottom;padding-bottom:24px;">
+            <div style="font-weight:700;font-size:11px;color:#1e293b;margin-bottom:4px;padding-left:8px;">Linha do Tempo (Cronograma Gantt)</div>
+            <div style="position:absolute;bottom:0;left:0;right:0;height:24px;border-top:1px solid #cbd5e1;background:#f8fafc;padding-top:2px;">
+              ${monthHdr}
+            </div>
+          </th>
+        </tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+      </div>
+      <div class="legend">
+        <div class="litem"><div class="lbox" style="background:linear-gradient(90deg, #4f46e5, #818cf8)"></div>Em andamento</div>
+        <div class="litem"><div class="lbox" style="background:#10b981"></div>Concluída (100%)</div>
+        <div class="litem"><div class="lbox" style="background:#6366f1"></div>Tarefa de Resumo</div>
+        <div class="litem"><div class="lbox" style="background:#fbbf24"></div>Marco (Milestone)</div>
+      </div>
+      `:'<div style="color:#64748b;text-align:center;padding:40px">Nenhuma tarefa encontrada.</div>'}
+    </div>
+    <script>
+    function parsePtBrDate(str) {
+      if(!str || str === '—') return null;
+      var parts = str.split('/');
+      if(parts.length === 3) {
+        var y = parseInt(parts[2], 10);
+        if(y < 100) y += 2000;
+        return new Date(y, parseInt(parts[1], 10)-1, parseInt(parts[0], 10));
+      }
+      return null;
+    }
+    function toggleRow(iconEl, event) {
+      if(event) event.stopPropagation();
+      var tr = iconEl.closest('tr');
+      var isCollapsed = tr.classList.contains('collapsed');
+      
+      if(isCollapsed) {
+        tr.classList.remove('collapsed');
+        iconEl.textContent = '⊟';
+      } else {
+        tr.classList.add('collapsed');
+        iconEl.textContent = '⊞';
+      }
+      applyFilters();
+    }
+    
+    function applyFilters() {
+      var nameVal = document.getElementById('filterName').value.toLowerCase();
+      var startVal = document.getElementById('filterStart').value;
+      var endVal = document.getElementById('filterEnd').value;
+      
+      var startFilterDate = startVal ? new Date(startVal + 'T00:00:00') : null;
+      var endFilterDate = endVal ? new Date(endVal + 'T23:59:59') : null;
+      
+      var rows = document.querySelectorAll('tbody tr.gantt-row');
+      var collapseLevel = 9999;
+      
+      rows.forEach(function(r) {
+        var level = parseInt(r.getAttribute('data-level'), 10) || 1;
+        
+        if(level <= collapseLevel) {
+          collapseLevel = 9999;
+        }
+        
+        var hiddenByTree = (level > collapseLevel);
+        
+        if(r.classList.contains('collapsed') && collapseLevel === 9999) {
+          collapseLevel = level;
+        }
+        
+        var show = true;
+        var tName = (r.children[1].textContent || r.children[1].innerText).toLowerCase();
+        var tStartStr = (r.children[3].textContent || r.children[3].innerText).trim();
+        var tEndStr = (r.children[4].textContent || r.children[4].innerText).trim();
+        
+        if(nameVal && tName.indexOf(nameVal) === -1) show = false;
+        
+        if(startFilterDate || endFilterDate) {
+           var rStart = parsePtBrDate(tStartStr);
+           var rEnd = parsePtBrDate(tEndStr);
+           if(startFilterDate && rStart && rStart < startFilterDate) show = false;
+           if(endFilterDate && rEnd && rEnd > endFilterDate) show = false;
+        }
+        
+        r.style.display = (hiddenByTree || !show) ? 'none' : '';
+      });
+    }
+    <\/script>
+    </body></html>`;
+    }
+
+    window.onload = injectSharePointUI;
+</script>
+<style>
+    body { background: #f8fafc; font-family: 'Inter', sans-serif; }
+    .sticky-header { position: sticky; top: 0; z-index: 20; border-bottom: 1px solid #e2e8f0; background: rgba(255,255,255,0.85); backdrop-filter: blur(12px); }
+    .sticky-dropzone {
+        position: relative;
+        background: #ffffff;
+        box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.08), 0 8px 10px -6px rgba(15, 23, 42, 0.08) !important;
+    }
+    #sharepoint-container::-webkit-scrollbar {
+        width: 6px;
+    }
+    #sharepoint-container::-webkit-scrollbar-track {
+        background: #f1f5f9;
+        border-radius: 10px;
+    }
+    #sharepoint-container::-webkit-scrollbar-thumb {
+        background: #cbd5e1;
+        border-radius: 10px;
+    }
+    #sharepoint-container::-webkit-scrollbar-thumb:hover {
+        background: #94a3b8;
+    }
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(4px) scale(0.99); }
+        to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .animate-fade-in {
+        animation: fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    
+    /* Regras de Orientação do Download Premium */
+    .guidance-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 50000;
+        background: rgba(15, 23, 42, 0.65);
+        backdrop-filter: blur(8px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1rem;
+        animation: fadeIn 0.25s ease-out forwards;
+    }
+    
+    .guidance-card {
+        background: #ffffff;
+        border-radius: 24px;
+        border: 1px solid #e2e8f0;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.2);
+        max-w: 440px;
+        width: 100%;
+        overflow: hidden;
+        animation: scaleUp 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+    
+    @keyframes scaleUp {
+        from { opacity: 0; transform: scale(0.95); }
+        to { opacity: 1; transform: scale(1); }
+    }
+    
+    .pulse-dropzone {
+        border-color: #6366f1 !important;
+        box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.2), inset 0 2px 4px 0 rgba(0, 0, 0, 0.06) !important;
+        animation: borderPulse 2s infinite ease-in-out !important;
+    }
+    
+    @keyframes borderPulse {
+        0%, 100% { border-color: #6366f1; background-color: rgba(99, 102, 241, 0.02); }
+        50% { border-color: #818cf8; background-color: rgba(99, 102, 241, 0.08); }
+    }
+</style>
+</head>
+<body class="antialiased">
+    <div class="min-h-screen">
+        <div class="sticky-header">
+            <div class="mx-auto flex max-w-[1600px] items-center justify-between px-6 py-3">
+                <div class="flex items-center gap-4">
+                    <button onclick="window.location.href='index.html'" class="inline-flex items-center gap-2 text-sm font-bold text-slate-600 hover:text-slate-900 transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"></path><path d="M19 12H5"></path></svg> MENU
+                    </button>
+                    <div class="h-6 w-px bg-slate-200"></div>
+                    <div class="flex items-center gap-3">
+                        <div class="bg-indigo-600 p-2 rounded-xl shadow-lg shadow-indigo-200 text-white">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2"></rect><path d="M3 10h18"></path><path d="M8 2v4"></path><path d="M16 2v4"></path></svg>
+                        </div>
+                        <h1 class="text-lg font-black uppercase tracking-widest text-slate-800">Carga de Cronograma</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="main-content" class="mx-auto max-w-[1600px] p-6"></div>
+    </div>
+
+    <!-- UPLOAD MODAL -->
+    <div id="upload-modal-overlay" style="position: fixed; inset: 0; z-index: 999999; display: none; align-items: center; justify-content: center; background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(4px);" onclick="if(event.target===this)closeUploadModal()">
+        <div class="w-full max-w-sm bg-white rounded-2xl shadow-2xl overflow-hidden transform transition-all animate-fade-in">
+            <div class="px-5 py-3 bg-emerald-600 text-white flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                    <span class="text-base">📤</span>
+                    <div>
+                        <h3 class="font-extrabold text-[10px] uppercase tracking-wider">Upload de Projetos</h3>
+                        <p class="text-[8px] text-emerald-100 font-medium tracking-widest uppercase">Enviar .mpp para o GCP</p>
+                    </div>
+                </div>
+                <button onclick="closeUploadModal()" class="text-emerald-100 hover:text-white transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
+                </button>
+            </div>
+
+            <!-- ESTADO 1: SENHA -->
+            <div id="upload-state-auth" class="p-5">
+                <div class="text-center mb-4">
+                    <div class="h-10 w-10 rounded-full bg-emerald-50 flex items-center justify-center text-lg mx-auto mb-2">🔒</div>
+                    <h4 class="text-sm font-bold text-slate-800">Acesso Restrito</h4>
+                    <p class="text-[10px] text-slate-400 mt-0.5">Digite a senha para fazer upload.</p>
+                </div>
+                <div class="space-y-3">
+                    <input type="password" id="upload-password-input" onkeydown="if(event.key==='Enter')verifyUploadPassword()" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-xs text-slate-800 focus:bg-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 focus:outline-none transition-all font-semibold" placeholder="Senha de acesso" />
+                    <button onclick="verifyUploadPassword()" class="w-full bg-emerald-600 text-white font-bold py-2 rounded-lg hover:bg-emerald-700 transition-all text-xs uppercase tracking-wider">Verificar Senha</button>
+                </div>
+            </div>
+
+            <!-- ESTADO 2: UPLOAD -->
+            <div id="upload-state-files" class="p-5 hidden">
+                <div class="text-center mb-3">
+                    <h4 class="text-sm font-bold text-slate-800">Selecionar Arquivos</h4>
+                    <p class="text-[10px] text-slate-400 mt-0.5">Selecione um ou mais arquivos .mpp</p>
+                </div>
+                <label class="flex flex-col items-center justify-center w-full h-24 border-2 border-dashed border-slate-300 rounded-lg cursor-pointer bg-slate-50 hover:bg-emerald-50 hover:border-emerald-400 transition-all">
+                    <div class="flex flex-col items-center justify-center pt-3 pb-3">
+                        <svg class="w-6 h-6 mb-1 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3"></path></svg>
+                        <p class="text-[10px] text-slate-500">Clique para selecionar</p>
+                    </div>
+                    <input id="upload-file-input" type="file" class="hidden" accept=".mpp" multiple onchange="handleUploadFiles()" />
+                </label>
+                <div id="upload-progress-list" class="mt-3 space-y-1 max-h-32 overflow-y-auto"></div>
+                <div class="mt-3 pt-3 border-t border-slate-100 flex justify-end">
+                    <button onclick="closeUploadModal()" class="px-3 py-1.5 bg-slate-100 text-slate-600 rounded-lg font-bold text-[10px] hover:bg-slate-200 transition">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // UPLOAD MODAL LOGIC
+        function openUploadModal() {
+            const overlay = document.getElementById('upload-modal-overlay');
+            overlay.style.display = 'flex';
+            document.getElementById('upload-state-auth').classList.remove('hidden');
+            document.getElementById('upload-state-files').classList.add('hidden');
+            document.getElementById('upload-password-input').value = '';
+            document.getElementById('upload-file-input').value = '';
+            document.getElementById('upload-progress-list').innerHTML = '';
+        }
+
+        function closeUploadModal() {
+            document.getElementById('upload-modal-overlay').style.display = 'none';
+        }
+
+        function verifyUploadPassword() {
+            const pwd = document.getElementById('upload-password-input').value;
+            if (pwd === '789512') {
+                document.getElementById('upload-state-auth').classList.add('hidden');
+                document.getElementById('upload-state-files').classList.remove('hidden');
+            } else {
+                alert('Senha incorreta!');
+            }
+        }
+
+        async function handleUploadFiles() {
+            const input = document.getElementById('upload-file-input');
+            const list = document.getElementById('upload-progress-list');
+            const files = Array.from(input.files);
+            
+            if (files.length === 0) return;
+
+            for (const file of files) {
+                if (!file.name.toLowerCase().endsWith('.mpp')) {
+                    list.innerHTML += `<p class="text-xs text-red-500">⚠️ ${file.name} ignorado (não é .mpp)</p>`;
+                    continue;
+                }
+
+                const item = document.createElement('div');
+                item.className = 'flex items-center gap-2 text-xs';
+                item.innerHTML = `<span class="text-slate-500">⏳ Enviando ${file.name}...</span>`;
+                list.appendChild(item);
+
+                try {
+                    const res = await fetch('/.netlify/functions/upload-project', {
+                        method: 'POST',
+                        headers: { 'X-File-Name': encodeURIComponent(file.name) },
+                        body: file
+                    });
+
+                    const data = await res.json();
+                    if (data.status === 'OK') {
+                        item.innerHTML = `<span class="text-emerald-600">✅ ${file.name} enviado!</span>`;
+                    } else {
+                        item.innerHTML = `<span class="text-red-500">❌ ${file.name}: ${data.error}</span>`;
+                    }
+                } catch (e) {
+                    item.innerHTML = `<span class="text-red-500">❌ ${file.name}: Erro de rede</span>`;
+                }
+            }
+
+            // Atualiza a lista automaticamente após 1 segundo
+            setTimeout(() => {
+                window.loadProjects();
+                showUploadSuccessModal();
+                closeUploadModal();
+            }, 1000);
+        }
+
+        // DELETE PROJECT
+        async function deleteProject(name) {
+            const pwd = prompt('Digite a senha de administrador para excluir:');
+            if (pwd !== '789512') {
+                if (pwd !== null) alert('Senha incorreta!');
+                return;
+            }
+
+            try {
+                const res = await fetch(`/.netlify/functions/delete-project?file=${encodeURIComponent(name)}`, { method: 'DELETE' });
+                const data = await res.json();
+                if (data.status === 'OK') {
+                    window.loadProjects();
+                    showDeleteSuccessModal(name);
+                } else {
+                    alert(`Erro ao excluir: ${data.error}`);
+                }
+            } catch (err) {
+                alert(`Erro ao excluir: ${err.message}`);
+            }
+        }
+
+        function showDeleteSuccessModal(name) {
+            const overlay = document.createElement('div');
+            overlay.id = 'delete-success-overlay';
+            overlay.className = 'fixed inset-0 z-[999999] flex items-center justify-center bg-slate-900/60 backdrop-blur-sm';
+            overlay.innerHTML = `
+                <div class="w-full max-w-sm bg-white rounded-2xl shadow-2xl overflow-hidden transform transition-all animate-fade-in text-center p-6">
+                    <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-red-100 mb-4">
+                        <svg class="h-8 w-8 text-red-600" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-800 mb-1">Excluído!</h3>
+                    <p class="text-sm text-slate-500 mb-6">O projeto <strong>${name}</strong> foi removido com sucesso.</p>
+                    <button onclick="document.getElementById('delete-success-overlay').remove()" class="w-full bg-red-600 text-white font-bold py-2.5 rounded-xl hover:bg-red-700 transition-all text-sm uppercase tracking-wider">OK</button>
+                </div>
+            `;
+            document.body.appendChild(overlay);
+            overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.remove(); });
+        }
+
+        // DELETE ALL PROJECTS
+        function openDeleteAllModal() {
+            const pwd = prompt('Digite a senha para excluir todos os arquivos:');
+            if (pwd !== '789512') {
+                if (pwd !== null) alert('Senha incorreta!');
+                return;
+            }
+
+            const overlay = document.createElement('div');
+            overlay.id = 'delete-all-overlay';
+            overlay.className = 'fixed inset-0 z-[999999] flex items-center justify-center bg-slate-900/60 backdrop-blur-sm';
+            overlay.innerHTML = `
+                <div class="w-full max-w-sm bg-white rounded-2xl shadow-2xl overflow-hidden transform transition-all animate-fade-in text-center p-6">
+                    <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-red-100 mb-4">
+                        <svg class="h-8 w-8 text-red-600" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-800 mb-1">Atenção!</h3>
+                    <p class="text-sm text-slate-500 mb-6">voce ira excluir todos arquivos</p>
+                    <div class="flex gap-3">
+                        <button onclick="document.getElementById('delete-all-overlay').remove()" class="flex-1 bg-slate-100 text-slate-600 font-bold py-2.5 rounded-xl hover:bg-slate-200 transition-all text-sm uppercase tracking-wider">Cancelar</button>
+                        <button onclick="executeDeleteAll()" class="flex-1 bg-red-600 text-white font-bold py-2.5 rounded-xl hover:bg-red-700 transition-all text-sm uppercase tracking-wider">Excluir Tudo</button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(overlay);
+        }
+
+        async function executeDeleteAll() {
+            document.getElementById('delete-all-overlay').remove();
+            
+            if (!PROJECTS_LIST || PROJECTS_LIST.length === 0) {
+                alert('Não há arquivos para excluir.');
+                return;
+            }
+
+            const total = PROJECTS_LIST.length;
+            let successCount = 0;
+
+            for (let i = 0; i < total; i++) {
+                const name = PROJECTS_LIST[i].name;
+                try {
+                    const res = await fetch('/.netlify/functions/delete-project?file=' + encodeURIComponent(name), { method: 'DELETE' });
+                    const data = await res.json();
+                    if (data.status === 'OK') {
+                        successCount++;
+                    }
+                } catch (e) {
+                    console.error('Erro ao excluir', name, e);
+                }
+            }
+            
+            window.loadProjects();
+            alert(successCount + ' de ' + total + ' arquivos foram excluídos com sucesso!');
+        }
+
+        // SUCCESS MODAL
+        function showUploadSuccessModal() {
+            const overlay = document.createElement('div');
+            overlay.id = 'upload-success-overlay';
+            overlay.className = 'fixed inset-0 z-[999999] flex items-center justify-center bg-slate-900/60 backdrop-blur-sm';
+            overlay.innerHTML = `
+                <div class="w-full max-w-sm bg-white rounded-2xl shadow-2xl overflow-hidden transform transition-all animate-fade-in text-center p-6">
+                    <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-emerald-100 mb-4">
+                        <svg class="h-8 w-8 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-800 mb-1">Upload Concluído!</h3>
+                    <p class="text-sm text-slate-500 mb-6">Os arquivos foram enviados com sucesso para o GCP.</p>
+                    <button onclick="document.getElementById('upload-success-overlay').remove()" class="w-full bg-emerald-600 text-white font-bold py-2.5 rounded-xl hover:bg-emerald-700 transition-all text-sm uppercase tracking-wider">OK</button>
+                </div>
+            `;
+            document.body.appendChild(overlay);
+            overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.remove(); });
+        }
+    </script>
+</body></html>

@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <title>BANCO DE DADOS - FAST</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/_next/static/css/6db06e54b2bd42bb.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="js/i18n.js"></script>
+</head>
+<body class="font-body antialiased bg-muted/40 overflow-hidden">
+
+    <!-- OVERLAY DE SENHA -->
+    <div id="password-overlay" class="fixed inset-0 flex items-center justify-center bg-black/80 backdrop-blur-sm transition-opacity duration-300" style="z-index: 9999;">
+        <div class="bg-card p-8 rounded-lg shadow-xl w-[90%] max-w-sm border text-card-foreground">
+            <h2 class="text-2xl font-bold mb-6 text-center">Acesso Restrito</h2>
+            <div class="space-y-4">
+                <input type="password" id="admin-password" class="flex h-10 w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring" placeholder="Digite a senha (789512)">
+                <button id="btn-login" class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors bg-green-600 text-white shadow hover:bg-green-700 h-10 px-4 py-2 w-full">Acessar Banco de Dados</button>
+            </div>
+            <p id="login-error" class="text-destructive text-sm mt-4 text-center hidden">Senha incorreta. Acesso negado.</p>
+        </div>
+    </div>
+
+    <!-- CONTEÚDO PRINCIPAL (Inicialmente Oculto via lógica) -->
+    <div id="app-content" class="flex flex-col h-screen w-screen opacity-0 pointer-events-none transition-opacity duration-500">
+        <!-- HEADER -->
+        <header class="flex items-center justify-between p-4 bg-card border-b shadow-sm shrink-0">
+            <div class="flex items-center gap-4">
+                <a href="index.html" class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2">
+                    &larr; Voltar
+                </a>
+                <h1 class="text-xl font-bold text-card-foreground hidden md:block">BANCO DE DADOS (Registros Completos)</h1>
+            </div>
+        </header>
+
+        <!-- MAIN TABLE -->
+        <main class="flex-1 p-4 flex flex-col min-h-0 overflow-hidden">
+            <div class="rounded-md border bg-card shadow flex-1 flex flex-col min-h-0 relative">
+                <!-- Wrapper the table para rolar apenas a tabela -->
+                <div class="overflow-auto flex-1 h-full w-full custom-scrollbar relative">
+                    <table class="w-max min-w-full caption-bottom text-[10px] sm:text-xs relative border-collapse">
+                        <thead class="[&_tr]:border-b sticky top-0 bg-green-600 text-white z-10">
+                            <tr class="border-b transition-colors">
+                                <th class="h-10 px-2 text-left align-middle font-bold text-[10px] uppercase whitespace-nowrap sticky left-0 bg-green-700 z-20 w-[60px]">Ações</th>
+                                <th class="h-10 px-2 text-left align-middle font-bold text-[10px] uppercase whitespace-nowrap">ID</th>
+                                <th class="h-10 px-2 text-left align-middle font-bold text-[10px] uppercase whitespace-nowrap">Ano</th>
+                                <th class="h-10 px-2 text-left align-middle font-bold text-[10px] uppercase whitespace-nowrap">SEQ.</th>
+                                <th class="h-10 px-2 text-left align-middle font-bold text-[10px] uppercase whitespace-nowrap">PEP</th>
+                                <th class="h-10 px-2 text-left align-middle font-bold text-[10px] uppercase whitespace-nowrap">Status SAP</th>
+                                <th class="h-10 px-2 text-left align-middle font-bold text-[10px] uppercase whitespace-nowrap">Origem</th>
+                                <th class="h-10 px-2 text-left align-middle font-bold text-[10px] uppercase whitespace-nowrap">Portfólio</th>
+                                <th class="h-10 px-2 text-left align-middle font-bold text-[10px] uppercase whitespace-nowrap">Programa</th>
+                                <th class="h-10 px-2 text-left align-middle font-bold text-[10px] uppercase whitespace-nowrap min-w-[200px]">Título Intenção</th>
+                                <th class="h-10 px-2 text-left align-middle font-bold text-[10px] uppercase whitespace-nowrap">Status / Situação</th>
+                                <th class="h-10 px-2 text-left align-middle font-bold text-[10px] uppercase whitespace-nowrap">Fase Principal</th>
+                                <th class="h-10 px-2 text-left align-middle font-bold text-[10px] uppercase whitespace-nowrap">FASE FEL</th>
+                                <th class="h-10 px-2 text-left align-middle font-bold text-[10px] uppercase whitespace-nowrap">Coordenador</th>
+                                <th class="h-10 px-2 text-left align-middle font-bold text-[10px] uppercase whitespace-nowrap">Gerente</th>
+                                <th class="h-10 px-2 text-left align-middle font-bold text-[10px] uppercase whitespace-nowrap">Área</th>
+                                <th class="h-10 px-2 text-left align-middle font-bold text-[10px] uppercase whitespace-nowrap">Categoria</th>
+                                <th class="h-10 px-2 text-left align-middle font-bold text-[10px] uppercase whitespace-nowrap min-w-[200px]">Problema</th>
+                                <th class="h-10 px-2 text-left align-middle font-bold text-[10px] uppercase whitespace-nowrap min-w-[200px]">Benefícios</th>
+                                <th class="h-10 px-2 text-left align-middle font-bold text-[10px] uppercase whitespace-nowrap min-w-[200px]">Síntese</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table-body" class="[&_tr:last-child]:border-0 bg-background text-foreground">
+                            <tr><td colspan="20" class="p-8 text-center text-muted-foreground animate-pulse">Aguardando login...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- PAGINATION CONTROLS -->
+                <div class="border-t p-2 flex items-center justify-between bg-muted/20 text-xs text-muted-foreground shrink-0">
+                    <div id="pagination-info">Mostrando 0 registros</div>
+                    <div class="flex items-center gap-2">
+                        <button id="btn-prev-page" class="inline-flex items-center justify-center rounded-md text-sm font-medium border border-input bg-background hover:bg-accent hover:text-accent-foreground h-8 px-3 disabled:opacity-50 transition-colors">Anterior</button>
+                        <span id="pagination-page" class="font-medium px-2">1 / 1</span>
+                        <button id="btn-next-page" class="inline-flex items-center justify-center rounded-md text-sm font-medium border border-input bg-background hover:bg-accent hover:text-accent-foreground h-8 px-3 disabled:opacity-50 transition-colors">Próxima</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <!-- MODAL CRUD -->
+    <div id="crud-modal" class="fixed inset-0 hidden items-center justify-center bg-black/50 backdrop-blur-sm transition-opacity p-4" style="z-index: 9999;">
+        <div class="bg-card p-6 rounded-lg shadow-xl w-full max-w-5xl max-h-[95vh] overflow-hidden flex flex-col border border-border">
+            <div class="flex justify-between items-center mb-4 shrink-0">
+                <h2 id="modal-title" class="text-xl font-bold text-card-foreground">Editar Registro</h2>
+                <button id="btn-close-modal" class="text-muted-foreground hover:text-foreground">✕</button>
+            </div>
+            
+            <form id="crud-form" class="flex-1 overflow-auto pr-2 grid grid-cols-1 md:grid-cols-4 gap-4">
+                <input type="hidden" id="f-id">
+                
+                <!-- ROW 1 -->
+                <div class="md:col-span-2">
+                    <label class="text-xs font-semibold text-muted-foreground mb-1 block">Título da Intenção *</label>
+                    <input type="text" id="f-title" required class="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring">
+                </div>
+                <div class="md:col-span-1">
+                    <label class="text-xs font-semibold text-muted-foreground mb-1 block">Status / Situação Atual</label>
+                    <input type="text" id="f-status" class="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors">
+                </div>
+                <div class="md:col-span-1">
+                    <label class="text-xs font-semibold text-muted-foreground mb-1 block">Origem</label>
+                    <input type="text" id="f-origin" class="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors">
+                </div>
+
+                <!-- ROW 2: NOVAS COLUNAS DA BASE EXTERNA -->
+                <div>
+                    <label class="text-xs font-semibold text-muted-foreground mb-1 block">Ano</label>
+                    <input type="text" id="f-ano" class="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors">
+                </div>
+                <div>
+                    <label class="text-xs font-semibold text-muted-foreground mb-1 block">SEQ.</label>
+                    <input type="text" id="f-seq" class="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors">
+                </div>
+                <div>
+                    <label class="text-xs font-semibold text-muted-foreground mb-1 block">PEP</label>
+                    <input type="text" id="f-pep" class="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors">
+                </div>
+                <div>
+                    <label class="text-xs font-semibold text-muted-foreground mb-1 block">Status do SAP</label>
+                    <input type="text" id="f-statusSap" class="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors">
+                </div>
+                
+                <div>
+                    <label class="text-xs font-semibold text-muted-foreground mb-1 block">Portfólio</label>
+                    <input type="text" id="f-portfolio" class="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors">
+                </div>
+                <div>
+                    <label class="text-xs font-semibold text-muted-foreground mb-1 block">Programa</label>
+                    <input type="text" id="f-programa" class="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors">
+                </div>
+                <div>
+                    <label class="text-xs font-semibold text-muted-foreground mb-1 block">Fase Principal</label>
+                    <input type="text" id="f-fasePrincipal" class="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors">
+                </div>
+                <div>
+                    <label class="text-xs font-semibold text-muted-foreground mb-1 block">FASE FEL</label>
+                    <input type="text" id="f-faseFel" class="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors">
+                </div>
+
+                <!-- ROW 3: PESSOAS -->
+                <div>
+                    <label class="text-xs font-semibold text-muted-foreground mb-1 block">Coordenador</label>
+                    <input type="text" id="f-coordenador" class="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors">
+                </div>
+                <div>
+                    <label class="text-xs font-semibold text-muted-foreground mb-1 block">Gerente</label>
+                    <input type="text" id="f-gerente" class="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors">
+                </div>
+                <div>
+                    <label class="text-xs font-semibold text-muted-foreground mb-1 block">Área</label>
+                    <input type="text" id="f-area" class="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors">
+                </div>
+                <div>
+                    <label class="text-xs font-semibold text-muted-foreground mb-1 block">Categoria</label>
+                    <input type="text" id="f-categoria" class="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors">
+                </div>
+
+                <!-- ROW 4: TEXTOS GRANDES -->
+                <div class="md:col-span-4">
+                    <label class="text-xs font-semibold text-muted-foreground mb-1 block">Problema / Dor</label>
+                    <textarea id="f-problem" rows="6" class="flex w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-sm transition-colors"></textarea>
+                </div>
+                <div class="md:col-span-4">
+                    <label class="text-xs font-semibold text-muted-foreground mb-1 block">Benefícios</label>
+                    <textarea id="f-benefits" rows="6" class="flex w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-sm transition-colors"></textarea>
+                </div>
+                <div class="md:col-span-4">
+                    <label class="text-xs font-semibold text-muted-foreground mb-1 block">Síntese</label>
+                    <textarea id="f-synthesis" rows="6" class="flex w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-sm transition-colors"></textarea>
+                </div>
+            </form>
+
+            <div class="mt-6 flex justify-end gap-3 shrink-0 border-t pt-4">
+                <button type="button" id="btn-cancel" class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2">Cancelar</button>
+                <button type="button" id="btn-save" class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium bg-green-600 text-white shadow hover:bg-green-700 h-10 px-4 py-2">Salvar Registro</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DE EXCLUSÃO -->
+    <div id="delete-modal" class="fixed inset-0 hidden items-center justify-center bg-black/80 backdrop-blur-sm transition-opacity p-4" style="z-index: 9999;">
+        <div class="bg-card p-6 rounded-lg shadow-xl w-full max-w-sm border border-border text-card-foreground">
+            <h2 class="text-xl font-bold mb-4 text-destructive">Confirmação de Exclusão</h2>
+            <p class="text-sm mb-4">Tem certeza que deseja excluir este registro permanentemente? Esta ação <b>não pode ser desfeita</b>.</p>
+            <div class="space-y-4">
+                <input type="password" id="delete-password" class="flex h-10 w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring" placeholder="Digite a senha (789512)">
+                <p id="delete-error" class="text-destructive text-sm mt-1 text-center hidden">Senha incorreta.</p>
+                <div class="flex justify-end gap-3 pt-2">
+                    <button type="button" id="btn-cancel-delete" class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2">Não, Cancelar</button>
+                    <button type="button" id="btn-confirm-delete" class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium bg-destructive text-destructive-foreground shadow hover:bg-destructive/90 h-10 px-4 py-2">Sim, Excluir</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCRIPT FIREBASE E LÓGICA -->
+    <script>
+        // Configuração do Firebase extraída do sistema original
+        const firebaseConfig = {
+            projectId: "studio-2837535581-1b461",
+            appId: "1:734126703234:web:b5e076685289c0f43fea9b",
+            storageBucket: "studio-2837535581-1b461.firebasestorage.app",
+            apiKey: atob("QUl6YVN5QkRmTXRrMG9CQWROd1VKMUpPWDJtd1VQU0txMjZsNkt3"),
+            authDomain: "studio-2837535581-1b461.firebaseapp.com",
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        let currentData = [];
+        let currentPage = 1;
+        const rowsPerPage = 10; // Limite de 10 registros por página para caber completamente na tela sem cortar o rodapé
+
+        // Elementos da UI
+        const pwdOverlay = document.getElementById('password-overlay');
+        const pwdInput = document.getElementById('admin-password');
+        const btnLogin = document.getElementById('btn-login');
+        const loginError = document.getElementById('login-error');
+        const appContent = document.getElementById('app-content');
+        
+        // Elementos do Modal
+        const crudModal = document.getElementById('crud-modal');
+        const crudForm = document.getElementById('crud-form');
+        const btnCreate = document.getElementById('btn-create');
+        const btnCancel = document.getElementById('btn-cancel');
+        const btnCloseModal = document.getElementById('btn-close-modal');
+        const btnSave = document.getElementById('btn-save');
+
+        // Autenticação da Tela
+        btnLogin.addEventListener('click', () => {
+            const pwd = pwdInput.value.trim();
+            if (pwd === '789512') {
+                loginError.classList.add('hidden');
+                pwdOverlay.classList.add('opacity-0');
+                setTimeout(() => {
+                    pwdOverlay.classList.add('hidden');
+                    appContent.classList.remove('opacity-0', 'pointer-events-none');
+                    // Mantém overflow-hidden no body para manter os controles de paginação visíveis na tela
+                    startFirebase();
+                }, 300);
+            } else {
+                loginError.classList.remove('hidden');
+            }
+        });
+
+        // Permitir Login com ENTER
+        pwdInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') btnLogin.click();
+        });
+
+        // Inicializar Banco
+        function startFirebase() {
+            document.getElementById('table-body').innerHTML = '<tr><td colspan="20" class="p-8 text-center text-muted-foreground animate-pulse">Conectando ao banco de dados FAST...</td></tr>';
+            
+            // Tenta o login silencioso mas não trava se der erro, pois o usuário já pode estar logado.
+            firebase.auth().signInWithEmailAndPassword("sistemasengenharia@cmpcrs.com.br", "Celulose@2031!")
+                .catch(e => console.warn("Aviso de auth:", e.message));
+
+            firebase.auth().onAuthStateChanged((user) => {
+                if (user) {
+                    loadData();
+                } else {
+                    document.getElementById('table-body').innerHTML = '<tr><td colspan="20" class="p-8 text-center text-destructive">Usuário não autenticado.</td></tr>';
+                }
+            });
+        }
+
+        // Buscar Dados
+        async function loadData() {
+            try {
+                const snap = await db.collection('fasts').orderBy('createdAt', 'desc').get();
+                currentData = [];
+                snap.forEach(doc => {
+                    currentData.push({ id: doc.id, ...doc.data() });
+                });
+                currentPage = 1;
+                renderTable();
+            } catch (e) {
+                console.error(e);
+                document.getElementById('table-body').innerHTML = '<tr><td colspan="20" class="p-8 text-center text-destructive">Erro ao carregar dados.</td></tr>';
+            }
+        }
+
+        // Eventos da Paginação
+        document.getElementById('btn-prev-page').addEventListener('click', () => {
+            if (currentPage > 1) {
+                currentPage--;
+                renderTable();
+            }
+        });
+        document.getElementById('btn-next-page').addEventListener('click', () => {
+            const totalPages = Math.ceil(currentData.length / rowsPerPage);
+            if (currentPage < totalPages) {
+                currentPage++;
+                renderTable();
+            }
+        });
+
+        // Renderizar Tabela
+        function renderTable() {
+            const tbody = document.getElementById('table-body');
+            tbody.innerHTML = '';
+            
+            if (currentData.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="20" class="p-8 text-center text-muted-foreground">Nenhum registro encontrado.</td></tr>';
+                document.getElementById('pagination-info').innerText = 'Nenhum registro';
+                document.getElementById('pagination-page').innerText = '1 / 1';
+                document.getElementById('btn-prev-page').disabled = true;
+                document.getElementById('btn-next-page').disabled = true;
+                return;
+            }
+
+            const totalPages = Math.ceil(currentData.length / rowsPerPage);
+            if (currentPage > totalPages) currentPage = totalPages;
+            if (currentPage < 1) currentPage = 1;
+
+            const startIndex = (currentPage - 1) * rowsPerPage;
+            const endIndex = startIndex + rowsPerPage;
+            const pageData = currentData.slice(startIndex, endIndex);
+
+            pageData.forEach(item => {
+                const tr = document.createElement('tr');
+                tr.className = "border-b transition-colors hover:bg-muted/50";
+                
+                // Helper para evitar undefined
+                const v = (val) => val ? val : '-';
+
+                tr.innerHTML = `
+                    <td class="p-1.5 align-middle sticky left-0 bg-background border-r shadow-[1px_0_0_0_theme(colors.border)] z-10 w-[60px]">
+                        <div class="flex gap-1 justify-center">
+                            <button onclick="editRow('${item.id}')" title="Editar" class="flex h-6 w-6 items-center justify-center rounded border border-blue-200 bg-blue-50 text-blue-600 hover:bg-blue-100 transition-colors">✎</button>
+                            <button onclick="deleteRow('${item.id}')" title="Excluir" class="flex h-6 w-6 items-center justify-center rounded border border-red-200 bg-red-50 text-red-600 hover:bg-red-100 transition-colors">✕</button>
+                        </div>
+                    </td>
+                    <td class="p-1.5 align-middle uppercase"><span class="block max-w-[60px] truncate text-muted-foreground" title="${item.id}">${item.id}</span></td>
+                    <td class="p-1.5 align-middle uppercase whitespace-nowrap">${v(item.ano)}</td>
+                    <td class="p-1.5 align-middle uppercase whitespace-nowrap">${v(item.seq)}</td>
+                    <td class="p-1.5 align-middle uppercase whitespace-nowrap">${v(item.pep)}</td>
+                    <td class="p-1.5 align-middle uppercase whitespace-nowrap max-w-[100px] truncate" title="${v(item.statusSap)}">${v(item.statusSap)}</td>
+                    <td class="p-1.5 align-middle uppercase whitespace-nowrap">${v(item.origin || item.origem)}</td>
+                    <td class="p-1.5 align-middle uppercase whitespace-nowrap max-w-[120px] truncate" title="${v(item.portfolio)}">${v(item.portfolio)}</td>
+                    <td class="p-1.5 align-middle uppercase whitespace-nowrap max-w-[120px] truncate" title="${v(item.programa)}">${v(item.programa)}</td>
+                    <td class="p-1.5 align-middle uppercase"><div class="w-[200px] sm:w-[250px] line-clamp-2 whitespace-normal break-words font-semibold" title="${v(item.title || item.tituloIntencao)}">${v(item.title || item.tituloIntencao)}</div></td>
+                    <td class="p-1.5 align-middle uppercase"><span class="inline-flex items-center rounded-full border px-2 py-0.5 text-[9px] font-semibold transition-colors focus:outline-none border-transparent bg-secondary text-secondary-foreground whitespace-nowrap">${v(item.status || item.situacaoAtual)}</span></td>
+                    <td class="p-1.5 align-middle uppercase whitespace-nowrap max-w-[100px] truncate" title="${v(item.fasePrincipal)}">${v(item.fasePrincipal)}</td>
+                    <td class="p-1.5 align-middle uppercase font-mono whitespace-nowrap">${v(item.faseFel)}</td>
+                    <td class="p-1.5 align-middle uppercase whitespace-nowrap max-w-[120px] truncate" title="${v(item.coordenador || item.studyCoordinator)}">${v(item.coordenador || item.studyCoordinator)}</td>
+                    <td class="p-1.5 align-middle uppercase whitespace-nowrap max-w-[120px] truncate" title="${v(item.manager || item.gerente)}">${v(item.manager || item.gerente)}</td>
+                    <td class="p-1.5 align-middle uppercase whitespace-nowrap max-w-[100px] truncate" title="${v(item.managerArea || item.area)}">${v(item.managerArea || item.area)}</td>
+                    <td class="p-1.5 align-middle uppercase whitespace-nowrap max-w-[120px] truncate" title="${v(item.category || item.categoria)}">${v(item.category || item.categoria)}</td>
+                    <td class="p-1.5 align-middle uppercase text-muted-foreground"><div class="w-[200px] line-clamp-2 whitespace-normal break-words" title="${v(item.problemDescription)}">${v(item.problemDescription)}</div></td>
+                    <td class="p-1.5 align-middle uppercase text-muted-foreground"><div class="w-[200px] line-clamp-2 whitespace-normal break-words" title="${v(item.benefits)}">${v(item.benefits)}</div></td>
+                    <td class="p-1.5 align-middle uppercase text-muted-foreground"><div class="w-[200px] line-clamp-2 whitespace-normal break-words" title="${v(item.synthesis)}">${v(item.synthesis)}</div></td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            // Atualiza rodapé da paginação
+            const startDisplay = startIndex + 1;
+            const endDisplay = Math.min(endIndex, currentData.length);
+            document.getElementById('pagination-info').innerText = `Mostrando ${startDisplay} a ${endDisplay} de ${currentData.length} registros`;
+            document.getElementById('pagination-page').innerText = `${currentPage} / ${totalPages}`;
+            document.getElementById('btn-prev-page').disabled = currentPage === 1;
+            document.getElementById('btn-next-page').disabled = currentPage === totalPages;
+        }
+
+        // Helpers de Modal
+        function openModal(isEdit = false) {
+            crudModal.classList.remove('hidden');
+            crudModal.classList.add('flex');
+            document.getElementById('modal-title').innerText = isEdit ? "Editar Registro FAST" : "Criar Novo Registro FAST";
+        }
+        function closeModal() {
+            crudModal.classList.add('hidden');
+            crudModal.classList.remove('flex');
+        }
+
+        if (btnCreate) {
+            btnCreate.addEventListener('click', () => {
+                crudForm.reset();
+                document.getElementById('f-id').value = '';
+                openModal(false);
+            });
+        }
+
+        btnCancel.addEventListener('click', closeModal);
+        btnCloseModal.addEventListener('click', closeModal);
+
+        // Preencher Form para Edição
+        window.editRow = (id) => {
+            const item = currentData.find(x => x.id === id);
+            if (!item) return;
+            crudForm.reset();
+            
+            document.getElementById('f-id').value = item.id;
+            document.getElementById('f-title').value = item.title || item.tituloIntencao || '';
+            document.getElementById('f-status').value = item.status || item.situacaoAtual || '';
+            document.getElementById('f-origin').value = item.origin || item.origem || '';
+            document.getElementById('f-ano').value = item.ano || '';
+            document.getElementById('f-seq').value = item.seq || '';
+            document.getElementById('f-pep').value = item.pep || '';
+            document.getElementById('f-statusSap').value = item.statusSap || '';
+            document.getElementById('f-portfolio').value = item.portfolio || '';
+            document.getElementById('f-programa').value = item.programa || '';
+            document.getElementById('f-fasePrincipal').value = item.fasePrincipal || '';
+            document.getElementById('f-faseFel').value = item.faseFel || '';
+            document.getElementById('f-coordenador').value = item.coordenador || item.studyCoordinator || '';
+            document.getElementById('f-gerente').value = item.manager || item.gerente || '';
+            document.getElementById('f-area').value = item.managerArea || item.area || '';
+            document.getElementById('f-categoria').value = item.category || item.categoria || '';
+            document.getElementById('f-problem').value = item.problemDescription || '';
+            document.getElementById('f-benefits').value = item.benefits || '';
+            document.getElementById('f-synthesis').value = item.synthesis || '';
+            
+            openModal(true);
+        };
+
+        // Excluir
+        let itemToDelete = null;
+
+        window.deleteRow = (id) => {
+            itemToDelete = id;
+            document.getElementById('delete-password').value = '';
+            document.getElementById('delete-error').classList.add('hidden');
+            document.getElementById('delete-modal').classList.remove('hidden');
+            document.getElementById('delete-modal').classList.add('flex');
+        };
+
+        document.getElementById('btn-cancel-delete').addEventListener('click', () => {
+            document.getElementById('delete-modal').classList.add('hidden');
+            document.getElementById('delete-modal').classList.remove('flex');
+            itemToDelete = null;
+        });
+
+        document.getElementById('btn-confirm-delete').addEventListener('click', async () => {
+            const pwd = document.getElementById('delete-password').value.trim();
+            if (pwd === '789512') {
+                if (itemToDelete) {
+                    try {
+                        const btn = document.getElementById('btn-confirm-delete');
+                        btn.innerText = 'Excluindo...';
+                        btn.disabled = true;
+                        await db.collection('fasts').doc(itemToDelete).delete();
+                        loadData();
+                        document.getElementById('delete-modal').classList.add('hidden');
+                        document.getElementById('delete-modal').classList.remove('flex');
+                    } catch (e) {
+                        console.error(e);
+                        alert("Erro ao excluir registro.");
+                    } finally {
+                        const btn = document.getElementById('btn-confirm-delete');
+                        btn.innerText = 'Sim, Excluir';
+                        btn.disabled = false;
+                        itemToDelete = null;
+                    }
+                }
+            } else {
+                document.getElementById('delete-error').classList.remove('hidden');
+            }
+        });
+
+        // Salvar (Create ou Update)
+        btnSave.addEventListener('click', async () => {
+            const id = document.getElementById('f-id').value;
+            const title = document.getElementById('f-title').value.trim();
+            
+            if (!title) {
+                alert("O Título da Intenção é obrigatório!");
+                document.getElementById('f-title').focus();
+                return;
+            }
+
+            const data = {
+                title: title,
+                status: document.getElementById('f-status').value,
+                origin: document.getElementById('f-origin').value,
+                ano: document.getElementById('f-ano').value,
+                seq: document.getElementById('f-seq').value,
+                pep: document.getElementById('f-pep').value,
+                statusSap: document.getElementById('f-statusSap').value,
+                portfolio: document.getElementById('f-portfolio').value,
+                programa: document.getElementById('f-programa').value,
+                fasePrincipal: document.getElementById('f-fasePrincipal').value,
+                faseFel: document.getElementById('f-faseFel').value,
+                coordenador: document.getElementById('f-coordenador').value,
+                manager: document.getElementById('f-gerente').value,
+                managerArea: document.getElementById('f-area').value,
+                category: document.getElementById('f-categoria').value,
+                problemDescription: document.getElementById('f-problem').value,
+                benefits: document.getElementById('f-benefits').value,
+                synthesis: document.getElementById('f-synthesis').value,
+                lastUpdated: firebase.firestore.FieldValue.serverTimestamp()
+            };
+            
+            // Remove chaves vazias para não sujar o banco
+            Object.keys(data).forEach(key => {
+                if (data[key] === '') delete data[key];
+            });
+            
+            const originalText = btnSave.innerText;
+            btnSave.innerText = 'Salvando...';
+            btnSave.disabled = true;
+            
+            try {
+                if (id) {
+                    await db.collection('fasts').doc(id).set(data, { merge: true });
+                } else {
+                    data.createdAt = firebase.firestore.FieldValue.serverTimestamp();
+                    data.code = await getNextCode(); // Gera código se novo
+                    await db.collection('fasts').add(data);
+                }
+                closeModal();
+                loadData();
+            } catch (e) {
+                console.error(e);
+                alert("Erro ao salvar registro.");
+            } finally {
+                btnSave.innerText = originalText;
+                btnSave.disabled = false;
+            }
+        });
+
+        async function getNextCode() {
+            try {
+                const snap = await db.collection('fasts').orderBy('code', 'desc').limit(1).get();
+                if (snap.empty) return 1;
+                const d = snap.docs[0].data();
+                return (d.code || 0) + 1;
+            } catch (e) {
+                return Date.now(); // fallback em caso de erro no índice
+            }
+        }
+    </script>
+</body>
+</html>
