@@ -66,7 +66,7 @@ function makeToolbarJsx() {
 const toolbarJsx = makeToolbarJsx();
 
 const fields = [
-  'bcAvaliacaoMesAno', 'bcGerenciaEstudos', 'bcGerenciaEngenharia', 'bcAutores', 'bcCodigoDoc', 'bcCodigoFast', 'bcTituloProjeto', 'bcEtapa', 'bcUnidadeNegocio', 'bcCategoria', 'bcPilarEstrategico', 'bcPrograma', 'bcArea', 'bcTema', 'bc1Objetivo', 'bc2Contextualizacao', 'bc3Beneficios', 'bc4AvaliacaoAlinhamento', 'bc5Capex', 'bc6CronogramaPreliminar', 'bc15EstrategiaImplantacao', 'bc16Requisitos', 'bc17PremissasRestricoes', 'bc18Exclusoes', 'bc19FatoresCriticos', 'bc20RiscosIncertezas', 'bc21AvaliacaoEconomica', 'bc22Conclusao', 'bcEnviarAprovacao'
+  'bcAvaliacaoMesAno', 'bcAutores', 'bcCodigoDoc', 'bcCodigoFast', 'bcTituloProjeto', 'bcEtapa', 'bcUnidadeNegocio', 'bcCategoria', 'bcPilarEstrategico', 'bcPrograma', 'bcArea', 'bcTema', 'bc1Objetivo', 'bc2Contextualizacao', 'bc3Beneficios', 'bc4AvaliacaoAlinhamento', 'bc5Capex', 'bc6CronogramaPreliminar', 'bc15EstrategiaImplantacao', 'bc16Requisitos', 'bc17PremissasRestricoes', 'bc18Exclusoes', 'bc19FatoresCriticos', 'bc20RiscosIncertezas', 'bc21AvaliacaoEconomica', 'bc22Conclusao', 'bcEnviarAprovacao'
 ];
 
 let stateReplacement = '[showBcModal,setShowBcModal]=(0,E.useState)(!1),';
@@ -102,8 +102,6 @@ let modalMarkup = ",(0,t.jsx)(s.Vq,{open:showBcModal,onOpenChange:setShowBcModal
 
 const inputs = [
   { id: 'bcAvaliacaoMesAno', label: 'Avaliação Econômico-Financeira (MÊS/ANO)' },
-  { id: 'bcGerenciaEstudos', label: 'Gerência de Estudos' },
-  { id: 'bcGerenciaEngenharia', label: 'Gerência de Engenharia' },
   { id: 'bcAutores', label: 'Autores' },
   { id: 'bcCodigoDoc', label: 'Código do Documento' },
   { id: 'bcCodigoFast', label: 'Código FAST' },

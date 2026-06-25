@@ -697,7 +697,7 @@
                     }
                     _bcSave = null;
                     _bcEditor = null;
-                    return result || false;
+                     return result || false;
                 }
 
                 // Image alignment (justify)
@@ -2076,6 +2076,10 @@ function toggleHtmlMode(toolbar) {
 
 
 <style id="bc-adv-edit-styles">
+div[contenteditable="true"] {
+  resize: vertical;
+  overflow: auto;
+}
 .bc-img-sel-box {
   position: absolute; pointer-events: none;
   outline: 2px solid #6366f1; outline-offset: 1px;
@@ -2729,11 +2733,16 @@ function toggleHtmlMode(toolbar) {
     var cell = t.closest ? t.closest('td, th') : null;
     if (cell && getEditor(cell)) {
       e.preventDefault(); _activeCell = cell; positionTableBar(cell);
+      var table = getTable(cell);
       showCtx([
         { icon:'↑', label:'Inserir linha acima',       fn: function(){ bcAddRowAbove(cell); } },
         { icon:'↓', label:'Inserir linha abaixo',      fn: function(){ bcAddRowBelow(cell); } },
         { icon:'←', label:'Inserir coluna à esquerda', fn: function(){ bcAddColLeft(cell);  } },
         { icon:'→', label:'Inserir coluna à direita',  fn: function(){ bcAddColRight(cell); } },
+        '-',
+        { icon:'◀', label:'Alinhar à esquerda', fn: function(){ if (table) { table.style.marginLeft = '0px'; table.style.marginRight = 'auto'; var editor = getEditor(table); if (editor) editor.dispatchEvent(new Event('input', { bubbles: true })); setTimeout(function() { refreshTableResizer(table); }, 30); } } },
+        { icon:'▬', label:'Centralizar',         fn: function(){ if (table) { table.style.marginLeft = 'auto'; table.style.marginRight = 'auto'; var editor = getEditor(table); if (editor) editor.dispatchEvent(new Event('input', { bubbles: true })); setTimeout(function() { refreshTableResizer(table); }, 30); } } },
+        { icon:'▶', label:'Alinhar à direita',   fn: function(){ if (table) { table.style.marginLeft = 'auto'; table.style.marginRight = '0px'; var editor = getEditor(table); if (editor) editor.dispatchEvent(new Event('input', { bubbles: true })); setTimeout(function() { refreshTableResizer(table); }, 30); } } },
         '-',
         { icon:'✕', label:'Excluir linha',  danger:true, fn: function(){ bcDeleteRow(cell); } },
         { icon:'✕', label:'Excluir coluna', danger:true, fn: function(){ bcDeleteCol(cell); } },

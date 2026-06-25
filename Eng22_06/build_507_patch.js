@@ -1,7 +1,7 @@
 const fs = require('fs');
 
 const fields = [
-  'bcAvaliacaoMesAno', 'bcGerenciaEstudos', 'bcGerenciaEngenharia', 'bcAutores', 'bcCodigoDoc', 'bcCodigoFast', 'bcTituloProjeto', 'bcEtapa', 'bcUnidadeNegocio', 'bcCategoria', 'bcPilarEstrategico', 'bcPrograma', 'bcArea', 'bcTema', 'bc1Objetivo', 'bc2Contextualizacao', 'bc3Beneficios', 'bc4AvaliacaoAlinhamento', 'bc5Capex', 'bc6CronogramaPreliminar', 'bc7ExecucaoFaseUnica', 'bc8Execucao6Fases', 'bc9EscopoResumido', 'bc10FornecimentoEquip', 'bc11ConstrucaoInstalacao', 'bc12AutomacaoControle', 'bc13Comissionamento', 'bc14Treinamento', 'bc15EstrategiaImplantacao', 'bc16Requisitos', 'bc17PremissasRestricoes', 'bc18Exclusoes', 'bc19FatoresCriticos', 'bc20RiscosIncertezas', 'bc21AvaliacaoEconomica', 'bc22Conclusao'
+  'bcAvaliacaoMesAno', 'bcAutores', 'bcCodigoDoc', 'bcCodigoFast', 'bcTituloProjeto', 'bcEtapa', 'bcUnidadeNegocio', 'bcCategoria', 'bcPilarEstrategico', 'bcPrograma', 'bcArea', 'bcTema', 'bc1Objetivo', 'bc2Contextualizacao', 'bc3Beneficios', 'bc4AvaliacaoAlinhamento', 'bc5Capex', 'bc6CronogramaPreliminar', 'bc7ExecucaoFaseUnica', 'bc8Execucao6Fases', 'bc9EscopoResumido', 'bc10FornecimentoEquip', 'bc11ConstrucaoInstalacao', 'bc12AutomacaoControle', 'bc13Comissionamento', 'bc14Treinamento', 'bc15EstrategiaImplantacao', 'bc16Requisitos', 'bc17PremissasRestricoes', 'bc18Exclusoes', 'bc19FatoresCriticos', 'bc20RiscosIncertezas', 'bc21AvaliacaoEconomica', 'bc22Conclusao'
 ];
 
 let stateReplacement = 'const bcDataRef=(0,r.useRef)({});let [showBcModal,setShowBcModal]=(0,r.useState)(!1),';
@@ -22,8 +22,6 @@ saveObj += '}';
 
 const inputs = [
   { id: 'bcAvaliacaoMesAno', label: 'Avaliação Econômico-Financeira (MÊS/ANO)' },
-  { id: 'bcGerenciaEstudos', label: 'Gerência de Estudos' },
-  { id: 'bcGerenciaEngenharia', label: 'Gerência de Engenharia' },
   { id: 'bcAutores', label: 'Autores' },
   { id: 'bcCodigoDoc', label: 'Código do Documento' },
   { id: 'bcCodigoFast', label: 'Código FAST' },

@@ -2,8 +2,8 @@ const fs = require('fs');
 
 // Ensure we start from a clean copy of 507 first by copying from the backup
 console.log('Restoring clean 507 chunk...');
-fs.copyFileSync('C:/Users/Admin/Downloads/Eng0206/Eng0206/_next/static/chunks/507-1cbb4e1ae80f89d3.js', '_next/static/chunks/507-1cbb4e1ae80f89d3.js');
-fs.copyFileSync('C:/Users/Admin/Downloads/Eng0206/Eng0206/_next/static/chunks/507-1cbb4e1ae80f89d3.js', 'OUT/_next/static/chunks/507-1cbb4e1ae80f89d3.js');
+fs.copyFileSync('../../backup/_next/static/chunks/507-1cbb4e1ae80f89d3.js', '_next/static/chunks/507-1cbb4e1ae80f89d3.js');
+fs.copyFileSync('../../backup/_next/static/chunks/507-1cbb4e1ae80f89d3.js', 'OUT/_next/static/chunks/507-1cbb4e1ae80f89d3.js');
 console.log('Restored.');
 
 const files = [
