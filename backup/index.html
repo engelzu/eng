@@ -1,0 +1,1497 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charSet="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ProjectFlow SAS</title>
+    <meta name="description" content="Aplicativo de planejamento de projetos." />
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" sizes="16x16" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&amp;family=Space+Grotesk:wght@500;700&amp;display=swap"
+        rel="stylesheet" />
+</head>
+
+<body class="font-body antialiased">
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
+    <script src="projects.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="js/i18n.js"></script>
+
+    <!-- Toast de notificação customizado -->
+    <div id="checklist-toast"></div>
+
+    <style>
+        body>div:first-child {
+            display: none !important;
+        }
+
+        #pf-root-dashboard {
+            display: flex !important;
+            min-height: 100vh !important;
+            flex-direction: row !important;
+            background: #f1f5f9 !important;
+            font-family: 'Inter', sans-serif !important;
+        }
+
+        #pf-sidebar {
+            width: 260px !important;
+            background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%) !important;
+            color: white !important;
+            display: flex !important;
+            flex-direction: column !important;
+            padding: 0 !important;
+            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.2) !important;
+            flex-shrink: 0 !important;
+        }
+
+        #pf-sidebar-header {
+            padding: 24px 20px !important;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+        }
+
+        #pf-sidebar-header h1 {
+            margin: 0 !important;
+            font-size: 16px !important;
+            font-weight: 900 !important;
+            letter-spacing: 1px !important;
+            text-transform: uppercase !important;
+            background: linear-gradient(90deg, #60a5fa, #a78bfa, #34d399) !important;
+            -webkit-background-clip: text !important;
+            -webkit-text-fill-color: transparent !important;
+            background-clip: text !important;
+        }
+
+        #pf-sidebar-header .pf-subtitle {
+            font-size: 9px !important;
+            color: #64748b !important;
+            margin-top: 4px !important;
+            letter-spacing: 2px !important;
+            text-transform: uppercase !important;
+        }
+
+        #pf-menu-simple {
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 4px !important;
+            padding: 16px 12px !important;
+            flex: 1 !important;
+        }
+
+        .pf-menu-item {
+            display: flex !important;
+            align-items: center !important;
+            padding: 12px 16px !important;
+            background: transparent !important;
+            border: none !important;
+            border-left: 3px solid transparent !important;
+            border-radius: 8px !important;
+            color: #94a3b8 !important;
+            font-weight: 600 !important;
+            font-size: 13px !important;
+            text-decoration: none !important;
+            transition: all 0.25s ease !important;
+            letter-spacing: 0.5px !important;
+            width: 100% !important;
+            text-align: left !important;
+            justify-content: flex-start !important;
+            box-sizing: border-box !important;
+        }
+
+        .pf-menu-item:hover {
+            background: rgba(96, 165, 250, 0.07) !important;
+            color: #e2e8f0 !important;
+            border-left: 3px solid #60a5fa !important;
+            box-shadow: inset 0 0 12px rgba(96, 165, 250, 0.08), 0 0 8px rgba(96, 165, 250, 0.15) !important;
+            transform: translateX(2px) !important;
+            text-shadow: 0 0 8px rgba(96, 165, 250, 0.4) !important;
+        }
+
+        #pf-sidebar-footer {
+            padding: 16px 20px !important;
+            border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: space-between !important;
+        }
+
+        #pf-sidebar-footer .user-logged {
+            font-size: 11px !important;
+            color: #e2e8f0 !important;
+            font-weight: 700 !important;
+            white-space: nowrap !important;
+            overflow: hidden !important;
+            text-overflow: ellipsis !important;
+            max-width: 160px !important;
+            display: block !important;
+            margin-bottom: 4px !important;
+        }
+
+        #pf-sidebar-footer .user-info {
+            font-size: 10px !important;
+            color: #64748b !important;
+            display: flex !important;
+            align-items: center !important;
+            gap: 6px !important;
+        }
+
+        #pf-sidebar-footer .user-email {
+            font-size: 11px !important;
+            color: #94a3b8 !important;
+            font-weight: 600 !important;
+        }
+
+        .led-online {
+            width: 9px !important;
+            height: 9px !important;
+            border-radius: 50% !important;
+            background: #22c55e !important;
+            box-shadow: 0 0 6px 2px rgba(34, 197, 94, 0.7) !important;
+            display: inline-block !important;
+            flex-shrink: 0 !important;
+            animation: ledPulse 1.8s ease-in-out infinite !important;
+        }
+
+        @keyframes ledPulse {
+
+            0%,
+            100% {
+                box-shadow: 0 0 5px 2px rgba(34, 197, 94, 0.7);
+                opacity: 1;
+            }
+
+            50% {
+                box-shadow: 0 0 10px 5px rgba(34, 197, 94, 0.4);
+                opacity: 0.8;
+            }
+        }
+
+        #pf-main-content {
+            flex: 1 !important;
+            display: flex !important;
+            align-items: stretch !important;
+            justify-content: stretch !important;
+            background: #f8fafc !important;
+            overflow: hidden !important;
+            position: relative !important;
+        }
+
+        #pf-welcome-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            background-image: url('https://portalcelulose.com.br/wp-content/uploads/2025/05/CMPC-registra-forte-recuperacao-do-lucro-liquido-no-1o-trimestre-de-2025.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            min-height: 100vh;
+        }
+
+        /* Partículas decorativas de fundo (ocultas) */
+        .pf-bg-dot {
+            display: none;
+        }
+
+        #pf-welcome-card {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 28px;
+            padding: 56px 64px;
+            background: rgba(255, 255, 255, 0.25);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            border-radius: 24px;
+            backdrop-filter: blur(12px);
+            box-shadow:
+                0 25px 60px rgba(0, 0, 0, 0.2),
+                0 0 0 1px rgba(255, 255, 255, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.5);
+            max-width: 540px;
+            width: 90%;
+            text-align: center;
+            margin-left: -130px;
+            /* Compensa a largura da sidebar para ficar no centro exato da tela */
+            animation: cardFadeIn 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+        }
+
+        @keyframes cardFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(24px) scale(0.97);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        #pf-welcome-logo {
+            width: 200px;
+            height: auto;
+            mix-blend-mode: multiply;
+            filter: drop-shadow(0 0 24px rgba(96, 165, 250, 0.35));
+            animation: logoPulse 4s ease-in-out infinite;
+        }
+
+        @keyframes logoPulse {
+
+            0%,
+            100% {
+                filter: drop-shadow(0 0 20px rgba(96, 165, 250, 0.3));
+            }
+
+            50% {
+                filter: drop-shadow(0 0 36px rgba(96, 165, 250, 0.6));
+            }
+        }
+
+        #pf-welcome-divider {
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(96, 165, 250, 0.4), transparent);
+        }
+
+        #pf-welcome-title {
+            font-size: 22px;
+            font-weight: 800;
+            color: #0f172a;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin: 0;
+            line-height: 1.3;
+        }
+
+        #pf-welcome-sub {
+            font-size: 13px;
+            color: #64748b;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin: 0;
+        }
+
+        .pf-welcome-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(34, 197, 94, 0.15);
+            border: 1px solid rgba(21, 128, 61, 0.3);
+            border-radius: 999px;
+            padding: 6px 16px;
+            font-size: 11px;
+            font-weight: 800;
+            color: #15803d;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        .pf-welcome-badge .dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #22c55e;
+            box-shadow: 0 0 6px #22c55e;
+            animation: ledPulse 1.8s ease-in-out infinite;
+        }
+
+        #pf-header {
+            display: none !important;
+        }
+
+
+        .checklist-tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            font-weight: bold;
+            color: #64748b;
+        }
+
+        .checklist-tab.active {
+            border-color: #15803d;
+            color: #15803d;
+            background: #f0fdf4;
+        }
+
+        .checklist-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+            table-layout: fixed;
+        }
+
+        .checklist-table th {
+            background: #ffffff;
+            padding: 12px 10px;
+            text-align: left;
+            border-bottom: 2px solid #15803d;
+            position: sticky;
+            top: 0;
+            z-index: 999 !important;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .checklist-table td {
+            padding: 10px;
+            border-bottom: 1px solid #f1f5f9;
+            background: white;
+        }
+
+        .btn-edit {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 11px;
+        }
+
+        .btn-edit:hover {
+            background: #1d4ed8;
+        }
+
+        #checklist-toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #15803d;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 8px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2);
+            z-index: 999999;
+            display: none;
+            align-items: center;
+            gap: 10px;
+            font-family: Inter, sans-serif;
+            font-weight: bold;
+            transform: translateY(-100px);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        #checklist-toast.show {
+            display: flex;
+            transform: translateY(0);
+        }
+
+        @keyframes chkArrowPulse {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            50% {
+                transform: translateX(4px);
+            }
+        }
+    </style>
+
+    <!-- ===== DASHBOARD LIMPO ===== -->
+    <div id="pf-root-dashboard">
+
+        <!-- Sidebar -->
+        <div id="pf-sidebar">
+            <div id="pf-sidebar-header">
+                <h1 data-i18n="sidebar.title">Gestor Engenharia</h1>
+                <div class="pf-subtitle" data-i18n="sidebar.subtitle">ProjectFlow SAS</div>
+            </div>
+
+            <div id="pf-menu-simple">
+                <a href="planning.html" class="pf-menu-item" data-i18n="sidebar.menu.planning">PLANEJAMENTO</a>
+                <a href="fast.html" class="pf-menu-item" data-i18n="sidebar.menu.fast">FAST</a>
+                <a href="business-case.html" class="pf-menu-item" data-i18n="sidebar.menu.businesscase">BUSINESS
+                    CASE</a>
+                <a href="pri/priorizacao-hibrida-v2.html" class="pf-menu-item"
+                    data-i18n="sidebar.menu.hybridprioritization">PRIORIZAÇÃO HÍBRIDA</a>
+                <a href="carga-recursos.html" class="pf-menu-item" data-i18n="sidebar.menu.resourceload">CARGA DE
+                    RECURSOS</a>
+                <a href="carga-cronograma.html" class="pf-menu-item" data-i18n="sidebar.menu.scheduleload">CARGA DE
+                    CRONOGRAMA</a>
+                <a href="javascript:openManager()" class="pf-menu-item" data-i18n="sidebar.menu.checklist">CHECKLIST</a>
+                <a href="gates.html" class="pf-menu-item" data-i18n="sidebar.menu.gates">GATES DE APROVAÇÃO</a>
+                <a href="FUP/index.html" class="pf-menu-item" data-i18n="sidebar.menu.fup">FUP</a>
+                <a href="RE/index.html" class="pf-menu-item" data-i18n="sidebar.menu.re">RE - RELATÓRIO ENG</a>
+                <a href="bancodedados.html" class="pf-menu-item" data-i18n="sidebar.menu.database">BANCO DE DADOS</a>
+                <a href="javascript:openAdminModal()" class="pf-menu-item" data-i18n="sidebar.menu.admin">ADMIN</a>
+            </div>
+
+            <div id="pf-sidebar-footer">
+                <div style="flex:1; min-width:0;">
+                    <span id="pf-user-logged" class="user-logged">—</span>
+                    <div class="user-info">
+                        <span class="led-online"></span>
+                        <span data-i18n="sidebar.status.online">SISTEMA ONLINE</span>
+                    </div>
+                    <div style="display:flex; gap:8px; margin-top:8px;">
+                        <span onclick="switchLangUI('pt-BR')"
+                            style="cursor:pointer;opacity:0.4;transition:all 0.2s;display:flex;align-items:center;"
+                            id="lang-flag-br" title="Português (Brasil)" onmouseover="this.style.opacity='0.8'"
+                            onmouseout="document.getElementById('lang-flag-br').style.opacity=window.i18n&&window.i18n.getLang()==='pt-BR'?'1':'0.4'">
+                            <img src="https://flagcdn.com/w20/br.png" alt="BR"
+                                style="width: 20px; border-radius: 2px; box-shadow: 0 0 2px rgba(0,0,0,0.3);" />
+                        </span>
+                        <span onclick="switchLangUI('es-ES')"
+                            style="cursor:pointer;opacity:0.4;transition:all 0.2s;display:flex;align-items:center;"
+                            id="lang-flag-es" title="Español (Chile)" onmouseover="this.style.opacity='0.8'"
+                            onmouseout="document.getElementById('lang-flag-es').style.opacity=window.i18n&&window.i18n.getLang()==='es-ES'?'1':'0.4'">
+                            <img src="https://flagcdn.com/w20/cl.png" alt="CL"
+                                style="width: 20px; border-radius: 2px; box-shadow: 0 0 2px rgba(0,0,0,0.3);" />
+                        </span>
+                    </div>
+                </div>
+                <button onclick="doLogout()"
+                    style="background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);color:#94a3b8;padding:8px 12px;border-radius:6px;font-size:10px;font-weight:700;cursor:pointer;font-family:Inter,sans-serif;text-transform:uppercase;letter-spacing:1px;transition:all 0.2s;margin-left:8px;flex-shrink:0;"
+                    onmouseover="this.style.background='rgba(239,68,68,0.2)';this.style.color='#f87171';this.style.borderColor='rgba(239,68,68,0.3)'"
+                    onmouseout="this.style.background='rgba(255,255,255,0.1)';this.style.color='#94a3b8';this.style.borderColor='rgba(255,255,255,0.2)'"
+                    data-i18n="sidebar.logout">SAIR</button>
+            </div>
+        </div>
+
+        <!-- Conteúdo Principal -->
+        <div id="pf-main-content">
+            <div id="pf-welcome-container">
+
+                <!-- Bolinhas decorativas de fundo -->
+                <div class="pf-bg-dot"></div>
+                <div class="pf-bg-dot"></div>
+                <div class="pf-bg-dot"></div>
+
+                <!-- Card central -->
+                <div id="pf-welcome-card">
+
+                    <img id="pf-welcome-logo" src="eng.png" alt="Logo Engenharia" />
+
+                    <div id="pf-welcome-divider"></div>
+
+                    <div>
+                        <p id="pf-welcome-title" data-i18n="welcome.title">Gestor de Engenharia</p>
+                        <p id="pf-welcome-sub" data-i18n="welcome.subtitle">ProjectFlow SAS · Sistema Integrado</p>
+                    </div>
+
+                    <div class="pf-welcome-badge" data-i18n="welcome.badge">
+                        <span class="dot"></span>
+                        Sistema Online e Operacional
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+    </div><!-- /#pf-root-dashboard -->
+
+    <!-- Toast de notificação customizado -->
+    <div id="checklist-toast"></div>
+
+    <!-- Modal Senha Admin -->
+    <div id="admin-pwd-modal"
+        style="position:fixed; inset:0; z-index:999999; background:rgba(0,0,0,0.75); backdrop-filter:blur(6px); align-items:center; justify-content:center; font-family:Inter,sans-serif;">
+        <div id="admin-pwd-card"
+            style="background:linear-gradient(135deg,#0f172a,#1e293b); border:1px solid rgba(96,165,250,0.2); border-radius:20px; padding:44px 48px; width:90%; max-width:380px; box-shadow:0 30px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(96,165,250,0.1); text-align:center;">
+            <div
+                style="width:52px;height:52px;border-radius:50%;background:rgba(96,165,250,0.1);border:1px solid rgba(96,165,250,0.25);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:22px;">
+                🔒</div>
+            <p style="margin:0 0 4px;font-size:16px;font-weight:800;color:#f1f5f9;letter-spacing:1px;text-transform:uppercase;"
+                data-i18n="admin.restricted">Área Restrita</p>
+            <p style="margin:0 0 28px;font-size:11px;color:#475569;letter-spacing:2px;text-transform:uppercase;"
+                data-i18n="admin.instruction">Insira a senha de administrador</p>
+            <input id="admin-pwd-input" type="password" placeholder="••••••" maxlength="20"
+                style="width:100%;box-sizing:border-box;padding:14px 16px;border-radius:10px;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.05);color:#f1f5f9;font-size:18px;letter-spacing:6px;text-align:center;outline:none;font-family:Inter,sans-serif;transition:border 0.2s;"
+                onfocus="this.style.borderColor='rgba(96,165,250,0.5)'"
+                onblur="this.style.borderColor='rgba(255,255,255,0.1)'"
+                onkeydown="if(event.key==='Enter')checkAdminPwd()" />
+            <p id="admin-pwd-error"
+                style="margin:10px 0 0;font-size:11px;color:#f87171;font-weight:700;letter-spacing:1px;min-height:16px;">
+            </p>
+            <div style="display:flex;gap:10px;margin-top:24px;">
+                <button onclick="closeAdminModal()"
+                    style="flex:1;padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.05);color:#64748b;font-size:12px;font-weight:700;cursor:pointer;letter-spacing:1px;font-family:Inter,sans-serif;text-transform:uppercase;transition:all 0.2s;"
+                    onmouseover="this.style.background='rgba(239,68,68,0.1)';this.style.color='#f87171'"
+                    onmouseout="this.style.background='rgba(255,255,255,0.05)';this.style.color='#64748b'"
+                    data-i18n="admin.cancel">CANCELAR</button>
+                <button onclick="checkAdminPwd()"
+                    style="flex:1;padding:12px;border-radius:10px;border:none;background:linear-gradient(135deg,#2563eb,#1d4ed8);color:white;font-size:12px;font-weight:800;cursor:pointer;letter-spacing:1px;font-family:Inter,sans-serif;text-transform:uppercase;box-shadow:0 4px 14px rgba(37,99,235,0.4);transition:opacity 0.2s;"
+                    onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'"
+                    data-i18n="admin.enter">ENTRAR</button>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        @keyframes adminShake {
+
+            0%,
+            100% {
+                transform: translateX(0)
+            }
+
+            20% {
+                transform: translateX(-8px)
+            }
+
+            40% {
+                transform: translateX(8px)
+            }
+
+            60% {
+                transform: translateX(-6px)
+            }
+
+            80% {
+                transform: translateX(6px)
+            }
+        }
+
+        #admin-pwd-modal {
+            display: none;
+        }
+
+        #admin-pwd-modal.open {
+            display: flex !important;
+        }
+    </style>
+
+    <script>
+        window.openAdminModal = function () {
+            const modal = document.getElementById('admin-pwd-modal');
+            modal.classList.add('open');
+            setTimeout(() => {
+                const inp = document.getElementById('admin-pwd-input');
+                inp.value = '';
+                document.getElementById('admin-pwd-error').textContent = '';
+                inp.focus();
+            }, 50);
+        };
+        window.closeAdminModal = function () {
+            document.getElementById('admin-pwd-modal').classList.remove('open');
+            document.getElementById('admin-pwd-input').value = '';
+            document.getElementById('admin-pwd-error').textContent = '';
+        };
+        window.checkAdminPwd = function () {
+            const val = document.getElementById('admin-pwd-input').value;
+            if (val === '789512') {
+                document.getElementById('admin-pwd-modal').classList.remove('open');
+                window.location.href = '/admin';
+            } else {
+                const card = document.getElementById('admin-pwd-card');
+                const err = document.getElementById('admin-pwd-error');
+                const tAdmin = window.i18n ? window.i18n.t.bind(window.i18n) : (k) => k;
+                err.textContent = tAdmin('admin.error');
+                card.style.animation = 'none';
+                void card.offsetWidth;
+                card.style.animation = 'adminShake 0.4s ease';
+                document.getElementById('admin-pwd-input').value = '';
+                document.getElementById('admin-pwd-input').focus();
+            }
+        };
+        // Fechar clicando fora do card
+        document.getElementById('admin-pwd-modal').addEventListener('click', function (e) {
+            if (e.target === this) closeAdminModal();
+        });
+    </script>
+    <script>
+        window.__ = function (key, replacements) {
+            if (window.i18n) return window.i18n.t(key, replacements);
+            return key;
+        };
+
+        window.switchLangUI = function (lang) {
+            if (window.i18n) {
+                window.i18n.setLang(lang);
+                document.getElementById('lang-flag-br').style.opacity = lang === 'pt-BR' ? '1' : '0.4';
+                document.getElementById('lang-flag-es').style.opacity = lang === 'es-ES' ? '1' : '0.4';
+            }
+        };
+
+        (function () {
+            const firebaseConfig = {
+                projectId: "studio-2837535581-1b461",
+                appId: "1:734126703234:web:b5e076685289c0f43fea9b",
+                storageBucket: "studio-2837535581-1b461.firebasestorage.app",
+                apiKey: atob("QUl6YVN5QkRmTXRrMG9CQWROd1VKMUpPWDJtd1VQU0txMjZsNkt3"),
+                authDomain: "studio-2837535581-1b461.firebaseapp.com",
+                messagingSenderId: "734126703234"
+            };
+
+            let excelData = null;
+            let currentUser = null;
+            let currentEditId = null;
+
+            window.checkFeatureVisibility = (featureKey) => {
+                const features = {
+                    'pdri-scoring': true,
+                    'history-tab': true
+                };
+                return !!features[featureKey];
+            };
+
+            function updateScorePDRI() {
+                let score = 0;
+                document.querySelectorAll('.q-select').forEach(s => {
+                    const val = parseInt(s.value) || 0;
+                    const cat = s.dataset.cat || '';
+                    let peso = 1;
+                    if (cat === 'Definição Técnica') peso = 3;
+                    else if (cat === 'Governança') peso = 1;
+                    else if (cat === 'Crítico') peso = 5;
+
+                    let mult = 0;
+                    if (val === 1) mult = 1;
+                    else if (val === 2) mult = 3;
+                    else if (val === 3) mult = 5;
+                    else if (val === 4) mult = 8;
+                    else if (val === 5) mult = 10;
+
+                    score += val * peso ? (peso * mult) : 0;
+                });
+
+                let pct = Math.round((score / 1610) * 100);
+                const fel2Unlocked = pct >= 20;
+                const fel3Unlocked = pct >= 53;
+
+                let resetOccurred = false;
+                if (!fel2Unlocked) {
+                    document.querySelectorAll('.q-select').forEach(s => {
+                        const fase = s.dataset.fase;
+                        if ((fase === 'FEL 2' || fase === 'FEL 3') && s.value !== '0') {
+                            s.value = '0';
+                            resetOccurred = true;
+                        }
+                    });
+                    document.querySelectorAll('.q-obs').forEach(o => {
+                        const fase = o.dataset.fase;
+                        if ((fase === 'FEL 2' || fase === 'FEL 3') && o.value !== '') {
+                            o.value = '';
+                        }
+                    });
+                } else if (!fel3Unlocked) {
+                    document.querySelectorAll('.q-select').forEach(s => {
+                        const fase = s.dataset.fase;
+                        if (fase === 'FEL 3' && s.value !== '0') {
+                            s.value = '0';
+                            resetOccurred = true;
+                        }
+                    });
+                    document.querySelectorAll('.q-obs').forEach(o => {
+                        const fase = o.dataset.fase;
+                        if (fase === 'FEL 3' && o.value !== '') {
+                            o.value = '';
+                        }
+                    });
+                }
+
+                if (resetOccurred) {
+                    score = 0;
+                    document.querySelectorAll('.q-select').forEach(s => {
+                        const val = parseInt(s.value) || 0;
+                        const cat = s.dataset.cat || '';
+                        let peso = 1;
+                        if (cat === 'Definição Técnica') peso = 3;
+                        else if (cat === 'Governança') peso = 1;
+                        else if (cat === 'Crítico') peso = 5;
+
+                        let mult = 0;
+                        if (val === 1) mult = 1;
+                        else if (val === 2) mult = 3;
+                        else if (val === 3) mult = 5;
+                        else if (val === 4) mult = 8;
+                        else if (val === 5) mult = 10;
+
+                        score += val * peso ? (peso * mult) : 0;
+                    });
+                    pct = Math.round((score / 1610) * 100);
+                }
+
+                // Update row and header visibility
+                document.querySelectorAll('.checklist-row, .fase-header-row').forEach(row => {
+                    const fase = row.dataset.fase;
+                    if (fase === 'FEL 2') {
+                        row.style.display = fel2Unlocked ? '' : 'none';
+                    } else if (fase === 'FEL 3') {
+                        row.style.display = fel3Unlocked ? '' : 'none';
+                    }
+                });
+
+                const display = document.getElementById('score-pdri-display');
+                const valSpan = document.getElementById('score-pdri-value');
+                const gateSpan = document.getElementById('score-pdri-gate');
+                if (display && valSpan && gateSpan) {
+                    valSpan.innerHTML = `${score} <span style="font-size:11px; opacity:0.8; font-weight:normal; margin-left:4px;">(${pct}%)</span>`;
+
+                    let gateText = "";
+                    let gateBg = "#334155";
+                    let gateColor = "#ffffff";
+                    if (pct < 20) {
+                        gateText = "Abaixo de FEL 1 (Mín. 20%)";
+                        gateBg = "#ef4444";
+                        gateColor = "#ffffff";
+                    } else if (pct >= 20 && pct <= 29) {
+                        gateText = "Portão FEL 1 Aprovado (20% - 29%)";
+                        gateBg = "#22c55e";
+                        gateColor = "#ffffff";
+                    } else if (pct >= 30 && pct <= 52) {
+                        gateText = "Pendente FEL 2 (Mín. 53%)";
+                        gateBg = "#f97316";
+                        gateColor = "#ffffff";
+                    } else if (pct >= 53 && pct < 64) {
+                        gateText = "Portão FEL 2 Aprovado (53% - 64%)";
+                        gateBg = "#3b82f6";
+                        gateColor = "#ffffff";
+                    } else if (pct >= 64) {
+                        gateText = "Portão FEL 3 Aprovado (Mín. 64%)";
+                        gateBg = "#a855f7";
+                        gateColor = "#ffffff";
+                    }
+                    gateSpan.textContent = gateText;
+                    gateSpan.style.background = gateBg;
+                    gateSpan.style.color = gateColor;
+
+                    const isNewTab = document.getElementById('tab-new') && document.getElementById('tab-new').classList.contains('active');
+                    display.style.display = (isNewTab && window.checkFeatureVisibility('pdri-scoring')) ? 'flex' : 'none';
+                }
+                return score;
+            }
+
+            window.handleProjectSelectChange = function () {
+                const select = document.getElementById('chk-proj-name');
+                const arrow = document.getElementById('chk-proj-arrow');
+                const container = document.getElementById('checklist-questions-wrapper');
+
+                if (select && select.value) {
+                    if (arrow) arrow.style.display = 'none';
+                    if (container) container.style.display = 'block';
+                } else {
+                    if (arrow) arrow.style.display = 'inline-flex';
+                    if (container) container.style.display = 'none';
+                }
+            };
+
+            if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+
+            async function startAuth() {
+                try {
+                    await firebase.auth().signInWithEmailAndPassword("sistemasengenharia@cmpcrs.com.br", "Celulose@2031!");
+                    console.log("Dashboard autenticado");
+                } catch (e) { console.error("Erro auth:", e); }
+            }
+            startAuth();
+
+            firebase.auth().onAuthStateChanged((user) => {
+                if (user) {
+                    currentUser = user;
+                    const el = document.getElementById('pf-user-logged');
+                    if (el) {
+                        // Mostra o nome antes do @ ou o email completo
+                        const label = user.displayName || (user.email ? user.email.split('@')[0] : user.email);
+                        el.textContent = label;
+                        el.title = user.email || '';
+                    }
+                } else {
+                    window.location.replace('login.html');
+                }
+            });
+
+            window.doLogout = async () => {
+                try { await firebase.auth().signOut(); } catch (e) { }
+                window.location.replace('login.html');
+            };
+
+            setTimeout(function () {
+                var lang = window.i18n ? window.i18n.getLang() : 'pt-BR';
+                var br = document.getElementById('lang-flag-br');
+                var es = document.getElementById('lang-flag-es');
+                if (br) br.style.opacity = lang === 'pt-BR' ? '1' : '0.4';
+                if (es) es.style.opacity = lang === 'es-ES' ? '1' : '0.4';
+            }, 100);
+
+            async function getSystemDB() {
+                return firebase.firestore();
+            }
+
+            window.showSystemToast = (msg, isError = false) => {
+                let toast = document.getElementById('checklist-toast');
+                if (!toast) {
+                    toast = document.createElement('div');
+                    toast.id = 'checklist-toast';
+                    document.body.appendChild(toast);
+                }
+                toast.style.background = isError ? '#dc2626' : '#15803d';
+                toast.innerHTML = `<span>${isError ? '⚠️' : '✅'}</span> ${msg}`;
+                toast.classList.add('show');
+                setTimeout(() => { toast.classList.remove('show'); }, 3500);
+            };
+
+            const CHECKLIST_FALLBACK = [
+                ["FASE", "ITEM", "ELEMENTO DE VERIFICAÇÃO", "Categoria", "Avaliação (1 a 5)", "Observações"],
+                ["FEL 1", 1, "Foi identificada a necessidade ou problema que o projeto se propõe a solucionar?", "Governança"],
+                ["FEL 1", 2, "Foi identificada a causa que esta gerando a necessidade de ação?", "Definição Técnica"],
+                ["FEL 1", 3, "Foi desenvolvida uma declaração do problema ou oportunidade?", "Governança"],
+                ["FEL 1", 4, "Foi identificado e quantificado os benefícios que o projeto irá gerar?", "Definição Técnica"],
+                ["FEL 1", 5, "Foram identificadas as principais partes interessadas?", "Governança"],
+                ["FEL 1", 6, "Existe um interesse ou compromisso inicial por parte dos principais interessados interno", "Governança"],
+                ["FEL 1", 7, "Se o projeto é procedente de ACR, foi identificada a origem?", "Governança"],
+                ["FEL 1", 8, "Foi identificado os fatores críticos de sucesso do projeto, e seus ganhos?", "Governança"],
+                ["FEL 1", 9, "Foi identificado o pilar de alinhamento estratégico do Projeto?", "Governança"],
+                ["FEL 1", 10, "O resultado da Análise de Mercado é consistente como os objetivos da CIA?", "Definição Técnica"],
+                ["FEL 1", 11, "Foram identificadas as principais alternativas de tecnologias possíveis? e, as tecnologias avaliadas são compatíveis com a infraestrutura de automação (DCS/Redes) e químicos existentes na fábrica?", "Definição Técnica"],
+                ["FEL 1", 12, "O escopo de FEL 1 é abrangente e esta corretamente identificado para atender as necessidades", "Definição Técnica"],
+                ["FEL 1", 13, "Os principais riscos e incertezas do projeto foram claramente identificados?", "Governança"],
+                ["FEL 1", 14, "Foi definido o Responsavel da Engenharia pela Condução do Estudo?", "Governança"],
+                ["FEL 1", 15, "A estratégia de condução de FEL 2, (escopo e cronograma Macro esta detalhado em FEL 2), é realista?", "Crítico"],
+                ["FEL 1", 16, "As bases utilizadas na Estimativa de Custo Total (Classe 50) e Estimativa de Custo de FEL2 (classe 10)?", "Crítico"],
+                ["FEL 1", 17, "Os resultados do Estudo (Preliminar) de Viabilidade Técnica e Econômica (TIR, VPL e PAYBACK), foram apresentados?", "Crítico"],
+                ["FEL 1", 18, "Foi realizada Avaliação de Exigências normativas, Legais e Ambientais? Existe algum fator que possa ser um impedimento crítico para o licenciamento?", "Governança"],
+                ["FEL 1", 19, "As entregas de FEL 1 foram satisfatóriamente atingidas?", "Governança"],
+                ["FEL 1", 20, "Foi validada a disponibilidade macro de utilidades (Vapor, Energia, Água e Efluentes) para a nova demanda?", "Definição Técnica"],
+                ["FEL 1", 21, "A área física pretendida está disponível e livre de interferências críticas que inviabilizem o layout preliminar?", "Definição Técnica"],
+                ["FEL 2", 1, "Esta confirmado ou definição o Responsavel pela condução do projeto ?", "Governança"],
+                ["FEL 2", 2, "Foi evidenciado o documento da Ata ou Autorização da reunião de FEL1 confirmando o prosseguimento para FEL2", "Governança"],
+                ["FEL 2", 3, "Foi apresentado o Bussines Case aprovado do Projeto", "Governança"],
+                ["FEL 2", 4, "O Projeto Esta cadastrado na Central de Projetos?", "Governança"],
+                ["FEL 2", 5, "Os documentos e demais estudos realizados estão arquivados na pasta do sharepoint?", "Governança"],
+                ["FEL 2", 6, "Refinamento do Levantamento e Analise dos Benefícios do Projeto", "Governança"],
+                ["FEL 2", 7, "Foram estudadas todas as alternativas técnicas definidas em FEL1?", "Governança"],
+                ["FEL 2", 8, "Foi realizada uma análise comparativa das alternativas selecionadas?", "Governança"],
+                ["FEL 2", 9, "Foi apresentada a Seleção da Alternativa Técnica?", "Crítico"],
+                ["FEL 2", 10, "Foi identificada a classificação de risco da área? NR10, NR20, outras", "Definição Técnica"],
+                ["FEL 2", 11, "Análise de Parada para implantação", "Crítico"],
+                ["FEL 2", 12, "Definição de todas utilidades necessárias e balanço de massa", "Governança"],
+                ["FEL 2", 13, "Foram desenvolvidos os entregáveis mínimos Acordados em FEL1?", "Governança"],
+                ["FEL 2", 14, "As partes interessadas foram envolvidas, principalmente operação, manutenção e confiabilidade, emitiram comentários e tem conhecimento dos aspectos da Engenharia Básica?", "Governança"],
+                ["FEL 2", 15, "Foram atualizados os riscos e incertezas relacionados a implantação do projeto após definição da engenharia básica?", "Definição Técnica"],
+                ["FEL 2", 16, "O escopo de FEL 3  esta corretamente detalhado contendo todos os pacotes identificados? Foi apresentada a Declaração de Escopo?", "Definição Técnica"],
+                ["FEL 2", 17, "O cronograma Macro esta detalhado em FEL 3 e é realista?", "Definição Técnica"],
+                ["FEL 2", 18, "As bases utilizadas na Estimativa de Custo Total (Classe 30) e Estimativa de Custo de FEL3 (classe 10)?", "Crítico"],
+                ["FEL 2", 19, "Os resultados do Estudo (Preliminar) de Viabilidade Técnica e Econômica, foram atualizados?", "Crítico"],
+                ["FEL 2", 20, "Existe disponibilidade de recursos financeiros na engenharia para desenvolver FEL 3 ?", "Governança"],
+                ["FEL 2", 21, "Será necessário aprovação de CAPEX para FEL 3?", "Crítico"],
+                ["FEL 2", 22, "Foi realizada Avaliação de todas as Exigências normativas, Legais e Ambientais?", "Definição Técnica"],
+                ["FEL 2", 23, "A estratégia de desenvolvimento para FEL 3 foi apresentada? Incluindo estratégia de contratação preliminar, declaração de escopo, cronograma detalhado de FEL 3 e Master de Implantação.", "Definição Técnica"],
+                ["FEL 2", 24, "As entregas de FEL 2 foram satisfatoriamente atingidas?", "Governança"],
+                ["FEL 3", 1, "Esta confirmado ou definição o Responsavel pela condução do projeto ?", "Governança"],
+                ["FEL 3", 2, "Foi evidenciado o documento da Ata ou Autorização da reunião de FEL2 confirmando para prosseguir o projeto para FEL3 ?", "Governança"],
+                ["FEL 3", 3, "Foi apresentado o Bussines Case atualizado com as análises de FEL2 ?", "Governança"],
+                ["FEL 3", 4, "Os documentos e demais estudos realizados estão arquivados na pasta do sharepoint ?", "Governança"],
+                ["FEL 3", 5, "A Engenharia Básica esta concluída?", "Governança"],
+                ["FEL 3", 6, "Seguindo o check list de FEL2 (deve ser anexado): Foram desenvolvidos os entregáveis mínimos de acordo com o tipo e complexidade do projeto como: Fluxogramas de processo (PFDs), P&Ids, Especificações Técnicas, layouts, Plantas, Lista de linhas, Lista de Cabos, 1°MTO, Levantamento de quantidades e planilhas de quantitativos preços unitários, etc...?", "Crítico"],
+                ["FEL 3", 7, "Foi verificado se existe disponibilidade de materiais ou equipamentos nos Almoxarifados da CMPC que possam ser utilizados no projeto?", "Crítico"],
+                ["FEL 3", 8, "A EAP do Projeto esta completa e Atualizada?", "Definição Técnica"],
+                ["FEL 3", 9, "Foi confirmada a estratégia de contratação?", "Definição Técnica"],
+                ["FEL 3", 10, "O Plano de execução de implantação esta detalhado, contendo: Cronograma de implantação e Cronograma de Parada quando aplicavel?", "Definição Técnica"],
+                ["FEL 3", 11, "A Matriz de Riscos Industrial foi atualizada e identificados os principais riscos do projeto?", "Definição Técnica"],
+                ["FEL 3", 12, "Foram atualizados os riscos e incertezas relacionados a engenharia Básica definida?", "Definição Técnica"],
+                ["FEL 3", 13, "As bases utilizadas na Estimativa de Custo Total são Classe 10?", "Crítico"],
+                ["FEL 3", 14, "Foram recebidas propostas firmes para os principais pacotes de aquisição? Com bases técnicas e comerciais finais?", "Crítico"],
+                ["FEL 3", 15, "Os resultados do Estudo de Viabilidade Técnica e Econômica, foram emitidos em carater definitivo?", "Crítico"],
+                ["FEL 3", 16, "Foi obtidas as licenças normativas, Legais e Ambientais necessárias para fase de execução?", "Crítico"],
+                ["FEL 3", 17, "A estratégia de execução foi apresentada? Incluindo estratégia para Projeto Detalhado, Aquisições, implantação, parada, comissionamento e start-up?", "Definição Técnica"],
+                ["FEL 3", 18, "As partes interessadas, estão de acordo com a estratégia de execução do projeto. (processo, operação, manutenção e confiabilidade)?", "Definição Técnica"],
+                ["FEL 3", 19, "O Onepage para aprovação de CAPEX esta pronto e comentado para apresentação de aprovação de CAPEX?", "Governança"],
+                ["FEL 3", 20, "As entregas de FEL 3 foram satisfatoriamente atingidas?", "Governança"]
+            ];
+
+            async function loadExcel() {
+                if (excelData) return excelData;
+                try {
+                    const paths = ['/Indice global de maturidade do Investimento.xlsx', 'Indice global de maturidade do Investimento.xlsx'];
+                    for (const p of paths) {
+                        try {
+                            const res = await fetch(p);
+                            if (res.ok) {
+                                const buf = await res.arrayBuffer();
+                                const wb = XLSX.read(buf, { type: 'array' });
+                                excelData = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]], { header: 1 });
+                                return excelData;
+                            }
+                        } catch (e) { }
+                    }
+                } catch (e) { }
+                excelData = CHECKLIST_FALLBACK;
+                return excelData;
+            }
+
+            async function renderExcelTable() {
+                const projSelect = document.getElementById('chk-proj-name');
+                if (projSelect && projSelect.options.length <= 1) {
+                    try {
+                        const _db = await getSystemDB();
+                        let projects = [];
+                        const snap = await _db.collection('fasts').get();
+                        if (!snap.empty) {
+                            snap.forEach(doc => {
+                                const d = doc.data();
+                                const status = (d.status || '').toUpperCase().trim();
+                                if (status === 'CONCLUÍDO' || status === 'CONCLUIDO') {
+                                    projects.push(d.title || d.projectName || d.name || doc.id);
+                                }
+                            });
+                        }
+
+                        const sorted = [...new Set(projects)].sort((a, b) => String(a).localeCompare(String(b)));
+                        sorted.forEach(p => {
+                            const opt = document.createElement('option');
+                            opt.value = p;
+                            opt.textContent = p;
+                            projSelect.appendChild(opt);
+                        });
+                    } catch (e) {
+                        console.error('Erro ao buscar FAST:', e);
+                    }
+                }
+                const data = await loadExcel();
+                const container = document.getElementById('excel-table-container');
+                const catColors = { 'Governança': '#15803d', 'Definição Técnica': '#1d4ed8', 'Crítico': '#dc2626' };
+                let html = `<table class="checklist-table"><thead><tr><th style="width:70px">${__('chk.table.phase')}</th><th style="width:40px">${__('chk.table.item')}</th><th>${__('chk.table.element')}</th><th style="width:100px">${__('chk.table.category')}</th><th style="width:150px">${__('chk.table.evaluation')}</th><th style="width:220px">${__('chk.table.observations')}</th></tr></thead><tbody>`;
+                let lastFase = null;
+                data.forEach((row, idx) => {
+                    if (idx === 0 || !row[2]) return;
+                    const fase = row[0] || '';
+                    const item = row[1] || idx;
+                    const desc = row[2] || '';
+                    const cat = row[3] || '';
+                    const catColor = catColors[cat] || '#64748b';
+                    if (fase && fase !== lastFase) {
+                        lastFase = fase;
+                        html += `<tr class="fase-header-row" data-fase="${fase.trim()}" style="background:linear-gradient(90deg,#1e293b,#334155);color:white;"><td colspan="6" style="padding:10px 14px;font-weight:900;font-size:13px;letter-spacing:2px;text-transform:uppercase;border:none;">📋 ${fase} — ${__('chklists.header.subtitle')}</td></tr>`;
+                    }
+                    html += `<tr class="checklist-row" data-fase="${fase.trim()}"><td style="text-align:center;font-weight:800;font-size:11px;color:#64748b;">${fase}</td><td style="text-align:center;font-weight:bold;color:#475569;">${item}</td><td style="font-size:12px;">${desc}</td><td style="text-align:center;"><span style="background:${catColor};color:white;padding:2px 6px;border-radius:4px;font-size:10px;font-weight:700;white-space:nowrap;">${cat}</span></td><td><select class="q-select" data-fase="${fase.trim()}" data-idx="${idx}" data-cat="${cat}" style="width:100%; padding:4px;border:1px solid #e2e8f0;border-radius:4px;font-size:12px;"><option value="0">${__('chk.table.eval.empty')}</option><option value="1">${__('chk.table.eval.1')}</option><option value="2">${__('chk.table.eval.2')}</option><option value="3">${__('chk.table.eval.3')}</option><option value="4">${__('chk.table.eval.4')}</option><option value="6">${__('chk.table.eval.5')}</option></select></td><td><input type="text" class="q-obs" data-fase="${fase.trim()}" data-idx="${idx}" style="width:100%;padding:4px;border:1px solid #e2e8f0;border-radius:4px;font-size:12px;" placeholder="${__('chk.table.obs.placeholder')}"></td></tr>`;
+                });
+                container.innerHTML = html + '</tbody></table>';
+
+                // Adicionar listeners para mudanças nos selects de avaliação
+                container.querySelectorAll('.q-select').forEach(s => {
+                    s.addEventListener('change', updateScorePDRI);
+                });
+                updateScorePDRI();
+            }
+
+            async function renderHistory() {
+                const container = document.getElementById('history-container');
+                const _db = await getSystemDB();
+                if (!_db) return;
+                try {
+                    const snap = await _db.collection('checklists').get();
+                    if (snap.empty) { container.innerHTML = __('chklists.no.data'); return; }
+                    const docs = snap.docs.sort((a, b) => (b.data().updatedAt?.seconds || b.data().createdAt?.seconds || 0) - (a.data().updatedAt?.seconds || a.data().createdAt?.seconds || 0));
+                    let html = '<table class="checklist-table"><thead><tr><th style="width:140px">' + __('chklists.col.datetime') + '</th><th>' + __('chklists.col.project') + '</th><th style="width:120px; text-align:center;">' + __('chk.score.label') + '</th><th>' + __('chklists.col.user') + '</th><th style="width:100px">' + __('chklists.col.actions') + '</th></tr></thead><tbody>';
+                    docs.forEach(doc => {
+                        const d = doc.data();
+                        const ts = d.updatedAt || d.createdAt;
+                        const dateStr = ts ? new Date(ts.seconds * 1000).toLocaleString() : '-';
+
+                        // Calcular score para documentos antigos que não possuem o campo salvo ou usavam outra fórmula
+                        let displayScore = 0;
+                        if (d.responses) {
+                            const refData = excelData || CHECKLIST_FALLBACK;
+                            Object.keys(d.responses).forEach(idx => {
+                                const r = d.responses[idx];
+                                const val = parseInt(r.nota) || 0;
+                                const row = refData[idx];
+                                const cat = row ? (row[3] || '') : '';
+                                let peso = 1;
+                                if (cat === 'Definição Técnica') peso = 3;
+                                else if (cat === 'Governança') peso = 1;
+                                else if (cat === 'Crítico') peso = 5;
+
+                                let mult = 0;
+                                if (val === 1) mult = 1;
+                                else if (val === 2) mult = 3;
+                                else if (val === 3) mult = 5;
+                                else if (val === 4) mult = 8;
+                                else if (val === 5) mult = 10;
+
+                                displayScore += peso * mult;
+                            });
+                        } else {
+                            displayScore = d["SCORE PDRI"] !== undefined ? d["SCORE PDRI"] : (d.scorePDRI !== undefined ? d.scorePDRI : 0);
+                        }
+
+                        const pct = Math.round((displayScore / 1610) * 100);
+                        let gateText = "";
+                        let gateBg = "#334155";
+                        let gateColor = "#ffffff";
+                        if (pct < 20) {
+                            gateText = "Abaixo de FEL 1";
+                            gateBg = "#ef4444";
+                        } else if (pct >= 20 && pct <= 29) {
+                            gateText = "Portão FEL 1 Aprovado";
+                            gateBg = "#22c55e";
+                        } else if (pct >= 30 && pct <= 52) {
+                            gateText = "Pendente FEL 2";
+                            gateBg = "#f97316";
+                        } else if (pct >= 53 && pct < 64) {
+                            gateText = "Portão FEL 2 Aprovado";
+                            gateBg = "#3b82f6";
+                        } else if (pct >= 64) {
+                            gateText = "Portão FEL 3 Aprovado";
+                            gateBg = "#a855f7";
+                        }
+                        const badge = `<span style="font-size:10px; background:${gateBg}; color:${gateColor}; padding:2px 6px; border-radius:4px; font-weight:bold; margin-left:8px; display:inline-block; vertical-align:middle; text-transform:uppercase;" title="${__('chk.fel.criteria')}">${gateText}</span>`;
+                        const projNameEscaped = (d.projectName || __('chk.no.name')).replace(/'/g, "\\'").replace(/"/g, '&quot;');
+                        html += `<tr><td>${dateStr}</td><td style="font-weight:bold">${d.projectName}</td><td style="text-align:center; font-weight:bold; color:#15803d; font-size:14px;">${displayScore} <span style="font-size:11px; color:#64748b; font-weight:normal;">(${pct}%)</span>${badge}</td><td>${d.userEmail || '-'}</td><td><button class="btn-edit" onclick="editChecklist('${doc.id}')">${__('chk.edit')}</button><button class="btn-edit" style="background:#dc2626; margin-left:5px;" onclick="openChecklistDeleteModal('single', '${doc.id}', '${projNameEscaped}')" title="${__('chk.delete.single.title')}">🗑️</button></td></tr>`;
+                    });
+                    container.innerHTML = html + '</tbody></table>';
+                } catch (e) { console.error(e); }
+            }
+
+            window.editChecklist = async (id) => {
+                const _db = await getSystemDB();
+                const doc = await _db.collection('checklists').doc(id).get();
+                if (!doc.exists) return showSystemToast(__('toast.notfound'), true);
+                const data = doc.data();
+                currentEditId = id;
+                switchTab('new');
+                document.getElementById('chk-proj-name').value = data.projectName;
+                if (window.handleProjectSelectChange) window.handleProjectSelectChange();
+                document.getElementById('btn-save-chk').innerText = __('chk.update');
+                Object.keys(data.responses).forEach(idx => {
+                    const sel = document.querySelector(`.q-select[data-idx="${idx}"]`);
+                    const obs = document.querySelector(`.q-obs[data-idx="${idx}"]`);
+                    if (sel) sel.value = data.responses[idx].nota;
+                    if (obs) obs.value = data.responses[idx].obs;
+                });
+                updateScorePDRI();
+                showSystemToast(__('toast.loaded'));
+            };
+
+            window.openManager = function () {
+                let modal = document.getElementById('checklist-manager-modal');
+                if (modal) modal.remove();
+                modal = document.createElement('div');
+                modal.id = 'checklist-manager-modal';
+                modal.style.cssText = 'position:fixed; z-index:99999; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.8); display:flex; align-items:center; justify-content:center; font-family:Inter, sans-serif;';
+                modal.innerHTML = `
+                        <div style="background:white; width:95%; max-width:1100px; height:90%; border-radius:12px; display:flex; flex-direction:column; overflow:hidden;">
+                            <div style="padding:15px 20px; background:#15803d; color:white; display:flex; justify-content:space-between; align-items:center; z-index:1001;">
+                                <h2 style="margin:0; font-size:18px; display:flex; align-items:center; gap:10px; flex-wrap: wrap;">
+                                    ${__('chk.manager.title')}
+                                    <span id="score-pdri-display" style="font-size:13px; background:rgba(255,255,255,0.25); padding:4px 10px; border-radius:6px; font-weight:bold; display:none; align-items:center; gap:8px;">
+                                        ${__('chk.score.label')} <span id="score-pdri-value" style="font-size:15px; color:#fde047; margin-left:4px;">0</span>
+                                        <span id="score-pdri-gate" style="font-size:11px; padding:2px 8px; border-radius:4px; font-weight:bold; text-transform:uppercase;">-</span>
+                                    </span>
+                                    <span id="score-pdri-legend" style="font-size:10px; color:#bbf7d0; font-weight:normal; margin-left:10px; cursor:pointer;" title="${__('chk.fel.criteria')}">
+                                        ${__('chk.fel.criteria')}
+                                    </span>
+                                </h2>
+                                <span style="cursor:pointer; font-size:24px; font-weight:bold;" onclick="this.closest('#checklist-manager-modal').remove()">&times;</span>
+                            </div>
+                            <div style="display:flex; border-bottom:1px solid #e2e8f0; background:#f8fafc; z-index:1001;">
+                                <div id="tab-new" class="checklist-tab active" onclick="switchTab('new')">${__('chk.tab.new')}</div>
+                                <div id="tab-list" class="checklist-tab" onclick="switchTab('list')">${__('chk.tab.history')}</div>
+                            </div>
+                            <div id="fixed-header-new" style="padding:20px 20px 10px 20px; background:white; border-bottom:1px solid #eee; z-index:1000;">
+                                <label style="font-weight:700; font-size:11px; color:#64748b; display:flex; align-items:center; gap:6px; margin-bottom:5px;">
+                                    ${__('chk.project.label')}
+                                    <span id="chk-proj-arrow" style="color:#ef4444; font-size:11px; font-weight:bold; display:inline-flex; align-items:center; gap:4px; animation: chkArrowPulse 1.2s infinite;">
+                                        ${__('chk.project.select.arrow')}
+                                    </span>
+                                </label>
+                                <div style="display:flex; gap:0.5rem; align-items:center;">
+                                    <div style="flex:1;">
+                                        <select id="chk-proj-name" onchange="handleProjectSelectChange()" style="width:100%; padding:10px; border:2px solid #22c55e; border-radius:6px; outline:none; background:white; cursor:pointer; font-family: Inter, sans-serif; font-size: 13px;">
+                                            <option value="">${__('chk.project.placeholder')}</option>
+                                        </select>
+                                    </div>
+                                    <button onclick="syncProjects()" style="padding:10px; border:1px solid #22c55e; border-radius:6px; color:#15803d; background:white; font-size:10px; font-weight:bold; cursor:pointer;" title="${__('chk.sync')}">
+                                        ${__('chk.sync')}
+                                    </button>
+                                </div>
+                            </div>
+                            <div id="content-new" style="flex:1; overflow-y:auto; padding:0 20px 20px 20px; position:relative;">
+                                <div id="checklist-questions-wrapper" style="display: none;">
+                                    <div id="excel-table-container"></div>
+                                    <div style="text-align:right; margin-top:20px; padding-bottom:20px;">
+                                        <button id="btn-save-chk" onclick="saveChecklist()" style="background:#15803d; color:white; border:none; padding:12px 25px; border-radius:6px; font-weight:bold; cursor:pointer;">${__('chk.save')}</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="content-list" style="flex:1; overflow-y:auto; padding:20px; display:none;">
+                                <div style="display:flex; justify-content:flex-end; margin-bottom:12px;">
+                                    <button onclick="openChecklistDeleteModal('all')" style="background:#dc2626; color:white; border:none; padding:8px 16px; border-radius:6px; font-weight:bold; cursor:pointer; font-size:11px; display:flex; align-items:center; gap:5px; text-transform:uppercase; font-family:Inter,sans-serif; letter-spacing:0.5px; box-shadow:0 2px 4px rgba(220,38,38,0.2);">
+                                        ${__('chk.clear.all')}
+                                    </button>
+                                </div>
+                                <div id="history-container"></div>
+                            </div>
+                        </div>
+                    `;
+                document.body.appendChild(modal);
+                renderExcelTable();
+                setTimeout(() => {
+                    syncProjects();
+                    if (window.handleProjectSelectChange) window.handleProjectSelectChange();
+                }, 500);
+
+                window.switchTab = async (tab) => {
+                    document.getElementById('tab-new').classList.toggle('active', tab === 'new');
+                    document.getElementById('tab-list').classList.toggle('active', tab === 'list');
+                    document.getElementById('content-new').style.display = tab === 'new' ? 'block' : 'none';
+                    document.getElementById('fixed-header-new').style.display = tab === 'new' ? 'block' : 'none';
+                    document.getElementById('content-list').style.display = tab === 'list' ? 'block' : 'none';
+                    if (tab === 'list') {
+                        renderHistory();
+                        const display = document.getElementById('score-pdri-display');
+                        if (display) display.style.display = 'none';
+                    } else {
+                        updateScorePDRI();
+                        if (window.handleProjectSelectChange) window.handleProjectSelectChange();
+                    }
+                    if (tab === 'new' && !currentEditId) document.getElementById('btn-save-chk').innerText = __('chk.save');
+                };
+
+                window.saveChecklist = async () => {
+                    const btn = document.getElementById('btn-save-chk');
+                    const name = document.getElementById('chk-proj-name').value;
+                    if (!name) return showSystemToast(__('toast.project.required'), true);
+                    const _db = await getSystemDB();
+                    if (!_db) return showSystemToast(__('toast.firebase.notfound'), true);
+                    btn.disabled = true; btn.innerText = __('chk.saving');
+                    const resps = {};
+                    let scorePDRI = 0;
+                    document.querySelectorAll('.q-select').forEach(s => {
+                        const idx = s.dataset.idx;
+                        const val = parseInt(s.value) || 0;
+                        const cat = s.dataset.cat || '';
+                        let peso = 1;
+                        if (cat === 'Definição Técnica') peso = 3;
+                        else if (cat === 'Governança') peso = 1;
+                        else if (cat === 'Crítico') peso = 5;
+
+                        let mult = 0;
+                        if (val === 1) mult = 1;
+                        else if (val === 2) mult = 3;
+                        else if (val === 3) mult = 5;
+                        else if (val === 4) mult = 8;
+                        else if (val === 5) mult = 10;
+
+                        scorePDRI += peso * mult;
+                        resps[idx] = { nota: s.value, obs: document.querySelector(`.q-obs[data-idx="${idx}"]`).value };
+                    });
+                    const isEdit = !!currentEditId;
+                    const id = isEdit ? currentEditId : 'CHK-' + Date.now();
+                    const payload = {
+                        projectName: name, userEmail: currentUser ? currentUser.email : "sistemasengenharia@cmpcrs.com.br",
+                        responses: resps,
+                        "SCORE PDRI": scorePDRI,
+                        scorePDRI: scorePDRI,
+                        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                    };
+                    if (!isEdit) { payload.id = id; payload.createdAt = firebase.firestore.FieldValue.serverTimestamp(); }
+                    try {
+                        await _db.collection('checklists').doc(id).set(payload, { merge: true });
+                        showSystemToast(isEdit ? __('toast.updated') : __('toast.saved'));
+                        currentEditId = null;
+                        document.getElementById('chk-proj-name').value = '';
+                        document.querySelectorAll('.q-select').forEach(s => s.value = '0');
+                        document.querySelectorAll('.q-obs').forEach(o => o.value = '');
+                        document.getElementById('content-new').scrollTop = 0;
+                        if (window.handleProjectSelectChange) window.handleProjectSelectChange();
+                        switchTab('list');
+                    } catch (e) { showSystemToast(__('toast.firebase.error'), true); }
+                    finally { btn.disabled = false; }
+                };
+
+                window.syncProjects = async (event) => {
+                    const btn = (event && event.target) ? event.target.closest('button') : null;
+                    const originalText = btn ? btn.innerHTML : null;
+                    if (btn) { btn.disabled = true; btn.innerHTML = '⌛...'; }
+                    try {
+                        const _db = await getSystemDB();
+                        let projects = [];
+                        const snap = await _db.collection('fasts').get();
+                        if (!snap.empty) {
+                            snap.forEach(doc => {
+                                const d = doc.data();
+                                const status = (d.status || '').toUpperCase().trim();
+                                if (status === 'CONCLUÍDO' || status === 'CONCLUIDO') {
+                                    projects.push(d.title || d.projectName || d.name || doc.id);
+                                }
+                            });
+                        }
+
+                        const projSelect = document.getElementById('chk-proj-name');
+                        if (projSelect) {
+                            projSelect.innerHTML = '<option value="">' + __('chk.project.with.count', { count: projects.length }) + '</option>';
+                            const sorted = [...new Set(projects)].sort((a, b) => String(a).localeCompare(String(b)));
+                            sorted.forEach(p => {
+                                const opt = document.createElement('option');
+                                opt.value = p; opt.textContent = p;
+                                projSelect.appendChild(opt);
+                            });
+                            showSystemToast(__('toast.sync.success', { count: projects.length }));
+                        }
+                    } catch (e) {
+                        showSystemToast(__('toast.sync.error'), true);
+                        console.error(e);
+                    }
+                    finally { if (btn) { btn.disabled = false; btn.innerHTML = originalText; } }
+                };
+            }
+        })();
+    </script>
+
+    <!-- MODAL DE EXCLUSÃO DE CHECKLIST (Mesmo modelo/design de overlay restrito) -->
+    <div id="checklist-delete-modal"
+        style="position:fixed; inset:0; z-index:999999; background:rgba(0,0,0,0.75); backdrop-filter:blur(6px); align-items:center; justify-content:center; font-family:Inter,sans-serif; display:none;">
+        <div id="chk-delete-card"
+            style="background:linear-gradient(135deg,#0f172a,#1e293b); border:1px solid rgba(239,68,68,0.25); border-radius:20px; padding:40px; width:90%; max-width:380px; box-shadow:0 30px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(239,68,68,0.1); text-align:center;">
+            <div
+                style="width:52px;height:52px;border-radius:50%;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.25);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:22px;">
+                🗑️</div>
+            <p id="chk-delete-title"
+                style="margin:0 0 4px;font-size:16px;font-weight:800;color:#f87171;letter-spacing:1px;text-transform:uppercase;"
+                data-i18n="chk.delete.modal.title">Excluir Histórico</p>
+            <p id="chk-delete-desc" style="margin:0 0 24px;font-size:12px;color:#94a3b8;line-height:1.5;"></p>
+            <input id="chk-delete-pwd" type="password" placeholder="••••••" maxlength="20"
+                style="width:100%;box-sizing:border-box;padding:14px 16px;border-radius:10px;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.05);color:#f1f5f9;font-size:18px;letter-spacing:6px;text-align:center;outline:none;font-family:Inter,sans-serif;transition:border 0.2s;"
+                onfocus="this.style.borderColor='rgba(239,68,68,0.5)'"
+                onblur="this.style.borderColor='rgba(255,255,255,0.1)'"
+                onkeydown="if(event.key==='Enter')confirmChecklistDelete()" />
+            <p id="chk-delete-error"
+                style="margin:10px 0 0;font-size:11px;color:#f87171;font-weight:700;letter-spacing:1px;min-height:16px;">
+            </p>
+            <div style="display:flex;gap:10px;margin-top:24px;">
+                <button onclick="closeChecklistDeleteModal()"
+                    style="flex:1;padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.05);color:#64748b;font-size:12px;font-weight:700;cursor:pointer;letter-spacing:1px;font-family:Inter,sans-serif;text-transform:uppercase;transition:all 0.2s;"
+                    onmouseover="this.style.background='rgba(255,255,255,0.05)';this.style.color='#94a3b8'"
+                    onmouseout="this.style.background='rgba(255,255,255,0.05)';this.style.color='#64748b'"
+                    data-i18n="chk.delete.cancel">CANCELAR</button>
+                <button id="btn-chk-confirm-delete" onclick="confirmChecklistDelete()"
+                    style="flex:1;padding:12px;border-radius:10px;border:none;background:linear-gradient(135deg,#dc2626,#b91c1c);color:white;font-size:12px;font-weight:800;cursor:pointer;letter-spacing:1px;font-family:Inter,sans-serif;text-transform:uppercase;box-shadow:0 4px 14px rgba(220,38,38,0.4);transition:opacity 0.2s;"
+                    onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'"
+                    data-i18n="chk.delete.confirm">EXCLUIR</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let chkDeleteType = null;
+        let chkDeleteId = null;
+
+        window.openChecklistDeleteModal = function (type, id = null, projectName = '') {
+            chkDeleteType = type;
+            chkDeleteId = id;
+            document.getElementById('chk-delete-pwd').value = '';
+            document.getElementById('chk-delete-error').textContent = '';
+
+            const title = document.getElementById('chk-delete-title');
+            const desc = document.getElementById('chk-delete-desc');
+
+            if (type === 'all') {
+                title.textContent = __('chk.delete.all.title');
+                desc.innerHTML = __('chk.delete.all.desc');
+            } else {
+                title.textContent = __('chk.delete.single.title');
+                desc.innerHTML = __('chk.delete.single.desc', { projectName: projectName });
+            }
+
+            const modal = document.getElementById('checklist-delete-modal');
+            modal.style.display = 'flex';
+            setTimeout(() => { document.getElementById('chk-delete-pwd').focus(); }, 50);
+        };
+
+        window.closeChecklistDeleteModal = function () {
+            document.getElementById('checklist-delete-modal').style.display = 'none';
+            chkDeleteType = null;
+            chkDeleteId = null;
+        };
+
+        window.confirmChecklistDelete = async function () {
+            const pwd = document.getElementById('chk-delete-pwd').value.trim();
+            const err = document.getElementById('chk-delete-error');
+            if (pwd === '789512') {
+                const btn = document.getElementById('btn-chk-confirm-delete');
+                const origText = btn.innerText;
+                btn.disabled = true;
+                btn.innerText = __('chk.delete.deleting');
+
+                try {
+                    const _db = firebase.firestore();
+                    if (chkDeleteType === 'all') {
+                        const snap = await _db.collection('checklists').get();
+                        if (snap.empty) {
+                            showSystemToast(__('toast.none.delete'), true);
+                            window.closeChecklistDeleteModal();
+                            return;
+                        }
+                        const batch = _db.batch();
+                        snap.forEach(doc => {
+                            batch.delete(doc.ref);
+                        });
+                        await batch.commit();
+                        showSystemToast(__('toast.all.deleted'));
+                    } else if (chkDeleteType === 'single' && chkDeleteId) {
+                        await _db.collection('checklists').doc(chkDeleteId).delete();
+                        showSystemToast(__('toast.deleted'));
+                    }
+                    window.closeChecklistDeleteModal();
+                    if (window.switchTab) window.switchTab('list');
+                } catch (e) {
+                    console.error(e);
+                    showSystemToast(__('toast.firebase.delete.error'), true);
+                } finally {
+                    btn.disabled = false;
+                    btn.innerText = origText;
+                }
+            } else {
+                err.textContent = window.i18n ? window.i18n.t('admin.error') : '\u26a0 Senha incorreta. Tente novamente.';
+                document.getElementById('chk-delete-pwd').value = '';
+                document.getElementById('chk-delete-pwd').focus();
+            }
+        };
+
+        document.getElementById('checklist-delete-modal').addEventListener('click', function (e) {
+            if (e.target === this) closeChecklistDeleteModal();
+        });
+    </script>\n\n\n\n\n\n\n\n\n\n
+    <!-- TinyMCE Script -->
+    <script src="https://cdn.jsdelivr.net/npm/tinymce@6.8.2/tinymce.min.js"></script>
+    <style>
+        .tox-notifications-container { display: none !important; }
+        .tox-promotion { display: none !important; }
+        /* Fix for Radix/Tailwind modals that add pointer-events: none to body */
+        .tox-tinymce-aux {
+            pointer-events: auto !important;
+            z-index: 9999999 !important;
+        }
+    </style>
+    <script>
+        console.log('[TinyMCE] Inject script loaded v6 (Open Source CDN)');
+        
+        // ULTIMATE FIX FOR REACT FOCUS TRAP INFINITE LOOPS
+        // Monkey-patch HTMLElement.prototype.focus to prevent the React modal from stealing focus
+        // while a TinyMCE dialog (like Insert Image or Link) is open.
+        if (!window._tinymceFocusPatched) {
+            window._tinymceFocusPatched = true;
+            const originalFocus = HTMLElement.prototype.focus;
+            HTMLElement.prototype.focus = function(options) {
+                try {
+                    if (this.ownerDocument !== window.document) return originalFocus.call(this, options);
+                    if (!window.document.contains(this)) return originalFocus.call(this, options);
+                    
+                    if (!this.closest('.tox-tinymce-aux') && !this.closest('.tox-tinymce')) {
+                        const aux = document.querySelector('.tox-tinymce-aux');
+                        if (aux && aux.innerHTML.trim() !== '') {
+                            return; // Block focus steal if ANY TinyMCE popup is open!
+                        }
+                    }
+                } catch (e) {
+                    console.error('[TinyMCE-Patch Error]', e);
+                }
+                return originalFocus.call(this, options);
+            };
+
+            // THE ULTIMATE BYPASS: SPOOFING NODE.CONTAINS
+            // React and Radix use modalRef.current.contains(event.target) to detect outside clicks.
+            // By patching contains, we force it to return true whenever the click target is inside TinyMCE!
+            // This prevents the modal from closing, WITHOUT intercepting any events, allowing TinyMCE's math to work perfectly!
+            if (!window._tinymceContainsPatch) {
+                window._tinymceContainsPatch = true;
+                const originalContains = Node.prototype.contains;
+                Node.prototype.contains = function(otherNode) {
+                    try {
+                        let targetNode = otherNode;
+                        if (targetNode && targetNode.nodeType === Node.TEXT_NODE) {
+                            targetNode = targetNode.parentNode;
+                        }
+                        if (targetNode && targetNode.nodeType === Node.ELEMENT_NODE) {
+                            // If the target is part of TinyMCE...
+                            if (targetNode.closest('.tox-tinymce-aux, .tox-tinymce, .tox-pop, .tiny-ui-container')) {
+                                // And the element calling contains() is NOT TinyMCE itself (e.g. it's the Radix Modal)
+                                if (this.nodeType === Node.ELEMENT_NODE && !this.closest('.tox-tinymce-aux, .tox-tinymce, .tox-pop, .tiny-ui-container')) {
+                                    return true;
+                                }
+                            }
+                        }
+                    } catch (e) {}
+                    return originalContains.call(this, otherNode);
+                };
+            }
+        }
+
+        // Global function to force-sync all TinyMCE editors before BC save
+        window.beforeBcSave = function() {
+            window.__bcValues = {};
+            if (typeof tinymce !== 'undefined' && tinymce.editors && tinymce.editors.length) {
+                tinymce.editors.forEach(function(ed) {
+                    try {
+                        var ta = ed.getElement();
+                        if (ta && ta.id) {
+                            window.__bcValues[ta.id] = ed.getContent();
+                            console.log('[BC-TINY] ' + ta.id + ' =', (window.__bcValues[ta.id] || '').substring(0, 50));
+                        }
+                    } catch(e) {
+                        console.error('[BC-TINY] Error on', (ta||{}).id, e);
+                    }
+                });
+            }
+            console.log('[BC-TINY] beforeBcSave called. __bcValues keys:', Object.keys(window.__bcValues));
+        };
+
+        setInterval(() => {
+            if (typeof tinymce === 'undefined') return;
+            const textareas = document.querySelectorAll('textarea:not([data-tiny-init="true"])');
+            if (textareas.length > 0) {
+                textareas.forEach(ta => {
+                    if (ta.style.display === 'none' || ta.offsetParent === null) return;
+                    
+                    ta.setAttribute('data-tiny-init', 'true');
+                    // We don't need to force an ID anymore since we use target, but it's okay to have one
+                    if (!ta.id) ta.id = 'tinymce-' + Math.random().toString(36).substr(2, 9);
+                    try {
+                        tinymce.init({
+                            target: ta,
+                            menubar: false,
+                            branding: false,
+                            promotion: false,
+                            plugins: 'lists link image table code autoresize',
+                            toolbar: 'undo redo | bold italic underline | bullist numlist | alignleft aligncenter alignright alignjustify | link customimage table | code',
+                            paste_data_images: true,
+                            min_height: 300, max_height: 1200,
+                            setup: function (editor) {
+                                editor.ui.registry.addButton('customimage', {
+                                    icon: 'image',
+                                    tooltip: 'Insert Image',
+                                    onAction: function () {
+                                        const input = document.createElement('input');
+                                        input.setAttribute('type', 'file');
+                                        input.setAttribute('accept', 'image/*');
+                                        input.onchange = function () {
+                                            const file = this.files[0];
+                                            const reader = new FileReader();
+                                            reader.onload = function () {
+                                                // Insert base64 directly, bypassing TinyMCE image dialog entirely
+                                                editor.insertContent('<img src="' + reader.result + '" alt="' + file.name.replace(/"/g, '') + '" style="max-width: 100%; height: auto;" />');
+                                            };
+                                            reader.readAsDataURL(file);
+                                        };
+                                        input.click();
+                                    }
+                                });
+
+                                editor.on('change keyup blur', function () {
+                                    editor.save();
+                                });
+                            }
+                        });
+                    } catch (err) {
+                        console.error('[TinyMCE] Failed to init on', ta.id, err);
+                        ta.removeAttribute('data-tiny-init');
+                    }
+                });
+            }
+        }, 1000);
+    </script>
+\n</body>\n</html>

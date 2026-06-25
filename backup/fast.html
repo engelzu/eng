@@ -1,0 +1,2752 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charSet="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="/_next/static/css/6db06e54b2bd42bb.css" data-precedence="next" />
+    <link rel="preload" as="script" fetchPriority="low" href="/_next/static/chunks/webpack-5e6cbb6060456a00.js" />
+    <script src="/_next/static/chunks/fd9d1056-332c7f886cfdf6b8.js" async=""></script>
+    <script src="/_next/static/chunks/2117-03597ebd8279fbfe.js" async=""></script>
+    <script src="/_next/static/chunks/main-app-fabb716fe5223c4b.js" async=""></script>
+    <script src="/_next/static/chunks/2170a4aa-83bc0779d42e53eb.js" async=""></script>
+    <script src="/_next/static/chunks/bc9e92e6-99425bc04d537046.js" async=""></script>
+    <script src="/_next/static/chunks/ec4fd7ab-f33c4c93b88c2c48.js" async=""></script>
+    <script src="/_next/static/chunks/164f4fb6-a58df6c7eb53e7d2.js" async=""></script>
+    <script src="/_next/static/chunks/ad2866b8-541c6da306f68f23.js" async=""></script>
+    <script src="/_next/static/chunks/1723-81691dc9d8e09ba6.js" async=""></script>
+    <script src="/_next/static/chunks/8933-a53c72b0d64db5cc.js" async=""></script>
+    <script src="/_next/static/chunks/8341-af2e2cf7596a5eb1.js" async=""></script>
+    <script src="/_next/static/chunks/5688-39969927028a2fee.js" async=""></script>
+    <script src="/_next/static/chunks/2850-1ba9c32b64d68649.js" async=""></script>
+    <script src="/_next/static/chunks/6818-ed3de2136b5615a6.js" async=""></script>
+    <script src="/_next/static/chunks/3014-b5ceec84a186f2ab.js" async=""></script>
+    <script src="/_next/static/chunks/7648-d3d6ee69a84f9369.js" async=""></script>
+    <script src="/_next/static/chunks/9065-3f1c2d4705bd039a.js" async=""></script>
+    <script src="/_next/static/chunks/6192-d43973c91476a812.js" async=""></script>
+    <script src="/_next/static/chunks/311-ae444c2238585de5.js" async=""></script>
+    <script src="/_next/static/chunks/3619-7af52bca45409dbd.js" async=""></script>
+    <script src="/_next/static/chunks/8533-b3e12768a9728a6e.js" async=""></script>
+    <script src="/_next/static/chunks/7588-71a7c745c148c6f2.js" async=""></script>
+    <script src="/_next/static/chunks/1891-ee191bb66093867c.js" async=""></script>
+    <script src="/_next/static/chunks/949-e5746bf08e10c7ed.js" async=""></script>
+    <script src="/_next/static/chunks/7783-8775010d0be07bd4.js" async=""></script>
+    <script src="/_next/static/chunks/507-1cbb4e1ae80f89d3.js" async=""></script>
+    <script src="/_next/static/chunks/2737-6344e6253c0e5ccb.js" async=""></script>
+    <script src="/_next/static/chunks/app/fast/page-5d0c28c966a6b026.js" async=""></script>
+    <script src="/_next/static/chunks/4120-a9f3344c24c9ee74.js" async=""></script>
+    <script src="/_next/static/chunks/app/layout-897af5d78183ef32.js" async=""></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
+    <title>ProjectFlow SAS</title>
+    <meta name="description" content="Aplicativo de planejamento de projetos." />
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" sizes="16x16" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&amp;family=Space+Grotesk:wght@500;700&amp;display=swap"
+        rel="stylesheet" />
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script type="text/javascript">
+        (function () {
+            if (window.emailjs) {
+                emailjs.init({
+                    publicKey: "WHTTSzza7T1t_VrUh",
+                });
+            }
+        })();
+    </script>
+    <!-- BC SAVE PATCH: Direct Firebase save for ENVIAR PARA APROVAÇÃO toggle -->
+    <script type="module">
+        import { initializeApp, getApps } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+        import { getStorage, ref, uploadBytes, getDownloadURL } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js';
+        import { getFirestore, doc, updateDoc } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+
+        const firebaseConfig = {
+            apiKey: atob("QUl6YVN5QkRmTXRrMG9CQWROd1VKMUpPWDJtd1VQU0txMjZsNkt3"),
+            authDomain: "studio-2837535581-1b461.firebaseapp.com",
+            projectId: "studio-2837535581-1b461",
+            storageBucket: "studio-2837535581-1b461.firebasestorage.app",
+            messagingSenderId: "734126703234",
+            appId: "1:734126703234:web:b5e076685289c0f43fea9b"
+        };
+
+        const app = getApps().length === 0 ? initializeApp(firebaseConfig, 'bc-patch') : getApps().find(a => a.name === 'bc-patch') || initializeApp(firebaseConfig, 'bc-patch');
+        const db = getFirestore(app);
+        const _bcStorageApp = getStorage(app);
+        window._bcStorage = _bcStorageApp;
+
+        // Helper: get React fiber state from a DOM node
+        function getReactState(node) {
+            if (!node) return null;
+            const key = Object.keys(node).find(k => k.startsWith('__reactFiber') || k.startsWith('__reactInternalInstance'));
+            if (!key) return null;
+            let fiber = node[key];
+            while (fiber) {
+                if (fiber.memoizedState) {
+                    // Walk the state chain to find boolean states
+                    let state = fiber.memoizedState;
+                    const states = [];
+                    while (state) {
+                        states.push(state.memoizedState);
+                        state = state.next;
+                    }
+                    return states;
+                }
+                fiber = fiber.return;
+            }
+            return null;
+        }
+
+        // Helper: find the current FAST record ID from the URL or DOM
+        function getCurrentFastId() {
+            // Try to find the ID from the side panel or any data attribute
+            const panel = document.querySelector('[data-fast-id]');
+            if (panel) return panel.getAttribute('data-fast-id');
+            
+            // Try from any element with id in DOM
+            const idEl = document.querySelector('[data-id]');
+            if (idEl) return idEl.getAttribute('data-id');
+            
+            return null;
+        }
+
+        // Main: intercept SALVAR BUSINESS CASE button
+        function interceptSaveButton() {
+            document.addEventListener('click', async function(e) {
+                const btn = e.target.closest('button');
+                if (!btn || !btn.textContent.includes('SALVAR BUSINESS CASE')) return;
+
+                // Find the toggle switch (div with bg-emerald-500 or bg-slate-300)
+                const modal = document.querySelector('[role="dialog"]');
+                if (!modal) return;
+
+                // Find toggle: look for the div that controls state
+                const toggle = modal.querySelector('.w-9.h-5.rounded-full');
+                const isOn = toggle && toggle.classList.contains('bg-emerald-500');
+                
+                console.log('[BC-PATCH] SALVAR clicked. Toggle isOn:', isOn);
+
+                // Get the fast ID - look for it in the component state
+                // The modal is triggered from a row - find which row is selected
+                const selectedRow = document.querySelector('tr.bg-blue-50, tr[data-selected="true"], tbody tr.selected');
+                
+                // Try to find ID from any visible data
+                let fastId = null;
+                
+                // Look for the ID in nearby elements - check the side panel header
+                const codeEl = modal.querySelector('[class*="code"], [class*="Code"]');
+                if (codeEl) {
+                    const match = codeEl.textContent.match(/[#\s]?(\d+)/);
+                    if (match) fastId = match[1];
+                }
+                
+                // Alternative: scan the modal title for code
+                const modalTitle = modal.querySelector('h2, [class*="title"], [class*="Title"]');
+                if (!fastId && modalTitle) {
+                    const match = modalTitle.textContent.match(/[#\s]?(\d+)/);
+                    if (match) fastId = match[1];
+                }
+
+                // Save via direct Firebase if we have the data
+                if (isOn !== null) {
+                    // Store toggle state in window for the React bundle to use
+                    window._bcEnviarAprovacao = isOn;
+                    window._bcPatchTriggered = true;
+                    console.log('[BC-PATCH] Stored bcEnviarAprovacao:', isOn, 'FastID:', fastId);
+                    
+                    // If React's eh() fails to save status, we'll detect it and save directly
+                    // Watch for 2 seconds after save for status change
+                    if (fastId && window._currentFastDocId) {
+                        setTimeout(async () => {
+                            try {
+                                const fastRef = doc(db, 'fasts', window._currentFastDocId);
+                                const newStatus = isOn ? 'AGUARDANDO APROVAÇÃO' : (window._bcStatusAnterior || '');
+                                const updateData = { bcEnviarAprovacao: isOn, updatedAt: new Date().toISOString() };
+                                if (newStatus) updateData.status = newStatus;
+                                await updateDoc(fastRef, updateData);
+                                console.log('[BC-PATCH] Direct Firebase save SUCCESS. status:', newStatus);
+                            } catch(err) {
+                                console.error('[BC-PATCH] Direct save error:', err);
+                            }
+                        }, 500);
+                    }
+                }
+            }, true); // use capture to run before React handlers
+        }
+
+        // Track current fast document ID via MutationObserver
+        function trackFastId() {
+            const observer = new MutationObserver(function() {
+                // Look for any element showing the current fast ID
+                // Check if a row is highlighted/selected in the table
+                const rows = document.querySelectorAll('tbody tr');
+                rows.forEach(row => {
+                    if (row.classList.contains('bg-blue-50') || row.style.backgroundColor) {
+                        // Try to get firestore ID from React fiber
+                        const key = Object.keys(row).find(k => k.startsWith('__reactFiber'));
+                        if (key) {
+                            let fiber = row[key];
+                            while (fiber) {
+                                if (fiber.memoizedProps && fiber.memoizedProps.onClick) {
+                                    // Found clickable row, try to get item from closure
+                                    break;
+                                }
+                                fiber = fiber.return;
+                            }
+                        }
+                    }
+                });
+                
+                // Look for the panel/modal with data
+                const panel = document.querySelector('[class*="panel"], [class*="Panel"], [class*="side"]');
+                if (panel) {
+                    // Extract ID from any text content
+                    const text = panel.textContent;
+                    // Store in window for our save handler
+                }
+            });
+            observer.observe(document.body, { childList: true, subtree: true });
+        }
+
+        // Capture the current fast ID when a row is clicked
+        document.addEventListener('click', function(e) {
+            const row = e.target.closest('tbody tr');
+            if (!row) return;
+            
+            // Try to get React fiber to find the item's ID
+            const key = Object.keys(row).find(k => k.startsWith('__reactFiber') || k.startsWith('__reactInternalInstance'));
+            if (!key) return;
+            
+            let fiber = row[key];
+            let depth = 0;
+            while (fiber && depth < 30) {
+                if (fiber.memoizedProps) {
+                    const props = fiber.memoizedProps;
+                    // Look for onClick with row data
+                    if (props.item && props.item.id) {
+                        window._currentFastDocId = props.item.id;
+                        window._bcStatusAnterior = props.item.status;
+                        console.log('[BC-PATCH] Captured fast ID:', window._currentFastDocId, 'status:', window._bcStatusAnterior);
+                        break;
+                    }
+                    if (props.row && props.row.id) {
+                        window._currentFastDocId = props.row.id;
+                        window._bcStatusAnterior = props.row.status;
+                        console.log('[BC-PATCH] Captured fast ID from row:', window._currentFastDocId);
+                        break;
+                    }
+                    if (props.fast && props.fast.id) {
+                        window._currentFastDocId = props.fast.id;
+                        window._bcStatusAnterior = props.fast.status;
+                        console.log('[BC-PATCH] Captured fast ID from fast prop:', window._currentFastDocId);
+                        break;
+                    }
+                }
+                fiber = fiber.return;
+                depth++;
+            }
+        }, true);
+
+        // Also intercept the modal open to capture the ID
+        document.addEventListener('click', function(e) {
+            const btn = e.target.closest('button');
+            if (!btn || !btn.textContent.includes('FAZER O BUSINESS CASE DIGITAL')) return;
+            console.log('[BC-PATCH] BC Modal opened. currentFastDocId:', window._currentFastDocId);
+        }, true);
+
+        // Wait for DOM to be ready and start intercepting
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', interceptSaveButton);
+        } else {
+            interceptSaveButton();
+        }
+        
+        console.log('[BC-PATCH] Direct Firebase save interceptor loaded.');
+    </script>
+    <script src="/_next/static/chunks/polyfills-42372ed130431b0a.js" noModule=""></script>
+    <style>
+        .bc-btn-trigger {
+            display: none !important;
+        }
+        /* Enforce fixed table layout with horizontal scrolling and no column squishing */
+        table:not([contenteditable="true"] *):not([contenteditable="true"]) {
+            table-layout: fixed !important;
+            width: 2450px !important;
+            border-collapse: collapse !important;
+        }
+
+        /* Explicit widths for all 16 potential columns in the grid */
+        th:not([contenteditable="true"] *):nth-child(1), td:not([contenteditable="true"] *):nth-child(1) { width: 55px !important; min-width: 55px !important; max-width: 55px !important; text-align: center !important; }
+        th:not([contenteditable="true"] *):nth-child(2), td:not([contenteditable="true"] *):nth-child(2) { width: 80px !important; min-width: 80px !important; max-width: 80px !important; text-align: center !important; }
+        th:not([contenteditable="true"] *):nth-child(3), td:not([contenteditable="true"] *):nth-child(3) { width: 320px !important; min-width: 320px !important; max-width: 320px !important; text-align: left !important; }
+        th:not([contenteditable="true"] *):nth-child(4), td:not([contenteditable="true"] *):nth-child(4) { width: 140px !important; min-width: 140px !important; max-width: 140px !important; text-align: center !important; }
+        th:not([contenteditable="true"] *):nth-child(5), td:not([contenteditable="true"] *):nth-child(5) { width: 130px !important; min-width: 130px !important; max-width: 130px !important; text-align: left !important; }
+        th:not([contenteditable="true"] *):nth-child(6), td:not([contenteditable="true"] *):nth-child(6) { width: 120px !important; min-width: 120px !important; max-width: 120px !important; text-align: left !important; }
+        th:not([contenteditable="true"] *):nth-child(7), td:not([contenteditable="true"] *):nth-child(7) { width: 150px !important; min-width: 150px !important; max-width: 150px !important; text-align: left !important; }
+        th:not([contenteditable="true"] *):nth-child(8), td:not([contenteditable="true"] *):nth-child(8) { width: 80px !important; min-width: 80px !important; max-width: 80px !important; text-align: center !important; }
+        th:not([contenteditable="true"] *):nth-child(9), td:not([contenteditable="true"] *):nth-child(9) { width: 70px !important; min-width: 70px !important; max-width: 70px !important; text-align: center !important; }
+        th:not([contenteditable="true"] *):nth-child(10), td:not([contenteditable="true"] *):nth-child(10) { width: 70px !important; min-width: 70px !important; max-width: 70px !important; text-align: center !important; }
+        th:not([contenteditable="true"] *):nth-child(11), td:not([contenteditable="true"] *):nth-child(11) { width: 130px !important; min-width: 130px !important; max-width: 130px !important; text-align: left !important; }
+        th:not([contenteditable="true"] *):nth-child(12), td:not([contenteditable="true"] *):nth-child(12) { width: 130px !important; min-width: 130px !important; max-width: 130px !important; text-align: left !important; }
+        th:not([contenteditable="true"] *):nth-child(13), td:not([contenteditable="true"] *):nth-child(13) { width: 130px !important; min-width: 130px !important; max-width: 130px !important; text-align: left !important; }
+        th:not([contenteditable="true"] *):nth-child(14), td:not([contenteditable="true"] *):nth-child(14) { width: 250px !important; min-width: 250px !important; max-width: 250px !important; text-align: left !important; }
+        th:not([contenteditable="true"] *):nth-child(15), td:not([contenteditable="true"] *):nth-child(15) { width: 250px !important; min-width: 250px !important; max-width: 250px !important; text-align: left !important; }
+        th:not([contenteditable="true"] *):nth-child(16), td:not([contenteditable="true"] *):nth-child(16) { width: 250px !important; min-width: 250px !important; max-width: 250px !important; text-align: left !important; }
+
+        /* Style first header row (green header) */
+        thead tr:first-child,
+        thead tr.bg-green-600 {
+            background-color: #16a34a !important; /* Premium clean green */
+            height: 44px !important;
+        }
+        thead tr:first-child th,
+        thead tr.bg-green-600 th {
+            color: #ffffff !important;
+            font-weight: 700 !important;
+            font-size: 10px !important;
+            text-transform: uppercase !important;
+            letter-spacing: 0.5px !important;
+            padding: 10px 6px !important;
+            border-bottom: 2px solid #15803d !important;
+            vertical-align: middle !important;
+            text-align: inherit !important;
+            white-space: nowrap !important;
+            overflow: hidden !important;
+            text-overflow: ellipsis !important;
+        }
+
+        /* Style second header row (filter controls) */
+        thead tr:nth-child(2),
+        thead tr.hover\:bg-transparent {
+            background-color: #f8fafc !important;
+            border-bottom: 2px solid #cbd5e1 !important;
+        }
+        thead tr:nth-child(2) th,
+        thead tr.hover\:bg-transparent th {
+            padding: 6px 4px !important;
+            vertical-align: middle !important;
+            text-align: inherit !important;
+        }
+
+        /* Clean aesthetics for filter components */
+        thead tr:nth-child(2) th input,
+        thead tr:nth-child(2) th button,
+        thead tr:nth-child(2) th [role="combobox"],
+        thead tr.hover\:bg-transparent th input,
+        thead tr.hover\:bg-transparent th button,
+        thead tr.hover\:bg-transparent th [role="combobox"] {
+            font-size: 9px !important;
+            height: 26px !important;
+            padding: 0 6px !important;
+            border-radius: 4px !important;
+            border: 1px solid #cbd5e1 !important;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05) !important;
+            transition: all 0.2s !important;
+            background-color: #ffffff !important;
+            width: 100% !important;
+            box-sizing: border-box !important;
+            text-overflow: ellipsis !important;
+            overflow: hidden !important;
+            white-space: nowrap !important;
+            text-align: left !important;
+        }
+        thead tr:nth-child(2) th input:focus,
+        thead tr:nth-child(2) th button:focus,
+        thead tr.hover\:bg-transparent th input:focus,
+        thead tr.hover\:bg-transparent th button:focus {
+            border-color: #16a34a !important;
+            outline: none !important;
+            box-shadow: 0 0 0 2px rgba(22, 163, 74, 0.15) !important;
+        }
+
+        /* Style select trigger icons */
+        thead tr:nth-child(2) th button svg,
+        thead tr.hover\:bg-transparent th button svg {
+            width: 10px !important;
+            height: 10px !important;
+            opacity: 0.6 !important;
+        }
+
+        /* Align and style table content cells - strictly single line nowrap with ellipsis */
+        tbody td:not([contenteditable="true"] *) {
+            padding: 8px 6px !important;
+            font-size: 10px !important;
+            color: #334155 !important;
+            vertical-align: middle !important;
+            line-height: 1.4 !important;
+            text-align: inherit !important;
+            white-space: nowrap !important;
+            overflow: hidden !important;
+            text-overflow: ellipsis !important;
+        }
+
+        /* Status badge alignment and centering */
+        tbody td span {
+            font-size: 8px !important;
+            padding: 2px 4px !important;
+            font-weight: 700 !important;
+        }
+    </style>
+</head>
+
+<body class="font-body antialiased">
+    <div class="flex flex-col min-h-screen items-center justify-center bg-muted/40 gap-4 p-4 text-center">
+        <p class="text-lg font-semibold animate-pulse">Verificando autenticação...</p><button
+            class="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm font-medium transition-colors">Demorando
+            muito? Tentar Login Manual</button>
+    </div>
+    <div role="region" aria-label="Notifications (F8)" tabindex="-1" style="pointer-events:none">
+        <ol tabindex="-1"
+            class="fixed top-0 z-[100] flex max-h-screen w-full flex-col-reverse p-4 sm:bottom-0 sm:right-0 sm:top-auto sm:flex-col md:max-w-[420px]">
+        </ol>
+    </div>
+    <script src="/_next/static/chunks/webpack-5e6cbb6060456a00.js" async=""></script>
+    <script>(self.__next_f = self.__next_f || []).push([0]); self.__next_f.push([2, null])</script>
+    <script>self.__next_f.push([1, "1:HL[\"/_next/static/css/6db06e54b2bd42bb.css\",\"style\"]\n"])</script>
+    <script>self.__next_f.push([1, "2:I[12846,[],\"\"]\n4:I[19107,[],\"ClientPageRoot\"]\n5:I[8721,[\"1425\",\"static/chunks/2170a4aa-83bc0779d42e53eb.js\",\"4358\",\"static/chunks/bc9e92e6-99425bc04d537046.js\",\"9122\",\"static/chunks/ec4fd7ab-f33c4c93b88c2c48.js\",\"2505\",\"static/chunks/164f4fb6-a58df6c7eb53e7d2.js\",\"7337\",\"static/chunks/ad2866b8-541c6da306f68f23.js\",\"1723\",\"static/chunks/1723-81691dc9d8e09ba6.js\",\"8933\",\"static/chunks/8933-a53c72b0d64db5cc.js\",\"8341\",\"static/chunks/8341-af2e2cf7596a5eb1.js\",\"5688\",\"static/chunks/5688-39969927028a2fee.js\",\"2850\",\"static/chunks/2850-1ba9c32b64d68649.js\",\"6818\",\"static/chunks/6818-ed3de2136b5615a6.js\",\"3014\",\"static/chunks/3014-b5ceec84a186f2ab.js\",\"7648\",\"static/chunks/7648-d3d6ee69a84f9369.js\",\"9065\",\"static/chunks/9065-3f1c2d4705bd039a.js\",\"6192\",\"static/chunks/6192-d43973c91476a812.js\",\"311\",\"static/chunks/311-ae444c2238585de5.js\",\"3619\",\"static/chunks/3619-7af52bca45409dbd.js\",\"8533\",\"static/chunks/8533-b3e12768a9728a6e.js\",\"7588\",\"static/chunks/7588-71a7c745c148c6f2.js\",\"1891\",\"static/chunks/1891-ee191bb66093867c.js\",\"949\",\"static/chunks/949-e5746bf08e10c7ed.js\",\"7783\",\"static/chunks/7783-8775010d0be07bd4.js\",\"507\",\"static/chunks/507-1cbb4e1ae80f89d3.js\",\"2737\",\"static/chunks/2737-6344e6253c0e5ccb.js\",\"4603\",\"static/chunks/app/fast/page-5d0c28c966a6b026.js\"],\"default\",1]\n6:I[4707,[],\"\"]\n7:I[36423,[],\"\"]\n8:I[48847,[\"1425\",\"static/chunks/2170a4aa-83bc0779d42e53eb.js\",\"4358\",\"static/chunks/bc9e92e6-99425bc04d537046.js\",\"9122\",\"static/chunks/ec4fd7ab-f33c4c93b88c2c48.js\",\"1723\",\"static/chunks/1723-81691dc9d8e09ba6.js\",\"8933\",\"static/chunks/8933-a53c72b0d64db5cc.js\",\"8341\",\"static/chunks/8341-af2e2cf7596a5eb1.js\",\"4120\",\"static/chunks/4120-a9f3344c24c9ee74.js\",\"1891\",\"static/chunks/1891-ee191bb66093867c.js\",\"3185\",\"static/chunks/app/layout-897af5d78183ef32.js\"],\"Providers\"]\n9:I[7075,[\"1425\",\"static/chunks/2170a4aa-83bc0779d42e53eb.js\",\"4358\",\"static/chunks/bc9e92e6-99425bc04d537046.js\",\"9122\",\"static/chunks/ec4fd7ab-f33c4c93b88c2c48.js\",\"1723\",\"static/chunks/1723-81691dc9d8e09ba6.js\",\"8933\",\"static/chunks/8933-a53c"])</script>
+    <script>self.__next_f.push([1, "72b0d64db5cc.js\",\"8341\",\"static/chunks/8341-af2e2cf7596a5eb1.js\",\"4120\",\"static/chunks/4120-a9f3344c24c9ee74.js\",\"1891\",\"static/chunks/1891-ee191bb66093867c.js\",\"3185\",\"static/chunks/app/layout-897af5d78183ef32.js\"],\"Toaster\"]\nb:I[61060,[],\"\"]\nc:[]\n"])</script>
+    <script>self.__next_f.push([1, "0:[\"$\",\"$L2\",null,{\"buildId\":\"IRm68ZTzYEmPWDMkvYKaF\",\"assetPrefix\":\"\",\"urlParts\":[\"\",\"fast\"],\"initialTree\":[\"\",{\"children\":[\"fast\",{\"children\":[\"__PAGE__\",{}]}]},\"$undefined\",\"$undefined\",true],\"initialSeedData\":[\"\",{\"children\":[\"fast\",{\"children\":[\"__PAGE__\",{},[[\"$L3\",[\"$\",\"$L4\",null,{\"props\":{\"params\":{},\"searchParams\":{}},\"Component\":\"$5\"}],null],null],null]},[null,[\"$\",\"$L6\",null,{\"parallelRouterKey\":\"children\",\"segmentPath\":[\"children\",\"fast\",\"children\"],\"error\":\"$undefined\",\"errorStyles\":\"$undefined\",\"errorScripts\":\"$undefined\",\"template\":[\"$\",\"$L7\",null,{}],\"templateStyles\":\"$undefined\",\"templateScripts\":\"$undefined\",\"notFound\":\"$undefined\",\"notFoundStyles\":\"$undefined\"}]],null]},[[[[\"$\",\"link\",\"0\",{\"rel\":\"stylesheet\",\"href\":\"/_next/static/css/6db06e54b2bd42bb.css\",\"precedence\":\"next\",\"crossOrigin\":\"$undefined\"}]],[\"$\",\"html\",null,{\"lang\":\"en\",\"suppressHydrationWarning\":true,\"children\":[[\"$\",\"head\",null,{\"children\":[[\"$\",\"link\",null,{\"rel\":\"preconnect\",\"href\":\"https://fonts.googleapis.com\"}],[\"$\",\"link\",null,{\"rel\":\"preconnect\",\"href\":\"https://fonts.gstatic.com\",\"crossOrigin\":\"anonymous\"}],[\"$\",\"link\",null,{\"href\":\"https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700\u0026family=Space+Grotesk:wght@500;700&display=swap\",\"rel\":\"stylesheet\"}],[\"$\",\"script\",null,{\"type\":\"text/javascript\",\"src\":\"https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js\"}],[\"$\",\"script\",null,{\"type\":\"text/javascript\",\"dangerouslySetInnerHTML\":{\"__html\":\"\\n            (function(){\\n              if (window.emailjs) {\\n                  emailjs.init({\\n                    publicKey: \\\"WHTTSzza7T1t_VrUh\\\",\\n                  });\\n              }\\n            })();\\n            \"}}]]}],[\"$\",\"body\",null,{\"className\":\"font-body antialiased\",\"children\":[\"$\",\"$L8\",null,{\"children\":[[\"$\",\"$L6\",null,{\"parallelRouterKey\":\"children\",\"segmentPath\":[\"children\"],\"error\":\"$undefined\",\"errorStyles\":\"$undefined\",\"errorScripts\":\"$undefined\",\"template\":[\"$\",\"$L7\",null,{}],\"templateStyles\":\"$undefined\",\"templateScripts\":\"$undefined\",\"notFound\":[[\"$\",\"title\",null,{\"children\":\"404: This page could not be found.\"}],[\"$\",\"div\",null,{\"style\":{\"fontFamily\":\"system-ui,\\\"Segoe UI\\\",Roboto,Helvetica,Arial,sans-serif,\\\"Apple Color Emoji\\\",\\\"Segoe UI Emoji\\\"\",\"height\":\"100vh\",\"textAlign\":\"center\",\"display\":\"flex\",\"flexDirection\":\"column\",\"alignItems\":\"center\",\"justifyContent\":\"center\"},\"children\":[\"$\",\"div\",null,{\"children\":[[\"$\",\"style\",null,{\"dangerouslySetInnerHTML\":{\"__html\":\"body{color:#000;background:#fff;margin:0}.next-error-h1{border-right:1px solid rgba(0,0,0,.3)}@media (prefers-color-scheme:dark){body{color:#fff;background:#000}.next-error-h1{border-right:1px solid rgba(255,255,255,.3)}}\"}}],[\"$\",\"h1\",null,{\"className\":\"next-error-h1\",\"style\":{\"display\":\"inline-block\",\"margin\":\"0 20px 0 0\",\"padding\":\"0 23px 0 0\",\"fontSize\":24,\"fontWeight\":500,\"verticalAlign\":\"top\",\"lineHeight\":\"49px\"},\"children\":\"404\"}],[\"$\",\"div\",null,{\"style\":{\"display\":\"inline-block\"},\"children\":[\"$\",\"h2\",null,{\"style\":{\"fontSize\":14,\"fontWeight\":400,\"lineHeight\":\"49px\",\"margin\":0},\"children\":\"This page could not be found.\"}]}]]}]}]],\"notFoundStyles\":[]}],[\"$\",\"$L9\",null,{}]]}]}]]}]],null],null],\"couldBeIntercepted\":false,\"initialHead\":[null,\"$La\"],\"globalErrorComponent\":\"$b\",\"missingSlots\":\"$Wc\"}]\n"])</script>
+    <script>self.__next_f.push([1, "a:[[\"$\",\"meta\",\"0\",{\"name\":\"viewport\",\"content\":\"width=device-width, initial-scale=1\"}],[\"$\",\"meta\",\"1\",{\"charSet\":\"utf-8\"}],[\"$\",\"title\",\"2\",{\"children\":\"ProjectFlow SAS\"}],[\"$\",\"meta\",\"3\",{\"name\":\"description\",\"content\":\"Aplicativo de planejamento de projetos.\"}],[\"$\",\"link\",\"4\",{\"rel\":\"icon\",\"href\":\"/favicon.ico\",\"type\":\"image/x-icon\",\"sizes\":\"16x16\"}]]\n3:null\n"])</script>
+
+
+    \n\n\n\n\n\n\n\n
+<!-- Modal moderno para redimensionar imagem -->
+    <div id="bc-img-size-modal" style="display:none;position:fixed;inset:0;z-index:2147483647;pointer-events:auto;align-items:center;justify-content:center;background:rgba(15,23,42,0.55);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);">
+      <div id="bc-img-size-card" style="background:#fff;border-radius:20px;box-shadow:0 24px 64px rgba(0,0,0,0.22),0 4px 16px rgba(79,70,229,0.12);padding:32px 28px 24px;width:320px;max-width:92vw;transform:scale(0.88);opacity:0;transition:transform 0.22s cubic-bezier(.34,1.56,.64,1),opacity 0.18s ease;">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
+          <div style="width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#6366f1,#4f46e5);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+          </div>
+          <div>
+            <div style="font-size:15px;font-weight:800;color:#1e293b;line-height:1.2;">Tamanho da imagem</div>
+            <div style="font-size:11px;color:#64748b;margin-top:1px;">Digite o valor em porcentagem</div>
+          </div>
+        </div>
+        <div style="height:1px;background:linear-gradient(90deg,#e2e8f0,transparent);margin:16px 0;"></div>
+        <label style="display:block;font-size:11px;font-weight:700;color:#64748b;letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px;">Largura (%)</label>
+        <div style="display:flex;align-items:center;border:2px solid #e2e8f0;border-radius:12px;overflow:hidden;transition:border-color 0.15s;background:#f8fafc;" id="bc-img-input-wrap">
+          <input id="bc-img-size-input" type="number" min="1" max="200" step="1"
+            style="flex:1;border:none;background:transparent;padding:12px 14px;font-size:20px;font-weight:700;color:#1e293b;outline:none;width:0;"
+            placeholder="100" />
+          <span style="padding:0 16px 0 4px;font-size:16px;font-weight:700;color:#94a3b8;">%</span>
+        </div>
+        <p style="font-size:11px;color:#94a3b8;margin:8px 0 0;text-align:center;">Deixe em branco para restaurar ao tamanho original</p>
+        <div style="display:flex;gap:10px;margin-top:20px;">
+          <button id="bc-btn-cancel" type="button"
+            style="flex:1;padding:11px;border-radius:12px;border:2px solid #e2e8f0;background:#fff;font-size:13px;font-weight:700;color:#64748b;cursor:pointer;transition:all 0.15s;"
+            onmouseover="this.style.background='#f1f5f9'" onmouseout="this.style.background='#fff'">
+            Cancelar
+          </button>
+          <button id="bc-btn-apply" type="button"
+            style="flex:1;padding:11px;border-radius:12px;border:none;background:linear-gradient(135deg,#6366f1,#4f46e5);font-size:13px;font-weight:800;color:#fff;cursor:pointer;box-shadow:0 4px 14px rgba(99,102,241,0.4);transition:all 0.15s;"
+            onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='1'">
+            Aplicar
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // ── Estado global ──────────────────────────────────────────────────────
+      window._bcImgTarget = null;
+      window._bcImgEditor = null;
+
+      window._bcImgClose = function() {
+        // Re-enable the contenteditable editor
+        if (window._bcImgEditor) {
+          window._bcImgEditor.setAttribute('contenteditable', 'true');
+          window._bcImgEditor = null;
+        }
+        window._bcImgTarget = null;
+        var modal = document.getElementById('bc-img-size-modal');
+        var card  = document.getElementById('bc-img-size-card');
+        if (card) { card.style.transform = 'scale(0.88)'; card.style.opacity = '0'; }
+        setTimeout(function() { if (modal) modal.style.display = 'none'; }, 200);
+      };
+
+      window._bcImgApply = function() {
+        var img    = window._bcImgTarget;
+        var editor = window._bcImgEditor;
+        if (!img) { window._bcImgClose(); return; }
+        var input = document.getElementById('bc-img-size-input');
+        var val   = input ? input.value.trim() : '';
+        if (val === '') {
+          img.style.width = '100%'; img.style.height = 'auto';
+        } else {
+          var num = parseFloat(val);
+          if (isNaN(num) || num <= 0) { if (input) input.focus(); return; }
+          img.style.width = num + '%'; img.style.height = 'auto';
+        }
+        // Fire input event before re-enabling editor
+        if (editor) {
+          editor.setAttribute('contenteditable', 'true');
+          editor.dispatchEvent(new Event('input', { bubbles: true }));
+        }
+        window._bcImgTarget = null;
+        window._bcImgEditor = null;
+        var modal = document.getElementById('bc-img-size-modal');
+        var card  = document.getElementById('bc-img-size-card');
+        if (card) { card.style.transform = 'scale(0.88)'; card.style.opacity = '0'; }
+        setTimeout(function() { if (modal) modal.style.display = 'none'; }, 200);
+      };
+
+      // ── MutationObserver to prevent Radix from making bc-img-size-modal inert ──
+      (function() {
+        var protectedIds = ['bc-img-size-modal', 'bc-img-size-card', 'bc-table-bar', 'bc-img-bar', 'bc-adv-edit-styles', 'bc-adv-edit-script'];
+        var observer = new MutationObserver(function(mutations) {
+          mutations.forEach(function(m) {
+            if (m.type === 'attributes') {
+              var el = m.target;
+              if (protectedIds.indexOf(el.id) !== -1) {
+                if (el.hasAttribute('inert')) { el.removeAttribute('inert'); }
+                if (el.getAttribute('aria-hidden') === 'true') { el.removeAttribute('aria-hidden'); }
+              }
+            }
+          });
+        });
+        observer.observe(document.body, { subtree: true, attributes: true, attributeFilter: ['inert', 'aria-hidden', 'data-hidden'] });
+      })();
+
+      window.bcOpenImgModal = function(img, editor) {
+        window._bcImgTarget = img;
+        window._bcImgEditor = editor;
+
+        // DISABLE the contentEditable so it cannot steal focus or keystrokes
+        if (editor) {
+          editor.setAttribute('contenteditable', 'false');
+          editor.blur();
+        }
+
+        var cur = img.style.width || '';
+        var num = parseInt(cur, 10);
+        var input = document.getElementById('bc-img-size-input');
+        if (input) { input.value = (!isNaN(num) && num > 0) ? num : ''; }
+
+        var modal = document.getElementById('bc-img-size-modal');
+        var card  = document.getElementById('bc-img-size-card');
+        if (!modal || !card) return;
+        // Move modal into the topmost Radix portal so Radix doesn't make it inert
+        // (This is needed when BC editor opens inside a nested Radix Dialog like FAST)
+        var radixPortals = document.querySelectorAll('[data-radix-portal]');
+        var topPortal = radixPortals.length > 0 ? radixPortals[radixPortals.length - 1] : document.body;
+        if (modal.parentNode !== topPortal) {
+          topPortal.appendChild(modal);
+        }
+        // Remove any inert or aria-hidden that Radix may have set on the modal
+        modal.removeAttribute('inert');
+        modal.removeAttribute('aria-hidden');
+        modal.style.pointerEvents = 'all';
+        modal.style.display = 'flex';
+
+        requestAnimationFrame(function() { requestAnimationFrame(function() {
+          card.style.transform = 'scale(1)'; card.style.opacity = '1';
+        }); });
+
+        // Force focus onto the input — with retries in case something steals it back
+        function grabFocus(n) {
+          var i = document.getElementById('bc-img-size-input');
+          if (!i) return;
+          i.focus();
+          if (n > 0) setTimeout(function() { grabFocus(n - 1); }, 50);
+        }
+        setTimeout(function() { grabFocus(4); }, 30);
+      };
+
+      // ── Keyboard trap (capture) — Enter/Escape always work ────────────────
+      document.addEventListener('keydown', function(e) {
+        var modal = document.getElementById('bc-img-size-modal');
+        if (!modal || modal.style.display === 'none') return;
+        if (e.key === 'Enter')  { e.stopPropagation(); e.preventDefault(); window._bcImgApply(); return; }
+        if (e.key === 'Escape') { e.stopPropagation(); e.preventDefault(); window._bcImgClose(); return; }
+        // Redirect any keystrokes to the modal input
+        var input = document.getElementById('bc-img-size-input');
+        if (input && document.activeElement !== input) { input.focus(); }
+      }, true);
+
+      // ── Click trap (capture) — buttons always respond ─────────────────────
+      document.addEventListener('click', function(e) {
+        var modal = document.getElementById('bc-img-size-modal');
+        if (!modal || modal.style.display === 'none') return;
+        var t = e.target;
+        if (t.id === 'bc-btn-apply' || (t.closest && t.closest('#bc-btn-apply'))) {
+          e.stopPropagation(); e.preventDefault();
+          window._bcImgApply(); return;
+        }
+        if (t.id === 'bc-btn-cancel' || (t.closest && t.closest('#bc-btn-cancel'))) {
+          e.stopPropagation(); e.preventDefault();
+          window._bcImgClose(); return;
+        }
+        var card = document.getElementById('bc-img-size-card');
+        if (card && !card.contains(t)) {
+          e.stopPropagation(); e.preventDefault();
+          window._bcImgClose();
+        }
+      }, true);
+
+      // ── Mousedown trap — prevent editor from refocusing while modal is open ─
+      document.addEventListener('mousedown', function(e) {
+        var modal = document.getElementById('bc-img-size-modal');
+        if (!modal || modal.style.display === 'none') return;
+        var card = document.getElementById('bc-img-size-card');
+        // Only allow mousedown inside the modal card
+        if (!card || !card.contains(e.target)) {
+          e.stopPropagation(); e.preventDefault();
+        }
+      }, true);
+
+      // ── Pointerdown interceptor for table column handles ────────────────────
+      // This runs BEFORE Radix registers its listeners (early script execution).
+      // It stops Radix from seeing the pointerdown on our handles (which are in
+      // document.body outside the dialog), preventing the dialog from closing.
+      // We use stopImmediatePropagation so no OTHER listener on document fires,
+      // then manually call the handle's stored _bcPointerDown function.
+      document.addEventListener('pointerdown', function(e) {
+        var t = e.target;
+        if (!t || !t.classList) return;
+        
+        if (t.closest && t.closest('#bc-img-size-modal')) {
+            e.stopImmediatePropagation();
+            return;
+        }
+        if (t.id === 'bc-img-resize-handle') {
+            e.stopImmediatePropagation();
+            return;
+        }
+        if (t.classList.contains('bc-tbl-col-handle') || t.classList.contains('bc-drag-overlay')) {
+          e.stopImmediatePropagation(); // Radix never sees this pointerdown
+          if (typeof t._bcPointerDown === 'function') t._bcPointerDown(e);
+        }
+      }, true);
+    </script>
+
+    <script>
+        // Save original execCommand for debugging
+        window._bcRawExec = document.execCommand.bind(document);
+
+        // Override execCommand for image alignment and list support
+        (function() {
+            var _bcSave = null;
+            var _bcEditor = null;
+            var _bcOrig = document.execCommand.bind(document);
+
+            // Save selection in capture phase before toolbar buttons steal focus
+            document.addEventListener('mousedown', function(e) {
+                var btn = e.target.closest('.bc-editor-toolbar button, .bc-editor-toolbar select');
+                if (!btn) return;
+                
+                var tb = btn.closest('.bc-editor-toolbar');
+                var editor = tb ? tb.nextElementSibling : null;
+                
+                var sel = window.getSelection();
+                var range = null;
+                if (sel.rangeCount && editor) {
+                    var n = sel.getRangeAt(0).commonAncestorContainer;
+                    if (n.nodeType === 3) n = n.parentNode;
+                    var selEditor = n.closest ? n.closest('[contenteditable="true"]') : null;
+                    if (selEditor === editor) {
+                        range = sel.getRangeAt(0).cloneRange();
+                    }
+                }
+                
+                if (!range && editor) {
+                    range = document.createRange();
+                    range.selectNodeContents(editor);
+                    range.collapse(false);
+                }
+                
+                _bcSave = range;
+                _bcEditor = editor;
+                if (btn.tagName !== 'SELECT') {
+                    e.preventDefault();
+                }
+            }, true);
+
+            document.execCommand = function(cmd, ui, val) {
+                var sel = window.getSelection();
+
+                // Lists: restore saved range, use native execCommand
+                if (cmd === 'insertOrderedList' || cmd === 'insertUnorderedList') {
+                    if (_bcSave && _bcEditor) {
+                        try { if (_bcEditor && typeof _bcEditor.focus === 'function') { _bcEditor.focus(); } sel.removeAllRanges(); sel.addRange(_bcSave); } catch(e) {}
+                    }
+                    var result = _bcOrig(cmd, ui, val);
+                    if (!result && _bcEditor) {
+                        // Manual fallback
+                        try {
+                            var li = document.createElement('li');
+                            li.innerHTML = '\u00A0';
+                            var list = document.createElement(cmd === 'insertOrderedList' ? 'OL' : 'UL');
+                            list.appendChild(li);
+                            if (sel.rangeCount > 0) {
+                                sel.getRangeAt(0).deleteContents();
+                                sel.getRangeAt(0).insertNode(list);
+                            } else if (_bcEditor) {
+                                _bcEditor.appendChild(list);
+                            }
+                            var nr = document.createRange();
+                            nr.setStart(li, 0); nr.collapse(true);
+                            sel.removeAllRanges(); sel.addRange(nr);
+                            result = true;
+                        } catch(e) {}
+                    }
+                    if (result && _bcEditor) {
+                        try { _bcEditor.dispatchEvent(new Event('input', { bubbles: true })); } catch(e) {}
+                    }
+                    _bcSave = null;
+                    _bcEditor = null;
+                    return result || false;
+                }
+
+                // Image alignment (justify)
+                if (cmd === 'justifyLeft' || cmd === 'justifyCenter' || cmd === 'justifyRight' || cmd === 'justifyFull') {
+                    try {
+                        if (sel.rangeCount > 0) {
+                            var n = sel.getRangeAt(0).commonAncestorContainer;
+                            if (n.nodeType === 3) n = n.parentNode;
+                            var img = n.tagName === 'IMG' ? n : (n.querySelector ? n.querySelector('img') : null);
+                            if (img) {
+                                var w = img.closest ? img.closest('div, p') : null;
+                                if (w) {
+                                    w.style.textAlign = cmd.replace('justify', '').toLowerCase();
+                                    var editor = w.closest('[contenteditable]') || document.querySelector('[contenteditable]');
+                                    if (editor) editor.dispatchEvent(new Event('input', { bubbles: true }));
+                                    return true;
+                                }
+                            }
+                        }
+                    } catch(e) {}
+                }
+
+                // Other commands: restore saved range if selection is lost
+                if (_bcSave && (_bcEditor || !sel.rangeCount)) {
+                    try { 
+                        if (_bcEditor && typeof _bcEditor.focus === 'function') {
+                            _bcEditor.focus(); 
+                        }
+                        sel.removeAllRanges(); 
+                        sel.addRange(_bcSave); 
+                    } catch(e) {}
+                }
+                var result = _bcOrig(cmd, ui, val);
+                _bcSave = null;
+                _bcEditor = null;
+                return result;
+            };
+        })();
+
+        // Global image picker
+        window.bcPickImage = function() {
+            var editor = window._bcSavedEditor ||
+                (document.activeElement && document.activeElement.isContentEditable
+                 ? document.activeElement : document.querySelector('[contenteditable="true"]'));
+            if (!editor) return;
+            var i = document.createElement('input');
+            i.type = 'file'; i.accept = 'image/*';
+            i.onchange = function() {
+                var f = i.files[0];
+                if (!f) return;
+                var storage = window._bcStorage;
+                if (storage) {
+                    editor.focus();
+                    var loadId = 'bcld' + Date.now();
+                    var ld = document.createElement('span');
+                    ld.id = loadId; ld.contentEditable = 'false';
+                    ld.style.cssText = 'display:inline-flex;align-items:center;gap:5px;padding:3px 10px;background:#eef2ff;border:1px dashed #6366f1;border-radius:6px;font-size:11px;color:#6366f1;margin:2px;vertical-align:middle';
+                    ld.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="animation:spin 1s linear infinite"><path d="M21 12a9 9 0 11-18 0" stroke-linecap="round"/></svg> Enviando...';
+                    var sel2 = window.getSelection();
+                    var rng2 = (sel2.rangeCount > 0 && editor.contains(sel2.getRangeAt(0).commonAncestorContainer)) ? sel2.getRangeAt(0) : (function(){var r2=document.createRange();r2.selectNodeContents(editor);r2.collapse(false);return r2;})();
+                    rng2.insertNode(ld);
+
+                    var ext = (f.name.split('.').pop() || 'jpg').toLowerCase();
+                    var uid = Date.now() + '_' + Math.random().toString(36).slice(2,8);
+                    var fastCode = (document.title.match(/#(\d+)/) || ['','0'])[1] || uid;
+                    var storPath = 'bc-images/' + fastCode + '/' + uid + '.' + ext;
+
+                    import('https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js').then(function(mod) {
+                        var storRef = mod.ref(storage, storPath);
+                        return mod.uploadBytes(storRef, f).then(function(snap) { return mod.getDownloadURL(snap.ref); });
+                    }).then(function(url) {
+                        var l = document.getElementById(loadId); if (l) l.remove();
+                        window._bcInsertImg(editor, url);
+                    }).catch(function(err) {
+                        console.warn('Storage upload failed, using base64:', err);
+                        var l = document.getElementById(loadId); if (l) l.remove();
+                        window._bcInsertBase64(f, editor);
+                    });
+                } else {
+                    window._bcInsertBase64(f, editor);
+                }
+            };
+            i.click();
+        };
+
+        window._bcInsertImg = function(editor, src) {
+            editor.focus();
+            var sel = window.getSelection();
+            var range = (sel.rangeCount > 0 && editor.contains(sel.getRangeAt(0).commonAncestorContainer)) ? sel.getRangeAt(0) : (function(){var r2=document.createRange();r2.selectNodeContents(editor);r2.collapse(false);return r2;})();
+            var div = document.createElement('div');
+            div.style.cssText = 'text-align:left;border:1px dashed #94a3b8;border-radius:4px;padding:4px;margin:4px 0';
+            var img = document.createElement('img');
+            img.src = src; img.style.cssText = 'max-width:100%;height:auto;display:inline-block';
+            div.appendChild(img); range.deleteContents(); range.insertNode(div);
+            var nr = document.createRange(); nr.setStartAfter(div); nr.collapse(true);
+            sel.removeAllRanges(); sel.addRange(nr);
+            editor.dispatchEvent(new Event('input', { bubbles: true }));
+        };
+
+        window._bcInsertBase64 = function(f, editor) {
+            var r = new FileReader();
+            r.onload = function(e) { window._bcInsertImg(editor, e.target.result); };
+            r.readAsDataURL(f);
+        };
+
+        window.bcShowTablePicker = function() {
+            var editor = document.activeElement && document.activeElement.isContentEditable
+                ? document.activeElement : document.querySelector('[contenteditable="true"]');
+            if (!editor) return;
+            var r = prompt('Linhas:', '3');
+            if (r === null || r === '') return;
+            var c = prompt('Colunas:', '3');
+            if (c === null || c === '') return;
+            r = parseInt(r, 10) || 3; if (r < 1) r = 1; if (r > 20) r = 20;
+            c = parseInt(c, 10) || 3; if (c < 1) c = 1; if (c > 20) c = 20;
+            editor.focus();
+            var sel = window.getSelection();
+            var range = (sel.rangeCount > 0 && editor.contains(sel.getRangeAt(0).commonAncestorContainer))
+                ? sel.getRangeAt(0)
+                : (function(){var r2=document.createRange();r2.selectNodeContents(editor);r2.collapse(false);return r2;})();
+            var table = document.createElement('table');
+            table.border = '1'; table.cellPadding = '6'; table.cellSpacing = '0';
+            table.style.cssText = 'width:100%;border-collapse:collapse;font-size:13px;margin:4px 0';
+            for (var ri = 0; ri < r; ri++) {
+                var tr = document.createElement('tr');
+                for (var ci = 0; ci < c; ci++) {
+                    var td = document.createElement('td');
+                    td.style.cssText = 'padding:6px;border:1px solid #94a3b8;min-width:40px';
+                    td.innerHTML = '&nbsp;';
+                    tr.appendChild(td);
+                }
+                table.appendChild(tr);
+            }
+            range.deleteContents();
+            range.insertNode(table);
+            var fc = table.querySelector('td');
+            if (fc) {
+                var nr = document.createRange();
+                nr.setStart(fc, 0); nr.collapse(true);
+                sel.removeAllRanges(); sel.addRange(nr);
+            }
+            editor.dispatchEvent(new Event('input', { bubbles: true }));
+        };
+
+        window.bcCreateLink = function() {
+            var u = prompt('URL:');
+            if (!u) return;
+            var editor = document.activeElement && document.activeElement.isContentEditable
+                ? document.activeElement : document.querySelector('[contenteditable="true"]');
+            if (!editor) return;
+            editor.focus();
+            var sel = window.getSelection();
+            var range = (sel.rangeCount > 0 && editor.contains(sel.getRangeAt(0).commonAncestorContainer))
+                ? sel.getRangeAt(0)
+                : (function(){var r2=document.createRange();r2.selectNodeContents(editor);r2.collapse(false);return r2;})();
+            if (range.toString()) {
+                document.execCommand('createLink', false, u);
+            } else {
+                var a = document.createElement('a');
+                a.href = u;
+                a.textContent = u;
+                a.target = '_blank';
+                a.rel = 'noopener noreferrer';
+                range.deleteContents();
+                range.insertNode(a);
+                var nr = document.createRange();
+                nr.setStartAfter(a); nr.collapse(true);
+                sel.removeAllRanges(); sel.addRange(nr);
+            }
+            editor.dispatchEvent(new Event('input', { bubbles: true }));
+        };
+
+        // Image drag resizing helpers
+        function setupImageResize(img, editor) {
+            removeImageResize();
+            var handle = document.createElement("div");
+            handle.id = "bc-img-resize-handle";
+            // Use position:fixed so handle tracks viewport position regardless of modal scroll
+            handle.style.cssText = "position: fixed; width: 14px; height: 14px; background: #4f46e5; border: 2px solid white; cursor: nwse-resize; z-index: 2147483647; border-radius: 3px; box-shadow: 0 1px 4px rgba(0,0,0,0.4); pointer-events: auto;";
+            
+            function positionHandle() {
+                var rect = img.getBoundingClientRect();
+                handle.style.top = (rect.bottom - 14) + "px";
+                handle.style.left = (rect.right - 14) + "px";
+            }
+            
+            positionHandle();
+            document.body.appendChild(handle);
+                    // Add a highly visible column number badge
+                    var badge = document.createElement('span');
+                    badge.style.cssText = 'color:#fff;font-size:8px;background:#f59e0b;padding:1px 3px;border-radius:3px;position:absolute;top:-13px;left:50%;transform:translateX(-50%);white-space:nowrap;font-family:sans-serif;font-weight:bold;z-index:2147483647;pointer-events:none;box-shadow:0 1px 3px rgba(0,0,0,0.3);line-height:1;display:inline-block;';
+                    badge.textContent = (idx + 1);
+                    handle.appendChild(badge);
+                    handle.innerHTML = '<span style="color:#fff;font-size:9px;background:#f59e0b;padding:1px 4px;border-radius:4px;position:absolute;top:-14px;left:50%;transform:translateX(-50%);white-space:nowrap;font-family:sans-serif;font-weight:bold;z-index:2147483647;pointer-events:none">Col ' + (idx + 1) + '</span>';
+            img.style.outline = "2px solid #4f46e5";
+            
+            var startX, startY, startWidth, startHeight;
+            var onMouseDown = function(mdEvent) {
+                mdEvent.preventDefault();
+                mdEvent.stopPropagation();
+                startX = mdEvent.clientX;
+                startY = mdEvent.clientY;
+                startWidth = img.getBoundingClientRect().width;
+                startHeight = img.getBoundingClientRect().height;
+                
+                var onMouseMove = function(mmEvent) {
+                    var deltaX = mmEvent.clientX - startX;
+                    var deltaY = mmEvent.clientY - startY;
+                    // Use the larger delta to allow both horizontal and vertical resize
+                    var delta = Math.abs(deltaX) >= Math.abs(deltaY) ? deltaX : deltaY;
+                    var newW = Math.max(20, startWidth + delta);
+                    img.style.width = newW + "px";
+                    img.style.height = "auto";
+                    positionHandle();
+                };
+                
+                var onMouseUp = function() {
+                    document.removeEventListener("mousemove", onMouseMove);
+                    document.removeEventListener("mouseup", onMouseUp);
+                    editor.dispatchEvent(new Event("input", { bubbles: true }));
+                };
+                
+                document.addEventListener("mousemove", onMouseMove);
+                document.addEventListener("mouseup", onMouseUp);
+            };
+            
+            handle.addEventListener("mousedown", onMouseDown);
+            
+            // Keep handle position in sync when modal scrolls
+            var scrollHandler = function() { positionHandle(); };
+            var scrollParent = img.closest('[class*="overflow-y-auto"], [style*="overflow"]') || document.documentElement;
+            scrollParent.addEventListener("scroll", scrollHandler, true);
+            
+            window._bcActiveResize = {
+                handle: handle,
+                img: img,
+                scrollParent: scrollParent,
+                scrollHandler: scrollHandler
+            };
+        }
+
+        function removeImageResize() {
+            if (window._bcActiveResize) {
+                if (window._bcActiveResize.handle) {
+                    window._bcActiveResize.handle.remove();
+                }
+                if (window._bcActiveResize.img) {
+                    window._bcActiveResize.img.style.outline = "";
+                }
+                if (window._bcActiveResize.scrollParent && window._bcActiveResize.scrollHandler) {
+                    window._bcActiveResize.scrollParent.removeEventListener("scroll", window._bcActiveResize.scrollHandler, true);
+                }
+                window._bcActiveResize = null;
+            }
+        }
+
+        document.addEventListener("scroll", removeImageResize, true);
+        document.addEventListener("mousedown", function(e) {
+            if (window._bcActiveResize && e.target !== window._bcActiveResize.img && e.target !== window._bcActiveResize.handle) {
+                removeImageResize();
+            }
+            // Remove table column handles when clicking outside any table or handle
+            if (window._bcTableHandles && window._bcTableHandles.length > 0) {
+                var cls = e.target && e.target.classList;
+                var isHandle  = cls && (cls.contains('bc-tbl-col-handle') || cls.contains('bc-drag-overlay'));
+                var isInTable = window._bcActiveTable && window._bcActiveTable.contains(e.target);
+                if (!isHandle && !isInTable) {
+                    document.querySelectorAll('.bc-tbl-col-handle').forEach(function(h) { h.remove(); });
+                    window._bcTableHandles = [];
+                    window._bcActiveTable = null;
+                }
+            }
+        });
+
+        // Main Editor Initializer
+        window.bcInitEditor = function(el, value, setter) {
+            if (!el) return;
+            if (el.innerHTML !== value) {
+                el.innerHTML = value;
+            }
+            if (el.dataset.initBc) return;
+            el.dataset.initBc = "true";
+
+            el.addEventListener("focus", function() {
+                document.execCommand("defaultParagraphSeparator", false, "p");
+            });
+
+            var updateToolbar = function() {
+                var tb = el.previousSibling;
+                if (!tb) return;
+                var btns = tb.querySelectorAll("button[data-cmd]");
+                btns.forEach(function(b) {
+                    var cmd = b.getAttribute("data-cmd");
+                    if (!cmd) return;
+                    var act = false;
+                    try { act = document.queryCommandState(cmd); } catch(err) {}
+                    if (act) {
+                        b.classList.add("bg-indigo-50", "text-indigo-600");
+                        b.classList.remove("text-slate-500");
+                    } else {
+                        b.classList.remove("bg-indigo-50", "text-indigo-600");
+                        b.classList.add("text-slate-500");
+                    }
+                });
+            };
+
+            el.addEventListener("keyup", updateToolbar);
+            el.addEventListener("click", updateToolbar);
+
+            // Click image to show resize handle
+            el.addEventListener("click", function(e) {
+                if (e.target.tagName === "IMG") {
+                    setupImageResize(e.target, el);
+                } else {
+                    removeImageResize();
+                }
+            });
+
+            // Double click: open modern image size modal
+            el.addEventListener("dblclick", function(e) {
+                if (e.target.tagName === "IMG") {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    e.stopImmediatePropagation();
+                    if (window.bcOpenImgModal) {
+                        window.bcOpenImgModal(e.target, el);
+                    }
+                }
+            });
+
+            // ── Table Column Resizing ───────────────────────────────────────────────
+            // Uses <colgroup><col> elements so that table-layout:fixed respects
+            // column widths across ALL rows, not just the reference row.
+            // The early-script pointerdown interceptor prevents Radix from closing.
+
+            function bcMakeColHandles(table, editor) {
+                // Clean up existing handles
+                document.querySelectorAll('.bc-tbl-col-handle').forEach(function(h) { h.remove(); });
+                window._bcTableHandles = [];
+                window._bcActiveTable  = table;
+
+                // Find row with most cells to determine column count
+                var allRows = Array.from(table.querySelectorAll('tr'));
+                if (!allRows.length) return;
+                var refRow = allRows.reduce(function(best, r) {
+                    return r.cells.length > best.cells.length ? r : best;
+                }, allRows[0]);
+                var cells = Array.from(refRow.cells);
+                var colCount = cells.length;
+                if (colCount < 2) return;
+
+                // Snapshot rendered widths BEFORE switching layout
+                var colWidths = cells.map(function(c) { return c.getBoundingClientRect().width; });
+
+                // Inject / refresh <colgroup><col> — this is what table-layout:fixed uses
+                var colgroup = table.querySelector('colgroup');
+                if (!colgroup) {
+                    colgroup = document.createElement('colgroup');
+                    table.insertBefore(colgroup, table.firstChild);
+                }
+                colgroup.innerHTML = '';
+                colWidths.forEach(function(w) {
+                    var col = document.createElement('col');
+                    col.style.width = Math.round(w) + 'px';
+                    colgroup.appendChild(col);
+                });
+
+                // Fix table layout and width
+                table.style.tableLayout = 'fixed';
+                if (!table.style.width || table.style.width.indexOf('%') !== -1) {
+                    table.style.width = table.offsetWidth + 'px';
+                }
+
+                var cols = Array.from(colgroup.querySelectorAll('col'));
+
+                // One handle per column border (including the last column's right border)
+                cols.forEach(function(col, idx) {
+                    var handle = document.createElement('div');
+                    handle.className = 'bc-tbl-col-handle';
+                    handle.style.cssText = [
+                        'position:fixed',
+                        'width:14px',
+                        'cursor:col-resize',
+                        'z-index:2147483645',
+                        'background:rgba(245,158,11,0.15)',
+                        'border-left:2px solid rgba(245,158,11,0.7)',
+                        'border-right:2px solid rgba(245,158,11,0.7)',
+                        'pointer-events:all',
+                        'user-select:none',
+                        'box-sizing:border-box',
+                        'touch-action:none',
+                        'top:0'
+                    ].join(';');
+
+                    function placeHandle() {
+                        // Position at right edge of refRow cell at this column index
+                        var refCell = refRow.cells[idx];
+                        if (!refCell) return;
+                        var r = refCell.getBoundingClientRect();
+                        handle.style.left   = (r.right - 7) + 'px';
+                        handle.style.top    = r.top + 'px';
+                        handle.style.height = Math.max(r.height, 6) + 'px';
+                    }
+                    placeHandle();
+
+                    document.body.appendChild(handle);
+                    // Add a highly visible column number badge
+                    var badge = document.createElement('span');
+                    badge.style.cssText = 'color:#fff;font-size:8px;background:#f59e0b;padding:1px 3px;border-radius:3px;position:absolute;top:-13px;left:50%;transform:translateX(-50%);white-space:nowrap;font-family:sans-serif;font-weight:bold;z-index:2147483647;pointer-events:none;box-shadow:0 1px 3px rgba(0,0,0,0.3);line-height:1;display:inline-block;';
+                    badge.textContent = (idx + 1);
+                    handle.appendChild(badge);
+                    window._bcTableHandles.push(handle);
+
+                    handle.onmouseover = function() { handle.style.background = 'rgba(245,158,11,0.4)'; };
+                    handle.onmouseout  = function() { handle.style.background = 'rgba(245,158,11,0.15)'; };
+
+                    // Called by early-script pointerdown interceptor (bypasses Radix dismiss)
+                    handle._bcPointerDown = function(pdEvt) {
+                        if (pdEvt && pdEvt.preventDefault) pdEvt.preventDefault();
+                        try { handle.setPointerCapture(pdEvt.pointerId); } catch(err) {}
+
+                        var startX      = pdEvt ? pdEvt.clientX : 0;
+                        var startW      = parseFloat(col.style.width)  || 0;
+                        var nextCol     = cols[idx + 1];
+                        var nextStartW  = nextCol ? (parseFloat(nextCol.style.width) || 0) : null;
+                        var startTableW = table.offsetWidth;
+
+                        handle.style.background = 'rgba(245,158,11,0.6)';
+
+                        function onMove(mvEvt) {
+                            var delta = mvEvt.clientX - startX;
+                            var newW  = Math.max(20, startW + delta);
+                            col.style.width = newW + 'px';
+                            if (nextCol && nextStartW !== null) {
+                                nextCol.style.width = Math.max(20, nextStartW - delta) + 'px';
+                            } else {
+                                // For the last column, adjust table's total width
+                                table.style.width = (startTableW + (newW - startW)) + 'px';
+                            }
+                            placeHandle();
+                        }
+
+                        function onUp(upEvt) {
+                            try { handle.releasePointerCapture(upEvt.pointerId); } catch(err) {}
+                            handle.removeEventListener('pointermove', onMove);
+                            handle.removeEventListener('pointerup', onUp);
+                            handle.style.background = 'rgba(245,158,11,0.15)';
+                            editor.dispatchEvent(new Event('input', { bubbles: true }));
+                            setTimeout(function() { bcMakeColHandles(table, editor); }, 10);
+                        }
+
+                        handle.addEventListener('pointermove', onMove);
+                        handle.addEventListener('pointerup', onUp);
+                    };
+                });
+            }
+
+            // Show handles when clicking inside a table
+            el.addEventListener('click', function(e) {
+                var tbl = e.target.closest ? e.target.closest('table') : null;
+                if (tbl && el.contains(tbl)) {
+                    setTimeout(function() { bcMakeColHandles(tbl, el); }, 10);
+                } else if (!e.target.classList.contains('bc-tbl-col-handle')) {
+                    document.querySelectorAll('.bc-tbl-col-handle').forEach(function(h) { h.remove(); });
+                    window._bcTableHandles = [];
+                    window._bcActiveTable  = null;
+                }
+            });
+
+            // Auto-setup handles on newly inserted tables
+            var bcTableObserver = new MutationObserver(function(mutations) {
+                mutations.forEach(function(m) {
+                    m.addedNodes.forEach(function(node) {
+                        if (node.nodeType !== 1) return;
+                        var tables = node.tagName === 'TABLE'
+                            ? [node]
+                            : Array.from(node.querySelectorAll ? node.querySelectorAll('table') : []);
+                        tables.forEach(function(t) {
+                            setTimeout(function() { bcMakeColHandles(t, el); }, 80);
+                        });
+                    });
+                });
+            });
+            bcTableObserver.observe(el, { childList: true, subtree: true });
+        };
+    </script>
+
+    <!-- Test buttons for list debugging -->
+    <script>
+        (function() {
+            function injectTestButtons() {
+                var toolbar = document.querySelector('.bc-editor-toolbar');
+                if (!toolbar) { setTimeout(injectTestButtons, 500); return; }
+                var sep = toolbar.querySelector('span:last-of-type');
+                if (!sep) { setTimeout(injectTestButtons, 500); return; }
+
+                // Button 1: calls raw (original, pre-override) execCommand
+                var b1 = document.createElement('button');
+                b1.type = 'button';
+                b1.textContent = 'RAW';
+                b1.title = 'Call original (pre-override) execCommand';
+                b1.style.cssText = 'font-size:9px;padding:2px 4px;border:1px solid #060;border-radius:4px;background:#dfd;cursor:pointer';
+                b1.onmousedown = function(e) { e.preventDefault(); };
+                b1.onclick = function() {
+                    var ce = document.querySelector('[contenteditable="true"]');
+                    if (!ce) return;
+                    var sel = window.getSelection();
+                    if (!sel.rangeCount || !ce.contains(sel.getRangeAt(0).commonAncestorContainer)) {
+                        var r = document.createRange(); r.selectNodeContents(ce); r.collapse(false);
+                        sel.removeAllRanges(); sel.addRange(r);
+                    }
+                    var result = window._bcRawExec('insertOrderedList');
+                    console.log('[RAW] insertOrderedList result:', result);
+                    if (!result) {
+                        // Try manual
+                        var li = document.createElement('li');
+                        li.textContent = 'R' + new Date().getSeconds();
+                        var ol = document.createElement('ol'); ol.appendChild(li);
+                        sel.getRangeAt(0).deleteContents();
+                        sel.getRangeAt(0).insertNode(ol);
+                        var nr = document.createRange(); nr.setStart(li,0); nr.collapse(true);
+                        sel.removeAllRanges(); sel.addRange(nr);
+                        ce.dispatchEvent(new Event('input', {bubbles:true}));
+                        console.log('[RAW] manual fallback used');
+                    }
+                };
+
+                // Button 2: calls overridden execCommand (same as toolbar buttons)
+                var b2 = document.createElement('button');
+                b2.type = 'button';
+                b2.textContent = 'OVR';
+                b2.title = 'Call overridden execCommand (same as toolbar)';
+                b2.style.cssText = 'font-size:9px;padding:2px 4px;border:1px solid #006;border-radius:4px;background:#ddf;cursor:pointer';
+                b2.onmousedown = function(e) { e.preventDefault(); };
+                b2.onclick = function() {
+                    var result = document.execCommand('insertOrderedList');
+                    console.log('[OVR] insertOrderedList result:', result);
+                };
+
+                sep.parentNode.insertBefore(b1, sep.nextSibling);
+                sep.parentNode.insertBefore(b2, sep.nextSibling);
+                console.log('[TEST] Injected RAW and OVR buttons');
+            }
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', injectTestButtons);
+            } else {
+                injectTestButtons();
+            }
+        })();
+    </script>
+    <style>
+        /* Toolbar buttons for contentEditable editor - WordPad style */
+        .bc-editor-toolbar {
+            background: #f1f5f9;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            padding: 3px 4px;
+            gap: 1px;
+            display: flex;
+            flex-wrap: wrap;
+            box-shadow: inset 0 1px 1px rgba(0,0,0,0.05);
+        }
+        .bc-editor-toolbar button {
+            border-radius: 4px;
+            transition: all 0.12s;
+            cursor: pointer;
+        }
+        .bc-editor-toolbar button:hover {
+            background: #e2e8f0 !important;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
+        .bc-editor-toolbar button:active {
+            transform: scale(0.93);
+        }
+        .bc-editor-toolbar select {
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .bc-editor-toolbar select:hover {
+            background: #e2e8f0;
+        }
+        [contenteditable="true"]:focus {
+            border-color: #6366f1 !important;
+            box-shadow: 0 0 0 2px rgba(99,102,241,0.15) !important;
+            outline: none;
+        }
+        [contenteditable="true"] {
+            transition: border-color 0.15s, box-shadow 0.15s;
+            background: white;
+            line-height: 1.6;
+        }
+        [contenteditable="true"] img {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+\n
+    
+    <style>
+        .tox-notifications-container { display: none !important; }
+        .tox-promotion { display: none !important; }
+        .tox-tinymce-aux {
+            pointer-events: auto !important;
+            z-index: 9999999 !important;
+        }
+    </style>
+    <script>
+        console.log('[TinyMCE] BC1 Final inject loaded');
+
+        // Monitorar o modal do BC e inicializar TinyMCE nos textareas
+        function initBcTinymce() {
+            if (typeof tinymce === 'undefined') {
+                setTimeout(initBcTinymce, 500);
+                return;
+            }
+            const textareas = document.querySelectorAll('textarea.bc-tinymce:not([data-tiny-bc-init])');
+            textareas.forEach(function(ta) {
+                if (ta.style.display === 'none' || ta.offsetParent === null) return;
+                
+                ta.setAttribute('data-tiny-bc-init', 'true');
+                if (!ta.id) {
+                    ta.id = 'tinymce-' + Math.random().toString(36).substr(2, 9);
+                }
+                
+                try {
+                    tinymce.init({
+                        target: ta,
+                        menubar: false,
+                        branding: false,
+                        promotion: false,
+                        plugins: 'lists advlist link image table code',
+                        toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image table | code',
+                        paste_data_images: true,
+                        min_height: 250,
+                        max_height: 800,
+                        setup: function(editor) {
+                            editor.on('init', function() {
+                                console.log('[TinyMCE] Editor initialized on', ta.id);
+                            });
+                            editor.on('change keyup blur', function() {
+                                editor.save();
+                                const event = new Event('input', { bubbles: true });
+                                ta.dispatchEvent(event);
+                            });
+                        }
+                    });
+                } catch(err) {
+                    console.error('[TinyMCE] Failed to init on', ta.id, err);
+                    ta.removeAttribute('data-tiny-bc-init');
+                }
+            });
+        }
+
+        // Observar mudancas no DOM para detectar quando o modal BC abrir
+        (function(){ (function(){ var _obs = new MutationObserver(function() {
+            initBcTinymce();
+        });
+        _obs.observe(document.body, { childList: true, subtree: true }); })(); })();
+
+        // Tambem tentar a cada 1s
+        setInterval(initBcTinymce, 1000);
+
+        // Inicializar imediatamente se ja estiver no DOM
+        setTimeout(initBcTinymce, 500);
+    </script>
+
+
+    
+    <style>
+        .tox-notifications-container { display: none !important; }
+        .tox-promotion { display: none !important; }
+        .tox-tinymce-aux {
+            pointer-events: auto !important;
+            z-index: 9999999 !important;
+        }
+    </style>
+    <script>
+        console.log('[TinyMCE] BC1 Final inject loaded');
+
+        // Monitorar o modal do BC e inicializar TinyMCE nos textareas
+        function initBcTinymce() {
+            if (typeof tinymce === 'undefined') {
+                setTimeout(initBcTinymce, 500);
+                return;
+            }
+            const textareas = document.querySelectorAll('textarea.bc-tinymce:not([data-tiny-bc-init])');
+            textareas.forEach(function(ta) {
+                if (ta.style.display === 'none' || ta.offsetParent === null) return;
+                
+                ta.setAttribute('data-tiny-bc-init', 'true');
+                if (!ta.id) {
+                    ta.id = 'tinymce-' + Math.random().toString(36).substr(2, 9);
+                }
+                
+                try {
+                    tinymce.init({
+                        target: ta,
+                        menubar: false,
+                        branding: false,
+                        promotion: false,
+                        plugins: 'lists advlist link image table code',
+                        toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image table | code',
+                        paste_data_images: true,
+                        min_height: 250,
+                        max_height: 800,
+                        content_style: 'ol { list-style-type: decimal !important; margin-left: 20px !important; padding-left: 10px !important; } ul { list-style-type: disc !important; margin-left: 20px !important; padding-left: 10px !important; }',
+                        setup: function(editor) {
+                            editor.on('init', function() {
+                                console.log('[TinyMCE] Editor initialized on', ta.id);
+                            });
+                            editor.on('change keyup blur', function() {
+                                editor.save();
+                                const event = new Event('input', { bubbles: true });
+                                ta.dispatchEvent(event);
+                            });
+                        }
+                    });
+                } catch(err) {
+                    console.error('[TinyMCE] Failed to init on', ta.id, err);
+                    ta.removeAttribute('data-tiny-bc-init');
+                }
+            });
+        }
+
+        // Observar mudancas no DOM para detectar quando o modal BC abrir
+        (function(){ (function(){ var _obs = new MutationObserver(function() {
+            initBcTinymce();
+        });
+        _obs.observe(document.body, { childList: true, subtree: true }); })(); })();
+
+        // Tambem tentar a cada 1s
+        setInterval(initBcTinymce, 1000);
+
+        // Inicializar imediatamente se ja estiver no DOM
+        setTimeout(initBcTinymce, 500);
+    </script>
+
+
+    
+
+
+    
+
+
+    <style>
+        .tox-notifications-container { display: none !important; }
+        .tox-promotion { display: none !important; }
+        .tox-tinymce-aux, .tox-dialog, .tox-pop {
+            pointer-events: auto !important;
+            z-index: 9999999 !important;
+        }
+        [data-radix-dialog-overlay] {
+            pointer-events: none !important;
+        }
+        [data-radix-dialog-content] {
+            pointer-events: auto !important;
+        }
+        /* Ensure lists display correctly in Next/Tailwind view mode inside the modal/dialog */
+        [data-radix-dialog-content] ol,
+        [role="dialog"] ol {
+            list-style-type: decimal !important;
+            margin-left: 24px !important;
+            padding-left: 8px !important;
+            display: block !important;
+        }
+        [data-radix-dialog-content] ul,
+        [role="dialog"] ul {
+            list-style-type: disc !important;
+            margin-left: 24px !important;
+            padding-left: 8px !important;
+            display: block !important;
+        }
+        [data-radix-dialog-content] li,
+        [role="dialog"] li {
+            display: list-item !important;
+        }
+    </style>
+    <script>
+        console.log('[TinyMCE] BC Final inject loaded');
+
+        document.addEventListener('mousedown', function(e) {
+            if (e.target.closest('.tox-tinymce-aux, .tox-dialog, .tox-pop, .tox-tinymce, .tox-editor-container')) {
+                e.stopPropagation();
+            }
+        }, true);
+
+        function initBcTinymce() {
+            if (typeof tinymce === 'undefined') {
+                setTimeout(initBcTinymce, 500);
+                return;
+            }
+            var textareas = document.querySelectorAll('textarea.bc-tinymce:not([data-tiny-bc-init])');
+            textareas.forEach(function(ta) {
+                if (ta.style.display === 'none' || ta.offsetParent === null) return;
+                
+                ta.setAttribute('data-tiny-bc-init', 'true');
+                if (!ta.id) {
+                    ta.id = 'tinymce-' + Math.random().toString(36).substr(2, 9);
+                }
+                
+                try {
+                    tinymce.init({
+                        target: ta,
+                        menubar: false,
+                        branding: false,
+                        promotion: false,
+                        plugins: 'lists advlist link image table code',
+                        toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link table | imageLocal | code',
+                        paste_data_images: true,
+                        min_height: 250,
+                        max_height: 800,
+                        content_style: 'ol { list-style-type: decimal !important; margin-left: 20px !important; padding-left: 10px !important; } ul { list-style-type: disc !important; margin-left: 20px !important; padding-left: 10px !important; }',
+                        setup: function(editor) {
+                            editor.ui.registry.addButton('imageLocal', {
+                                text: 'IMG',
+                                tooltip: 'Inserir imagem do computador',
+                                icon: 'image',
+                                onAction: function() {
+                                    var input = document.createElement('input');
+                                    input.setAttribute('type', 'file');
+                                    input.setAttribute('accept', 'image/*');
+                                    input.onchange = function() {
+                                        var file = this.files[0];
+                                        if (!file) return;
+                                        var reader = new FileReader();
+                                        reader.onload = function(e) {
+                                            var img = '<img src="' + e.target.result + '" alt="' + file.name.replace(/[<>&"]/g, '') + '" style="max-width:100%;height:auto;" />';
+                                            editor.insertContent(img);
+                                            editor.save();
+                                            var event = new Event('input', { bubbles: true });
+                                            ta.dispatchEvent(event);
+                                        };
+                                        reader.readAsDataURL(file);
+                                    };
+                                    input.click();
+                                }
+                            });
+                            editor.on('init', function() {
+                                console.log('[TinyMCE] Editor initialized on', ta.id);
+                            });
+                            editor.on('change keyup blur', function() {
+                                editor.save();
+                                var event = new Event('input', { bubbles: true });
+                                ta.dispatchEvent(event);
+                            });
+                        }
+                    });
+                } catch(err) {
+                    console.error('[TinyMCE] Failed to init on', ta.id, err);
+                    ta.removeAttribute('data-tiny-bc-init');
+                }
+            });
+        }
+
+        (function(){ var _obs = new MutationObserver(function() {
+            initBcTinymce();
+        });
+        _obs.observe(document.body, { childList: true, subtree: true }); })();
+
+        setInterval(initBcTinymce, 1000);
+
+        setTimeout(initBcTinymce, 500);
+    </script>
+
+
+
+<style>
+@keyframes spin { to { transform: rotate(360deg); } }
+.bc-extra-controls { display:flex;align-items:center;gap:1px;flex-wrap:wrap;width:100%;padding-top:3px;border-top:1px solid #e2e8f0;margin-top:2px; }
+.bc-color-palette { position:fixed;z-index:2147483646;background:#fff;border:1px solid #e2e8f0;border-radius:14px;box-shadow:0 8px 32px rgba(0,0,0,0.18),0 2px 8px rgba(99,102,241,.12);padding:10px;display:none; }
+.bc-color-swatch { width:20px;height:20px;border-radius:4px;cursor:pointer;border:1px solid rgba(0,0,0,.1);transition:transform .1s; }
+.bc-color-swatch:hover { transform:scale(1.25);z-index:2; }
+.bc-html-active { background:#6366f1 !important;color:#fff !important; }
+.bc-toolbar-sel { padding:2px 6px;font-size:11px;border:1px solid #e2e8f0;border-radius:7px;background:#fff;font-family:inherit;color:#374151;outline:none;cursor:pointer;transition:border-color .15s; }
+.bc-toolbar-sel:focus { border-color:#6366f1; }
+.bc-toolbar-btn2 { width:26px;height:26px;display:flex;align-items:center;justify-content:center;border:none;background:transparent;border-radius:7px;cursor:pointer;color:#64748b;transition:all .15s;font-size:11px;font-weight:700;flex-shrink:0; }
+.bc-toolbar-btn2:hover { background:#f1f5f9;color:#6366f1; }
+.bc-toolbar-sep { width:1px;background:#e2e8f0;align-self:stretch;margin:0 3px;flex-shrink:0; }
+</style>
+
+<script>
+/* ────── BC Advanced Editor Enhancement v2.0 ────── */
+(function() {
+  'use strict';
+
+  var enhanced = new WeakSet();
+
+  // Bulletproof selection tracking: save range whenever selection changes inside a contenteditable
+  document.addEventListener('selectionchange', function() {
+    try {
+      var sel = window.getSelection();
+      if (sel && sel.rangeCount > 0) {
+        var range = sel.getRangeAt(0);
+        var node = range.commonAncestorContainer;
+        if (!node) return;
+        var ce = node.nodeType === 3 ? node.parentNode : node;
+        var insideEditor = false;
+        while (ce && ce !== document.body) {
+          if (ce.getAttribute && ce.getAttribute('contenteditable') === 'true') {
+            insideEditor = true;
+            break;
+          }
+          ce = ce.parentNode;
+        }
+        if (insideEditor) {
+          // CRITICAL: Only save range if the user is NOT interacting with any toolbar/select/button controls.
+          // This prevents selectionchange from overwriting the highlighted text range with a collapsed/empty cursor
+          // when clicking dropdowns, colors or tools.
+          var activeEl = document.activeElement;
+          var isToolbarInteraction = activeEl && (
+            (typeof activeEl.closest === 'function' && (
+              activeEl.closest('.bc-editor-toolbar') || 
+              activeEl.closest('.bc-color-palette') ||
+              activeEl.closest('.bc-extra-controls')
+            )) ||
+            activeEl.tagName === 'SELECT' || 
+            activeEl.tagName === 'BUTTON' ||
+            activeEl.tagName === 'INPUT'
+          );
+          if (!isToolbarInteraction) {
+            window._bcSavedRange = range.cloneRange();
+            window._bcSavedEditor = ce;
+          }
+        }
+      }
+    } catch(e) {
+      console.warn('selectionchange error:', e);
+    }
+  });
+
+  // Colour palette presets
+  var COLORS = [
+    '#000000','#1e293b','#374151','#6b7280','#9ca3af','#d1d5db','#e5e7eb','#ffffff',
+    '#dc2626','#ea580c','#ca8a04','#16a34a','#0891b2','#2563eb','#7c3aed','#db2777',
+    '#fca5a5','#fdba74','#fde68a','#86efac','#67e8f9','#93c5fd','#c4b5fd','#f9a8d4',
+    '#991b1b','#9a3412','#854d0e','#14532d','#164e63','#1e3a8a','#4c1d95','#831843',
+    '#f97316','#eab308','#22c55e','#06b6d4','#3b82f6','#8b5cf6','#ec4899','#f43f5e',
+  ];
+
+  function createColorPalette(label, onSelect) {
+    var pal = document.createElement('div');
+    pal.className = 'bc-color-palette';
+    pal.innerHTML = '<div style="font-size:10px;font-weight:700;color:#6366f1;margin-bottom:8px;text-transform:uppercase;letter-spacing:.06em">' + label + '</div>';
+
+    var grid = document.createElement('div');
+    grid.style.cssText = 'display:grid;grid-template-columns:repeat(8,1fr);gap:3px;margin-bottom:8px';
+    COLORS.forEach(function(c) {
+      var sw = document.createElement('div');
+      sw.className = 'bc-color-swatch';
+      sw.style.background = c;
+      sw.title = c;
+      sw.onmousedown = function(e) { e.preventDefault(); e.stopPropagation(); };
+      sw.onclick = function(e) { e.stopPropagation(); onSelect(c); pal.style.display = 'none'; };
+      grid.appendChild(sw);
+    });
+    pal.appendChild(grid);
+
+    var customRow = document.createElement('div');
+    customRow.style.cssText = 'display:flex;align-items:center;gap:8px;border-top:1px solid #f1f5f9;padding-top:8px';
+    var lbl = document.createElement('span');
+    lbl.style.cssText = 'font-size:10px;color:#6b7280;flex:1;font-weight:600';
+    lbl.textContent = 'Cor personalizada:';
+    var ci = document.createElement('input');
+    ci.type = 'color'; ci.value = '#000000';
+    ci.style.cssText = 'width:32px;height:28px;border:none;padding:0;cursor:pointer;border-radius:6px;background:none';
+    ci.onmousedown = function(e) { e.stopPropagation(); };
+    ci.oninput = function() { onSelect(ci.value); pal.style.display = 'none'; };
+    customRow.appendChild(lbl); customRow.appendChild(ci);
+    pal.appendChild(customRow);
+    document.body.appendChild(pal);
+
+    document.addEventListener('mousedown', function(e) {
+      if (!pal.contains(e.target)) pal.style.display = 'none';
+    }, true);
+
+    pal.showAt = function(anchor) {
+      // Safely move palette inside the modal portal to prevent Radix Dialog clicks/interaction blocking
+      var mtp = window.moveToPortal || (typeof moveToPortal === 'function' ? moveToPortal : null);
+      if (mtp) {
+        mtp(pal, anchor);
+      } else if (pal.parentNode !== document.body) {
+        document.body.appendChild(pal);
+      }
+      pal.style.display = 'block';
+      var r = anchor.getBoundingClientRect();
+      
+      // Calculate coordinates relative to viewport
+      var top = r.bottom + 4;
+      var left = Math.min(r.left, window.innerWidth - 210);
+      
+      // Adjust if inside a positioned/transformed containing block (like the Radix Dialog)
+      var offsetParent = pal.offsetParent;
+      if (offsetParent && offsetParent !== document.body) {
+        var opR = offsetParent.getBoundingClientRect();
+        top -= opR.top;
+        left -= opR.left;
+      }
+      
+      if (top + 240 > window.innerHeight) {
+        var topPos = r.top - 244;
+        if (offsetParent && offsetParent !== document.body) {
+          var opR = offsetParent.getBoundingClientRect();
+          topPos -= opR.top;
+        }
+        top = topPos;
+      }
+      pal.style.top = top + 'px'; pal.style.left = Math.max(4, left) + 'px';
+    };
+    return pal;
+  }
+
+  function getEditor(toolbar) {
+    return window._bcSavedEditor || toolbar.nextElementSibling ||
+           document.querySelector('[contenteditable="true"]');
+  }
+
+    function applyStyle(prop, value, editor) {
+    if (!editor) return;
+    // Run asynchronously to allow browser to finish closing dropdowns/handling focus changes
+    setTimeout(function() {
+      editor.focus();
+      var sel = window.getSelection();
+      var range = window._bcSavedRange;
+      if (range) {
+        try { sel.removeAllRanges(); sel.addRange(range); } catch(e) {}
+      }
+
+      document.execCommand('styleWithCSS', false, true);
+
+      if (prop === 'color') {
+        document.execCommand('foreColor', false, value);
+      } else if (prop === 'backgroundColor') {
+        document.execCommand('backColor', false, value);
+      } else if (prop === 'fontFamily') {
+        document.execCommand('fontName', false, value);
+      } else if (prop === 'fontSize') {
+        // Wrap selection in <span style="font-size:Xpx"> since execCommand only does 1-7
+        var curRange = sel.rangeCount ? sel.getRangeAt(0) : null;
+        if (curRange && !curRange.collapsed) {
+          try {
+            var span = document.createElement('span');
+            span.style.fontSize = value;
+            var frag = curRange.extractContents();
+            span.appendChild(frag);
+            curRange.insertNode(span);
+            var nr = document.createRange();
+            nr.selectNodeContents(span);
+            sel.removeAllRanges(); sel.addRange(nr);
+          } catch(e) {
+            document.execCommand('fontSize', false, '7');
+          }
+        } else {
+          // No selection: insert a zero-width space in a span to carry the style
+          var sp = document.createElement('span');
+          sp.style.fontSize = value;
+          sp.innerHTML = '​';
+          if (curRange) {
+            curRange.insertNode(sp);
+            var nr2 = document.createRange();
+            nr2.setStart(sp.firstChild, 1); nr2.collapse(true);
+            sel.removeAllRanges(); sel.addRange(nr2);
+          }
+        }
+      }
+
+      editor.dispatchEvent(new Event('input', { bubbles: true }));
+    }, 0);
+  }
+
+function toggleHtmlMode(toolbar) {
+    var editor = toolbar.nextElementSibling;
+    if (!editor || !editor.isContentEditable) {
+      // Might be hidden (already in html mode)
+      editor = toolbar.parentNode.querySelector('[contenteditable]');
+    }
+    var existing = toolbar.parentNode.querySelector('.bc-html-textarea');
+    if (existing) {
+      // Revert to rich text
+      editor.innerHTML = existing.value;
+      existing.remove();
+      if (editor) editor.style.display = '';
+      toolbar.querySelectorAll('.bc-html-toggler').forEach(function(b) { b.classList.remove('bc-html-active'); });
+      if (editor) editor.dispatchEvent(new Event('input', { bubbles: true }));
+    } else {
+      // Switch to source
+      var ta = document.createElement('textarea');
+      ta.className = 'bc-html-textarea';
+      ta.value = editor ? editor.innerHTML : '';
+      ta.style.cssText = 'width:100%;min-height:180px;max-height:400px;font-family:"Courier New",monospace;font-size:11px;padding:10px;border:2px solid #6366f1;border-top:none;border-radius:0 0 12px 12px;outline:none;resize:vertical;color:#1e293b;background:#fafbff;line-height:1.55;box-sizing:border-box';
+      ta.onmousedown = function(e) { e.stopPropagation(); };
+      if (editor) { editor.style.display = 'none'; editor.parentNode.insertBefore(ta, editor.nextSibling); }
+      toolbar.querySelectorAll('.bc-html-toggler').forEach(function(b) { b.classList.add('bc-html-active'); });
+      ta.focus();
+    }
+  }
+
+  function enhanceToolbar(toolbar) {
+    if (enhanced.has(toolbar)) return;
+    enhanced.add(toolbar);
+
+    // Save range BEFORE our controls steal focus
+    toolbar.addEventListener('mousedown', function(e) {
+      if (!e.target.closest('.bc-extra-controls')) return;
+      try {
+        var sel = window.getSelection();
+        if (sel && sel.rangeCount > 0) {
+          var n = sel.getRangeAt(0).commonAncestorContainer;
+          var ce = n.nodeType === 3 ? n.parentNode : n;
+          while (ce && ce !== document.body) {
+            if (ce.getAttribute && ce.getAttribute('contenteditable') === 'true') { break; }
+            ce = ce.parentNode;
+          }
+          if (ce && ce !== document.body) {
+            window._bcSavedRange  = sel.getRangeAt(0).cloneRange();
+            window._bcSavedEditor = ce;
+          }
+        }
+      } catch(err) {
+        console.warn('toolbar mousedown error:', err);
+      }
+    }, true);
+
+    var row = document.createElement('div');
+    row.className = 'bc-extra-controls';
+
+    function sep() {
+      var d = document.createElement('div'); d.className = 'bc-toolbar-sep'; return d;
+    }
+
+    function mkBtn(title, html, onClick) {
+      var btn = document.createElement('button');
+      btn.type = 'button'; btn.className = 'bc-toolbar-btn2'; btn.title = title;
+      btn.innerHTML = html;
+      btn.onmousedown = function(e) { e.preventDefault(); };
+      btn.onclick = onClick;
+      return btn;
+    }
+
+    // ── Font family ──
+    var fontSel = document.createElement('select');
+    fontSel.className = 'bc-toolbar-sel'; fontSel.title = 'Família da fonte';
+    [['','Fonte...'],['Arial','Arial'],['Times New Roman','Times'],['Courier New','Courier'],
+     ['Georgia','Georgia'],['Verdana','Verdana'],['Tahoma','Tahoma'],['Impact','Impact'],
+     ['Trebuchet MS','Trebuchet']].forEach(function(f) {
+       var o = document.createElement('option'); o.value = f[0]; o.textContent = f[1];
+       fontSel.appendChild(o);
+    });
+    fontSel.onmousedown = function(e) { e.stopPropagation(); };
+    fontSel.onchange = function() {
+      if (!fontSel.value) return;
+      applyStyle('fontFamily', fontSel.value, getEditor(toolbar));
+      setTimeout(function() { fontSel.value = ''; }, 0);
+    };
+
+    // ── Font size ──
+    var sizeSel = document.createElement('select');
+    sizeSel.className = 'bc-toolbar-sel'; sizeSel.title = 'Tamanho da fonte'; sizeSel.style.maxWidth = '64px';
+    [['','Tam.'],['8px','8'],['9px','9'],['10px','10'],['11px','11'],['12px','12'],['14px','14'],
+     ['16px','16'],['18px','18'],['20px','20'],['24px','24'],['28px','28'],['32px','32'],
+     ['36px','36'],['48px','48'],['64px','64']].forEach(function(s) {
+       var o = document.createElement('option'); o.value = s[0]; o.textContent = s[1];
+       sizeSel.appendChild(o);
+    });
+    sizeSel.onmousedown = function(e) { e.stopPropagation(); };
+    sizeSel.onchange = function() {
+      if (!sizeSel.value) return;
+      applyStyle('fontSize', sizeSel.value, getEditor(toolbar));
+      setTimeout(function() { sizeSel.value = ''; }, 0);
+    };
+
+    row.appendChild(fontSel);
+    row.appendChild(sizeSel);
+    row.appendChild(sep());
+
+    // ── Text color ──
+    var fgPal = createColorPalette('Cor do Texto', function(c) {
+      applyStyle('color', c, getEditor(toolbar));
+    });
+    var fgBtn = mkBtn('Cor do texto', [
+      '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">',
+      '<path d="M9 3l6 14M5.5 12h13" stroke-linecap="round" stroke-linejoin="round"/>',
+      '</svg>',
+      '<div style="position:absolute;bottom:2px;left:4px;right:4px;height:3px;background:currentColor;border-radius:2px"></div>'
+    ].join(''), function(e) { e.stopPropagation(); fgPal.showAt(fgBtn); });
+    fgBtn.style.position = 'relative';
+
+    // ── Background/Highlight color ──
+    var bgPal = createColorPalette('Cor de Destaque', function(c) {
+      applyStyle('backgroundColor', c, getEditor(toolbar));
+    });
+    var bgBtn = mkBtn('Cor de fundo / destaque', [
+      '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">',
+      '<path d="M12 3l2 5H10l2-5zM4 14h16l2 5H2l2-5z" stroke-linecap="round" stroke-linejoin="round"/>',
+      '</svg>',
+      '<div style="position:absolute;bottom:2px;left:4px;right:4px;height:3px;background:#fde047;border-radius:2px"></div>'
+    ].join(''), function(e) { e.stopPropagation(); bgPal.showAt(bgBtn); });
+    bgBtn.style.position = 'relative';
+
+    row.appendChild(fgBtn); row.appendChild(bgBtn); row.appendChild(sep());
+
+    // ── Undo ──
+    var undoBtn = mkBtn('Desfazer (Ctrl+Z)',
+      '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 7v6h6M3.5 13C5.4 8.2 10.3 5 16 5c4.4 0 8 3.6 8 8s-3.6 8-8 8c-2.7 0-5.1-1.3-6.6-3.4" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+      function() { document.execCommand('undo'); });
+
+    // ── Redo ──
+    var redoBtn = mkBtn('Refazer (Ctrl+Y)',
+      '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 7v6h-6M20.5 13C18.6 8.2 13.7 5 8 5c-4.4 0-8 3.6-8 8s3.6 8 8 8c2.7 0 5.1-1.3 6.6-3.4" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+      function() { document.execCommand('redo'); });
+
+    row.appendChild(undoBtn); row.appendChild(redoBtn); row.appendChild(sep());
+
+    // ── HTML mode ──
+    var htmlBtn = mkBtn('Ver/Editar código HTML', '&lt;&gt;',
+      function() { toggleHtmlMode(toolbar); });
+    htmlBtn.classList.add('bc-html-toggler');
+    htmlBtn.style.fontFamily = '"Courier New",monospace';
+
+    row.appendChild(htmlBtn);
+    toolbar.appendChild(row);
+    toolbar.style.flexWrap = 'wrap';
+  }
+
+  // ── Word paste cleanup ──────────────────────────────────────────────────
+  document.addEventListener('paste', function(e) {
+    if (!e.target || !e.target.isContentEditable) return;
+    var html = e.clipboardData && e.clipboardData.getData('text/html');
+    if (!html) return;
+    // Check if it looks like Word content
+    if (!html.includes('mso-') && !html.includes('urn:schemas-microsoft') && !html.includes('MsoNormal')) return;
+    e.preventDefault();
+    var clean = html
+      .replace(/<o:p[\s\S]*?<\/o:p>/gi, '')
+      .replace(/<w:[^>]*>[\s\S]*?<\/w:[^>]*>/gi, '')
+      .replace(/<m:[^>]*>[\s\S]*?<\/m:[^>]*>/gi, '')
+      .replace(/<!--[\s\S]*?-->/g, '')
+      .replace(/class="[^"]*Mso[^"]*"/gi, '')
+      .replace(/style="([^"]*)"/gi, function(m, s) {
+        var keep = s.replace(/mso-[^;]+;?\s*/gi, '')
+                    .replace(/font-family:[^;]+;?\s*/gi, '')
+                    .replace(/margin[^:]*:[^;]+;?\s*/gi, '');
+        return keep.trim() ? 'style="' + keep.trim() + '"' : '';
+      })
+      .replace(/<span\s*(?:style="\s*")?>/gi, '<span>')
+      .replace(/<span><\/span>/gi, '')
+      .replace(/&nbsp;/g, ' ');
+    document.execCommand('insertHTML', false, clean);
+  }, true);
+
+  // ── Range saver for toolbar interaction ────────────────────────────────
+  document.addEventListener('mousedown', function(e) {
+    if (!e.target.closest('.bc-editor-toolbar')) return;
+    try {
+      var sel = window.getSelection();
+      if (sel && sel.rangeCount > 0) {
+        var n = sel.getRangeAt(0).commonAncestorContainer;
+        var ce = n.nodeType === 3 ? n.parentNode : n;
+        while (ce && ce !== document.body) {
+          if (ce.getAttribute && ce.getAttribute('contenteditable') === 'true') { break; }
+          ce = ce.parentNode;
+        }
+        if (ce && ce !== document.body) {
+          window._bcSavedRange  = sel.getRangeAt(0).cloneRange();
+          window._bcSavedEditor = ce;
+        }
+      }
+    } catch(err) {
+      console.warn('document mousedown error:', err);
+    }
+  }, true);
+
+  // ── MutationObserver: enhance toolbars as React renders them ──────────
+  var obs = new MutationObserver(function(muts) {
+    muts.forEach(function(m) {
+      m.addedNodes.forEach(function(node) {
+        if (node.nodeType !== 1) return;
+        if (node.classList && node.classList.contains('bc-editor-toolbar')) enhanceToolbar(node);
+        if (node.querySelectorAll) {
+          node.querySelectorAll('.bc-editor-toolbar').forEach(function(t) { enhanceToolbar(t); });
+        }
+      });
+    });
+  });
+  obs.observe(document.body, { childList: true, subtree: true });
+  document.querySelectorAll('.bc-editor-toolbar').forEach(enhanceToolbar);
+
+})();
+</script>
+
+
+
+
+
+
+
+<script id="bc-inert-guard">
+// ── Aggressive inert guard for BC UI elements ──
+(function() {
+  var BC_IDS = ['bc-table-bar', 'bc-img-bar', 'bc-img-size-modal', 'bc-img-size-card'];
+  var BC_CLASSES = ['bc-img-handle', 'bc-color-palette'];
+  var ATTRS = ['inert', 'aria-hidden', 'aria-modal', 'data-hidden', 'hidden'];
+
+  function unblock(el) {
+    if (!el || el.nodeType !== 1) return;
+    ATTRS.forEach(function(a) {
+      if (el.hasAttribute(a)) el.removeAttribute(a);
+    });
+    el.style.pointerEvents = 'all !important';
+  }
+
+  function checkAll() {
+    BC_IDS.forEach(function(id) { unblock(document.getElementById(id)); });
+    BC_CLASSES.forEach(function(cls) {
+      document.querySelectorAll('.' + cls).forEach(unblock);
+    });
+  }
+
+  // Run check immediately and on any DOM mutation that touches attributes
+  var guard = new MutationObserver(function(muts) {
+    var needsCheck = false;
+    for (var i = 0; i < muts.length; i++) {
+      var m = muts[i];
+      if (m.type === 'attributes' && ATTRS.indexOf(m.attributeName) !== -1) {
+        var t = m.target;
+        var id = t.id;
+        var cls = t.className;
+        if (BC_IDS.indexOf(id) !== -1) { unblock(t); }
+        else if (typeof cls === 'string' && BC_CLASSES.some(function(c) { return cls.indexOf(c) !== -1; })) { unblock(t); }
+        else { needsCheck = true; }
+      }
+      if (m.type === 'childList') { needsCheck = true; }
+    }
+    if (needsCheck) checkAll();
+  });
+
+  guard.observe(document.documentElement, {
+    subtree: true,
+    attributes: true,
+    attributeFilter: ATTRS,
+    childList: true
+  });
+
+  checkAll();
+})();
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style id="bc-adv-edit-styles">
+.bc-img-sel-box {
+  position: absolute; pointer-events: none;
+  outline: 2px solid #6366f1; outline-offset: 1px;
+  z-index: 1;
+}
+.bc-img-handle-wrap {
+  position: fixed; z-index: 2147483645; pointer-events: auto;
+}
+.bc-img-handle-inner {
+  width: 10px; height: 10px;
+  background: #6366f1; border: 2px solid #fff;
+  border-radius: 2px; box-shadow: 0 1px 6px rgba(0,0,0,.45);
+  touch-action: none; user-select: none;
+}
+#bc-img-bar {
+  position: fixed; z-index: 2147483647; pointer-events: auto;
+  background: #1e293b; border-radius: 10px; padding: 4px 6px;
+  box-shadow: 0 4px 24px rgba(0,0,0,.4); display: none;
+  gap: 2px; align-items: center;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+#bc-img-bar button {
+  background: transparent; border: none; color: #e2e8f0;
+  cursor: pointer; padding: 4px 8px; border-radius: 6px;
+  font-size: 11px; font-weight: 600; transition: background .15s; white-space: nowrap;
+}
+#bc-img-bar button:hover { background: rgba(255,255,255,.15); }
+#bc-img-bar .bc-bar-sep { width:1px; background:rgba(255,255,255,.2); align-self:stretch; margin: 0 2px; }
+#bc-table-bar {
+  position: fixed; z-index: 2147483646; pointer-events: auto;
+  background: #1e293b; border-radius: 10px; padding: 5px 8px;
+  box-shadow: 0 4px 24px rgba(0,0,0,.4); display: none;
+  gap: 3px; align-items: center; flex-wrap: wrap;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 500px;
+}
+#bc-table-bar button {
+  background: rgba(255,255,255,.1); border: none; color: #e2e8f0;
+  cursor: pointer; padding: 4px 9px; border-radius: 6px;
+  font-size: 10px; font-weight: 700; transition: all .15s; white-space: nowrap;
+}
+#bc-table-bar button:hover { background: rgba(255,255,255,.22); }
+#bc-table-bar button.danger:hover { background: rgba(248,113,113,.3); }
+#bc-table-bar .tb-sep { width:1px; background:rgba(255,255,255,.18); align-self:stretch; margin: 0 4px; }
+#bc-table-bar .tb-label { font-size: 8px; font-weight: 900; text-transform: uppercase; letter-spacing: .08em; padding: 0 2px; }
+#bc-ctx-menu {
+  position: fixed; z-index: 2147483647; pointer-events: auto;
+  background: #1e293b; border-radius: 10px; padding: 5px;
+  box-shadow: 0 8px 32px rgba(0,0,0,.45); min-width: 180px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+#bc-ctx-menu .ctx-item {
+  padding: 7px 12px; color: #e2e8f0; cursor: pointer; border-radius: 7px;
+  font-size: 12px; font-weight: 500; display: flex; align-items: center; gap: 8px;
+}
+#bc-ctx-menu .ctx-item:hover { background: rgba(255,255,255,.1); }
+#bc-ctx-menu .ctx-item.danger { color: #f87171; }
+#bc-ctx-menu .ctx-item.danger:hover { background: rgba(248,113,113,.15); }
+#bc-ctx-menu .ctx-sep { height: 1px; background: rgba(255,255,255,.12); margin: 4px 0; }
+</style>
+
+<script id="bc-adv-edit-script">
+/* ═══ BC Advanced Image & Table Editing v10.0 (Matching Styles & Column Refresh) ═══ */
+(function() {
+  'use strict';
+
+  var _activeImg  = null;
+  var _handles    = [];
+  var _imgBar     = null;
+  var _tableBar   = null;
+  var _activeCell = null;
+  var _ctxMenu    = null;
+
+  // ── UTILS ────────────────────────────────────────────────────────────────
+  function getEditor(el) {
+    var n = el;
+    while (n && n !== document.body) {
+      if (n.getAttribute && n.getAttribute('contenteditable') === 'true') return n;
+      n = n.parentNode;
+    }
+    return null;
+  }
+
+  function notifyEditor(el) {
+    var ed = getEditor(el);
+    if (ed) ed.dispatchEvent(new Event('input', { bubbles: true }));
+  }
+
+  // Get closest dialog root or topmost Radix portal (or body)
+  function getPortalFor(el) {
+    if (el) {
+      var n = el;
+      while (n && n !== document.body) {
+        if (n.getAttribute && (n.getAttribute('role') === 'dialog' || n.hasAttribute('data-radix-dialog-content') || n.classList.contains('DialogContent'))) {
+          return n;
+        }
+        n = n.parentNode;
+      }
+    }
+    var dialog = document.querySelector('[role="dialog"]') || 
+                 document.querySelector('[data-radix-dialog-content]') ||
+                 document.querySelector('.DialogContent');
+    if (dialog) return dialog;
+    var portals = document.querySelectorAll('[data-radix-portal]');
+    return portals.length > 0 ? portals[portals.length - 1] : document.body;
+  }
+
+  function moveToPortal(el, activeEl) {
+    if (!el) return;
+    var portal = getPortalFor(activeEl);
+    if (el.parentNode !== portal) portal.appendChild(el);
+    el.removeAttribute('inert');
+    el.removeAttribute('aria-hidden');
+    el.style.pointerEvents = 'auto';
+  }
+  window.moveToPortal = moveToPortal;
+
+  // ── IMAGE HANDLES (using Pointer Events + setPointerCapture) ─────────────
+
+  function removeHandles() {
+    _handles.forEach(function(wrap) { if (wrap.parentNode) wrap.parentNode.removeChild(wrap); });
+    _handles = [];
+    if (_imgBar) _imgBar.style.display = 'none';
+    if (_activeImg) {
+      _activeImg.style.outline = '';
+      _activeImg.style.outlineOffset = '';
+      _activeImg = null;
+    }
+    // Remove legacy single handle
+    var old = document.getElementById('bc-img-resize-handle');
+    if (old && old.parentNode) old.parentNode.removeChild(old);
+  }
+
+  //  TL TC TR
+  //  ML    MR
+  //  BL BC BR
+  var HDEFS = [
+    [0,   0,   'nwse-resize', -1, -1],
+    [0,   0.5, 'ns-resize',    0, -1],
+    [0,   1,   'nesw-resize',  1, -1],
+    [0.5, 0,   'ew-resize',   -1,  0],
+    [0.5, 1,   'ew-resize',    1,  0],
+    [1,   0,   'nesw-resize', -1,  1],
+    [1,   0.5, 'ns-resize',    0,  1],
+    [1,   1,   'nwse-resize',  1,  1],
+  ];
+
+  function positionHandle(wrap, def, rect) {
+    var SZ = 10;
+    var top  = rect.top  + rect.height * def[0] - SZ / 2;
+    var left = rect.left + rect.width  * def[1] - SZ / 2;
+    var parentRect = wrap.offsetParent ? wrap.offsetParent.getBoundingClientRect() : { top: 0, left: 0 };
+    wrap.style.top  = (top - parentRect.top) + 'px';
+    wrap.style.left = (left - parentRect.left) + 'px';
+  }
+
+  function repositionAll() {
+    if (!_activeImg) return;
+    var rect = _activeImg.getBoundingClientRect();
+    _handles.forEach(function(wrap, i) { positionHandle(wrap, HDEFS[i], rect); });
+    if (_imgBar) positionImgBar(_activeImg);
+  }
+
+  function showImageHandles(img) {
+    removeHandles();
+    _activeImg = img;
+    img.style.outline = '2.5px solid #6366f1';
+    img.style.outlineOffset = '2px';
+
+    var editor = getEditor(img);
+    var rect   = img.getBoundingClientRect();
+
+    HDEFS.forEach(function(def, idx) {
+      var wrap = document.createElement('div');
+      wrap.className = 'bc-img-handle-wrap';
+      wrap.style.cursor = def[2];
+
+      var inner = document.createElement('div');
+      inner.className = 'bc-img-handle-inner';
+      wrap.appendChild(inner);
+
+      moveToPortal(wrap, img);
+      positionHandle(wrap, def, rect);
+      _handles.push(wrap);
+
+      // ── POINTER EVENTS with setPointerCapture ──
+      inner.addEventListener('pointerdown', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        e.stopImmediatePropagation();
+        inner.setPointerCapture(e.pointerId);
+
+        var sx = e.clientX, sy = e.clientY;
+        var iRect = img.getBoundingClientRect();
+        var sw = iRect.width, sh = iRect.height;
+        var ar = sh / sw;
+        var dxSign = def[3], dySign = def[4];
+
+        function onMove(me) {
+          var dX = (me.clientX - sx) * dxSign;
+          var dY = (me.clientY - sy) * dySign;
+          var nW, nH;
+
+          if (dxSign !== 0 && dySign !== 0) {
+            nW = Math.max(20, sw + dX);
+            nH = me.shiftKey ? Math.max(20, sh + dY) : nW * ar;
+          } else if (dxSign !== 0) {
+            nW = Math.max(20, sw + dX);
+            nH = nW * ar;
+          } else {
+            nH = Math.max(20, sh + dY);
+            nW = nH / ar;
+          }
+
+          img.style.width  = nW + 'px';
+          img.style.height = nH + 'px';
+          repositionAll();
+        }
+
+        function onUp() {
+          inner.removeEventListener('pointermove', onMove);
+          inner.removeEventListener('pointerup', onUp);
+          if (editor) editor.dispatchEvent(new Event('input', { bubbles: true }));
+        }
+
+        inner.addEventListener('pointermove', onMove);
+        inner.addEventListener('pointerup', onUp);
+      });
+    });
+
+    // Show image toolbar
+    if (!_imgBar) { _imgBar = buildImgBar(); }
+    moveToPortal(_imgBar, img);
+    _imgBar._img    = img;
+    _imgBar._editor = editor;
+    _imgBar.style.display = 'flex';
+    positionImgBar(img);
+
+    // Update on scroll
+    window._bcImgScrollFn = repositionAll;
+    document.addEventListener('scroll', window._bcImgScrollFn, true);
+    window.addEventListener('resize', window._bcImgScrollFn);
+  }
+
+  function positionImgBar(img) {
+    if (!_imgBar) return;
+    var rect = img.getBoundingClientRect();
+    var bh = _imgBar.offsetHeight || 32;
+    var bw = _imgBar.offsetWidth  || 200;
+    var top  = rect.top - bh - 8;
+    if (top < 4) top = rect.bottom + 8;
+    var left = Math.max(4, Math.min(rect.left, window.innerWidth - bw - 4));
+    var parentRect = _imgBar.offsetParent ? _imgBar.offsetParent.getBoundingClientRect() : { top: 0, left: 0 };
+    _imgBar.style.top  = (top - parentRect.top) + 'px';
+    _imgBar.style.left = (left - parentRect.left) + 'px';
+  }
+
+  function buildImgBar() {
+    var bar = document.createElement('div');
+    bar.id = 'bc-img-bar';
+
+    function addBtn(html, title, fn) {
+      var btn = document.createElement('button');
+      btn.type = 'button'; btn.title = title; btn.innerHTML = html;
+      btn.addEventListener('pointerdown', function(e) { e.preventDefault(); e.stopPropagation(); });
+      btn.addEventListener('click', function(e) { e.stopPropagation(); fn(); });
+      bar.appendChild(btn);
+    }
+    function addSep() {
+      var s = document.createElement('div'); s.className = 'bc-bar-sep'; bar.appendChild(s);
+    }
+
+    addBtn('<svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M4 6h16M4 12h10M4 18h16" stroke-linecap="round"/></svg>', 'Alinhar à esquerda', function() { var p = _imgBar._img && _imgBar._img.parentNode; if (p) p.style.textAlign='left'; });
+    addBtn('<svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M4 6h16M7 12h10M4 18h16" stroke-linecap="round"/></svg>', 'Centralizar', function() { var p = _imgBar._img && _imgBar._img.parentNode; if (p) p.style.textAlign='center'; });
+    addBtn('<svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M4 6h16M10 12h10M4 18h16" stroke-linecap="round"/></svg>', 'Alinhar à direita', function() { var p = _imgBar._img && _imgBar._img.parentNode; if (p) p.style.textAlign='right'; });
+    addSep();
+    addBtn('↔ Original', 'Restaurar tamanho original', function() {
+      var img = _imgBar._img; if (!img) return;
+      img.style.width = ''; img.style.height = '';
+      repositionAll();
+    });
+    addBtn('⤡ 50%', 'Reduzir para 50%', function() {
+      var img = _imgBar._img; if (!img) return;
+      var pw = (img.parentNode ? img.parentNode.offsetWidth : 0) || 400;
+      img.style.width = Math.floor(pw * 0.5) + 'px'; img.style.height = 'auto';
+      setTimeout(repositionAll, 0);
+    });
+    addBtn('⤢ 100%', 'Largura total', function() {
+      var img = _imgBar._img; if (!img) return;
+      img.style.width = '100%'; img.style.height = 'auto';
+      setTimeout(repositionAll, 0);
+    });
+    addSep();
+    addBtn('<svg width="12" height="12" fill="none" stroke="#f87171" stroke-width="2.5" viewBox="0 0 24 24"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6" stroke-linecap="round" stroke-linejoin="round"/></svg>', 'Excluir imagem', function() {
+      var img = _imgBar._img; if (!img) return;
+      var ed  = _imgBar._editor;
+      var par = img.parentNode;
+      var rem = (par && par.tagName === 'DIV') ? par : img;
+      if (rem.parentNode) rem.parentNode.removeChild(rem);
+      removeHandles();
+      if (ed) ed.dispatchEvent(new Event('input', { bubbles: true }));
+    });
+
+    return bar;
+  }
+
+  // ── TABLE TOOLBAR ────────────────────────────────────────────────────────
+
+  function getTable(cell) {
+    var n = cell;
+    while (n && n !== document.body && n.tagName !== 'TABLE') n = n.parentNode;
+    return n && n.tagName === 'TABLE' ? n : null;
+  }
+
+  function makeTd(isHead) {
+    var td = document.createElement(isHead ? 'th' : 'td');
+    // Match the exact style and border color of the table picker cells (#94a3b8)
+    td.style.cssText = 'padding:6px;border:1px solid #94a3b8;min-height:22px;vertical-align:top';
+    td.innerHTML = '&nbsp;';
+    return td;
+  }
+
+  function redistributeWidths(table) {
+    if (!table) return;
+    var rows = table.getElementsByTagName('tr');
+    var colCount = 0;
+    for (var i = 0; i < rows.length; i++) {
+      if (getTable(rows[i]) === table) {
+        colCount = Math.max(colCount, rows[i].cells.length);
+      }
+    }
+    if (colCount === 0) return;
+    var newWidth = (100 / colCount).toFixed(2) + '%';
+    for (var i = 0; i < rows.length; i++) {
+      var row = rows[i];
+      if (getTable(row) !== table) continue;
+      for (var j = 0; j < row.cells.length; j++) {
+        row.cells[j].style.width = newWidth;
+      }
+    }
+  }
+
+  function refreshTableResizer(table) {
+    if (!table) return;
+    // Dispatch a click on the table to trigger the resizer handle generation
+    setTimeout(function() {
+      table.dispatchEvent(new Event('click', { bubbles: true }));
+    }, 50);
+  }
+
+  function afterOp(node) {
+    notifyEditor(node);
+    if (_activeCell && _tableBar) positionTableBar(_activeCell);
+  }
+
+  function bcAddRowAbove(cell) {
+    if (!cell) return;
+    var row = cell.parentNode; if (!row) return;
+    var cols = row.cells.length;
+    var newRow = document.createElement('tr');
+    for (var i = 0; i < cols; i++) newRow.appendChild(makeTd(row.parentNode && row.parentNode.tagName === 'THEAD'));
+    row.parentNode.insertBefore(newRow, row);
+    afterOp(cell);
+  }
+
+  function bcAddRowBelow(cell) {
+    if (!cell) return;
+    var row = cell.parentNode; if (!row) return;
+    var cols = row.cells.length;
+    var newRow = document.createElement('tr');
+    for (var i = 0; i < cols; i++) newRow.appendChild(makeTd(false));
+    row.nextSibling ? row.parentNode.insertBefore(newRow, row.nextSibling) : row.parentNode.appendChild(newRow);
+    afterOp(cell);
+  }
+
+  function bcDeleteRow(cell) {
+    if (!cell) return;
+    var table = getTable(cell); if (!table) return;
+    var rows = table.getElementsByTagName('tr');
+    var count = 0;
+    for (var i = 0; i < rows.length; i++) {
+      if (getTable(rows[i]) === table) count++;
+    }
+    if (count <= 1) { bcDeleteTable(cell); return; }
+    cell.parentNode.parentNode.removeChild(cell.parentNode);
+    _activeCell = null; notifyEditor(table);
+    if (_tableBar) _tableBar.style.display = 'none';
+  }
+
+  function bcAddColLeft(cell) {
+    if (!cell || typeof cell.cellIndex === 'undefined') return;
+    var ci = cell.cellIndex;
+    var table = getTable(cell); if (!table) return;
+    var rows = table.getElementsByTagName('tr');
+    for (var i = 0; i < rows.length; i++) {
+      var row = rows[i];
+      if (getTable(row) !== table) continue;
+      var ref = row.cells[ci];
+      var td = makeTd(row.parentNode && row.parentNode.tagName === 'THEAD');
+      if (ref) {
+        row.insertBefore(td, ref);
+      } else {
+        row.appendChild(td);
+      }
+    }
+    redistributeWidths(table);
+    afterOp(cell);
+    refreshTableResizer(table);
+  }
+
+  function bcAddColRight(cell) {
+    if (!cell || typeof cell.cellIndex === 'undefined') return;
+    var ci = cell.cellIndex;
+    var table = getTable(cell); if (!table) return;
+    var rows = table.getElementsByTagName('tr');
+    for (var i = 0; i < rows.length; i++) {
+      var row = rows[i];
+      if (getTable(row) !== table) continue;
+      var ref = row.cells[ci + 1];
+      var td = makeTd(row.parentNode && row.parentNode.tagName === 'THEAD');
+      if (ref) {
+        row.insertBefore(td, ref);
+      } else {
+        row.appendChild(td);
+      }
+    }
+    redistributeWidths(table);
+    afterOp(cell);
+    refreshTableResizer(table);
+  }
+
+  function bcDeleteCol(cell) {
+    if (!cell || typeof cell.cellIndex === 'undefined') return;
+    var ci = cell.cellIndex;
+    var table = getTable(cell); if (!table) return;
+    
+    var firstRow = null;
+    var rows = table.getElementsByTagName('tr');
+    for (var i = 0; i < rows.length; i++) {
+      if (getTable(rows[i]) === table) {
+        firstRow = rows[i];
+        break;
+      }
+    }
+    if (firstRow && firstRow.cells.length <= 1) {
+      bcDeleteTable(cell);
+      return;
+    }
+
+    for (var i = 0; i < rows.length; i++) {
+      var row = rows[i];
+      if (getTable(row) !== table) continue;
+      var c = row.cells[ci];
+      if (c) row.removeChild(c);
+    }
+    redistributeWidths(table);
+    _activeCell = null; notifyEditor(table);
+    if (_tableBar) _tableBar.style.display = 'none';
+    refreshTableResizer(table);
+  }
+
+  function bcDeleteTable(cell) {
+    if (!cell) return;
+    var table = getTable(cell); if (!table) return;
+    var ed = getEditor(table);
+    table.parentNode && table.parentNode.removeChild(table);
+    hideTableBar();
+    if (ed) ed.dispatchEvent(new Event('input', { bubbles: true }));
+  }
+
+  // Helper to run table operations and catch any JS errors
+  function runTableOp(fn) {
+    try {
+      fn();
+    } catch(err) {
+      alert("Erro na operação de tabela:\n" + err.message + "\n" + err.stack);
+    }
+  }
+
+  function ensureTableBar() {
+    if (_tableBar) return _tableBar;
+    var bar = document.createElement('div');
+    bar.id = 'bc-table-bar';
+
+    function addLabel(txt, color) {
+      var lbl = document.createElement('span');
+      lbl.className = 'tb-label'; lbl.textContent = txt; lbl.style.color = color;
+      bar.appendChild(lbl);
+    }
+    function addSep() {
+      var s = document.createElement('div'); s.className = 'tb-sep'; bar.appendChild(s);
+    }
+    function addBtn(label, title, fn, danger) {
+      var btn = document.createElement('button');
+      btn.type = 'button'; btn.title = title; btn.innerHTML = label;
+      if (danger) btn.classList.add('danger');
+      btn.addEventListener('pointerdown', function(e) { e.preventDefault(); e.stopPropagation(); });
+      btn.addEventListener('click', function(e) { e.stopPropagation(); e.preventDefault(); runTableOp(fn); });
+      bar.appendChild(btn);
+    }
+
+    addLabel('LINHAS', '#4ade80');
+    addBtn('↑ Linha acima',  'Inserir linha acima',   function() { bcAddRowAbove(_activeCell); });
+    addBtn('↓ Linha abaixo', 'Inserir linha abaixo',  function() { bcAddRowBelow(_activeCell); });
+    addBtn('✕ Del Linha',    'Excluir linha atual',    function() { bcDeleteRow(_activeCell); }, true);
+    addSep();
+    addLabel('COLUNAS', '#60a5fa');
+    addBtn('← Col.esq',  'Inserir coluna à esquerda', function() { bcAddColLeft(_activeCell); });
+    addBtn('→ Col.dir',  'Inserir coluna à direita',  function() { bcAddColRight(_activeCell); });
+    addBtn('✕ Del Col',  'Excluir coluna atual',      function() { bcDeleteCol(_activeCell); }, true);
+    addSep();
+    addBtn('🗑 Del Tabela', 'Excluir tabela inteira', function() { bcDeleteTable(_activeCell); }, true);
+
+    _tableBar = bar;
+    return bar;
+  }
+
+  function positionTableBar(cell) {
+    var bar = ensureTableBar();
+    var table = getTable(cell); if (!table) return;
+    moveToPortal(bar, cell);
+    bar.style.display = 'flex';
+
+    var rect = table.getBoundingClientRect();
+    var bh = bar.offsetHeight || 38;
+    var bw = bar.offsetWidth  || 400;
+    var top  = rect.top - bh - 6;
+    if (top < 4) top = rect.bottom + 6;
+    if (top + bh > window.innerHeight - 4) top = 4;
+    var left = Math.max(4, Math.min(rect.left, window.innerWidth - bw - 4));
+
+    var parentRect = bar.offsetParent ? bar.offsetParent.getBoundingClientRect() : { top: 0, left: 0 };
+    bar.style.top  = (Math.max(4, top) - parentRect.top) + 'px';
+    bar.style.left = (left - parentRect.left) + 'px';
+  }
+
+  function hideTableBar() {
+    if (_tableBar) _tableBar.style.display = 'none';
+    _activeCell = null;
+  }
+
+  // ── CONTEXT MENU ─────────────────────────────────────────────────────────
+  function removeCtx() {
+    if (_ctxMenu && _ctxMenu.parentNode) _ctxMenu.parentNode.removeChild(_ctxMenu);
+    _ctxMenu = null;
+  }
+
+  function showCtx(items, x, y, activeEl) {
+    removeCtx();
+    var menu = document.createElement('div');
+    menu.id = 'bc-ctx-menu';
+    menu.style.left = '0px';
+    menu.style.top  = '0px';
+    moveToPortal(menu, activeEl);
+    _ctxMenu = menu;
+
+    var targetX = Math.min(x, window.innerWidth  - 200);
+    var targetY = Math.min(y, window.innerHeight - 300);
+
+    var parentRect = menu.offsetParent ? menu.offsetParent.getBoundingClientRect() : { top: 0, left: 0 };
+    menu.style.left = (targetX - parentRect.left) + 'px';
+    menu.style.top  = (targetY - parentRect.top) + 'px';
+
+    items.forEach(function(item) {
+      if (item === '-') { var s = document.createElement('div'); s.className = 'ctx-sep'; menu.appendChild(s); return; }
+      var d = document.createElement('div');
+      d.className = 'ctx-item' + (item.danger ? ' danger' : '');
+      d.innerHTML = (item.icon ? '<span>' + item.icon + '</span>' : '') + item.label;
+      d.addEventListener('pointerdown', function(e) { e.preventDefault(); e.stopPropagation(); });
+      d.addEventListener('click', function(e) { e.stopPropagation(); item.fn(); removeCtx(); });
+      menu.appendChild(d);
+    });
+
+    setTimeout(function() {
+      document.addEventListener('pointerdown', removeCtx, { once: true, capture: true });
+    }, 0);
+  }
+
+  // ── MAIN EVENT HANDLERS ──────────────────────────────────────────────────
+
+  document.addEventListener('click', function(e) {
+    var t = e.target;
+
+    // Ignore our own UI elements
+    if (t.closest && (
+      t.closest('#bc-img-bar') || t.closest('#bc-table-bar') ||
+      t.closest('#bc-ctx-menu') || t.closest('.bc-img-handle-wrap') ||
+      t.closest('#bc-img-size-modal') || t.closest('.bc-color-palette')
+    )) return;
+
+    // Image
+    if (t.tagName === 'IMG' && getEditor(t)) {
+      showImageHandles(t);
+      setTimeout(function() {
+        var old = document.getElementById('bc-img-resize-handle');
+        if (old && old.parentNode) old.parentNode.removeChild(old);
+      }, 0);
+      hideTableBar();
+      return;
+    }
+
+    // Click outside image → clear handles
+    if (_activeImg) removeHandles();
+
+    // Table cell
+    var cell = t.closest ? t.closest('td, th') : null;
+    if (cell && getEditor(cell)) {
+      _activeCell = cell;
+      positionTableBar(cell);
+    } else {
+      if (_tableBar) _tableBar.style.display = 'none';
+      _activeCell = null;
+    }
+  });
+
+  document.addEventListener('keyup', function() {
+    var sel = window.getSelection();
+    if (!sel || !sel.rangeCount) return;
+    var n = sel.getRangeAt(0).commonAncestorContainer;
+    if (n.nodeType === 3) n = n.parentNode;
+    var cell = n && n.closest ? n.closest('td, th') : null;
+    if (cell && getEditor(cell)) { _activeCell = cell; positionTableBar(cell); }
+    else if (!cell) {
+      if (_tableBar) _tableBar.style.display = 'none';
+      _activeCell = null;
+    }
+  });
+
+  // Right-click context menus
+  document.addEventListener('contextmenu', function(e) {
+    var t = e.target;
+    if (t.tagName === 'IMG' && getEditor(t)) {
+      e.preventDefault();
+      if (_activeImg !== t) showImageHandles(t);
+      showCtx([
+        { icon:'◀', label:'Alinhar à esquerda', fn: function() { if (t.parentNode) t.parentNode.style.textAlign='left'; } },
+        { icon:'▬', label:'Centralizar',         fn: function() { if (t.parentNode) t.parentNode.style.textAlign='center'; } },
+        { icon:'▶', label:'Alinhar à direita',   fn: function() { if (t.parentNode) t.parentNode.style.textAlign='right'; } },
+        '-',
+        { icon:'↔', label:'Largura original',    fn: function() { t.style.width=''; t.style.height=''; } },
+        { icon:'⤢', label:'100% (largura total)',fn: function() { t.style.width='100%'; t.style.height='auto'; } },
+        { icon:'⤡', label:'50%',                 fn: function() { var pw=(t.parentNode?t.parentNode.offsetWidth:0)||400; t.style.width=Math.floor(pw*.5)+'px'; t.style.height='auto'; } },
+        '-',
+        { icon:'🗑', label:'Excluir imagem', danger:true, fn: function() {
+          var ed=getEditor(t); var rem=(t.parentNode&&t.parentNode.tagName==='DIV')?t.parentNode:t;
+          if (rem.parentNode) rem.parentNode.removeChild(rem); removeHandles();
+          if (ed) ed.dispatchEvent(new Event('input',{bubbles:true}));
+        }},
+      ], e.clientX, e.clientY, t);
+      return;
+    }
+    var cell = t.closest ? t.closest('td, th') : null;
+    if (cell && getEditor(cell)) {
+      e.preventDefault(); _activeCell = cell; positionTableBar(cell);
+      showCtx([
+        { icon:'↑', label:'Inserir linha acima',       fn: function(){ bcAddRowAbove(cell); } },
+        { icon:'↓', label:'Inserir linha abaixo',      fn: function(){ bcAddRowBelow(cell); } },
+        { icon:'←', label:'Inserir coluna à esquerda', fn: function(){ bcAddColLeft(cell);  } },
+        { icon:'→', label:'Inserir coluna à direita',  fn: function(){ bcAddColRight(cell); } },
+        '-',
+        { icon:'✕', label:'Excluir linha',  danger:true, fn: function(){ bcDeleteRow(cell); } },
+        { icon:'✕', label:'Excluir coluna', danger:true, fn: function(){ bcDeleteCol(cell); } },
+        '-',
+        { icon:'🗑', label:'Excluir tabela', danger:true, fn: function(){ bcDeleteTable(cell); } },
+      ], e.clientX, e.clientY, cell);
+    }
+  });
+
+  // Expose for external use
+  window.bcAddRowAbove = bcAddRowAbove; window.bcAddRowBelow = bcAddRowBelow;
+  window.bcDeleteRow   = bcDeleteRow;   window.bcAddColLeft  = bcAddColLeft;
+  window.bcAddColRight = bcAddColRight; window.bcDeleteCol   = bcDeleteCol;
+  window.bcDeleteTable = bcDeleteTable;
+
+})();
+</script>
+
+</body>
+</html>/html>
