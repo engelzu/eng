@@ -210,6 +210,10 @@
             e.stopImmediatePropagation();
             return;
         }
+        if (t.closest && t.closest('#bc-ctx-menu')) {
+            e.stopImmediatePropagation();
+            return;
+        }
         if (t.classList.contains('bc-tbl-col-handle') || t.classList.contains('bc-drag-overlay')) {
           e.stopImmediatePropagation(); // Radix never sees this pointerdown
           if (typeof t._bcPointerDown === 'function') t._bcPointerDown(e);
