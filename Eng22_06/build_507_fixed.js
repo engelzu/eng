@@ -125,11 +125,6 @@ for (const f of files) {
     console.log('Injected Modal Markup');
   }
 
-  const selectDropdownTarget = '(0,t.jsx)(j.Ql,{value:"PRIORIZADOS",children:"PRIORIZADOS"})';
-  if (code.includes(selectDropdownTarget) && !code.includes('value:"AGUARDANDO APROVAÇÃO"')) {
-    code = code.replace(selectDropdownTarget, '(0,t.jsx)(j.Ql,{value:"AGUARDANDO APROVAÇÃO",children:"AGUARDANDO APROVAÇÃO"}),(0,t.jsx)(j.Ql,{value:"PRIORIZADOS",children:"PRIORIZADOS"})');
-    console.log('Injected dropdown option');
-  }
 
   fs.writeFileSync(f, code);
   console.log('Patched ' + f);
